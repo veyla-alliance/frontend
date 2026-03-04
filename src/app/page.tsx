@@ -2,9 +2,8 @@ import dynamic from "next/dynamic";
 import Navbar from "@/components/sections/Navbar";
 import Hero from "@/components/sections/Hero";
 
-// Lazy load below-the-fold sections — reduces initial JS bundle significantly
-const Problem = dynamic(() => import("@/components/sections/Problem"));
-const Answer = dynamic(() => import("@/components/sections/Answer"));
+// Lazy load below-the-fold sections
+const ProofBar = dynamic(() => import("@/components/sections/ProofBar"));
 const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks"));
 const TheStack = dynamic(() => import("@/components/sections/TheStack"));
 const TheVision = dynamic(() => import("@/components/sections/TheVision"));
@@ -21,10 +20,8 @@ export default function Home() {
       <Navbar />
       <Hero />
 
-      {/* ===== TEXT MANIFESTO ===== */}
       <div className="manifesto-layer relative">
-        <Problem />
-        <Answer />
+        <ProofBar />
         <HowItWorks />
         <TheStack />
         <TheVision />
