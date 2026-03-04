@@ -149,6 +149,84 @@ body {
   position: relative;
 }
 
+/* ── Shimmer sweep on primary buttons ───────────────────── */
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.18),
+      transparent);
+  animation: btn-sweep 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes btn-sweep {
+  0% {
+    left: -80%;
+  }
+
+  40% {
+    left: 130%;
+  }
+
+  100% {
+    left: 130%;
+  }
+}
+
+/* ── Ambient Glow Blobs ─────────────────────────────────── */
+.glow-blob {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow-purple {
+  background: conic-gradient(from 180deg at 50% 50%, #7b39fc 0deg, #3a1a7c 360deg);
+}
+
+.glow-neon {
+  background: conic-gradient(from 0deg at 50% 50%, #a06dfa 0deg, #4d2b82 360deg);
+}
+
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    opacity: 0.25;
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+}
+
+@media (max-width: 768px) {
+  .glow-blob {
+    width: 300px !important;
+    height: 300px !important;
+    filter: blur(60px) !important;
+    opacity: 0.08 !important;
+  }
+}
+
 /* ========================================
    HERO — CINEMATIC FULL-SCREEN VIDEO
    ======================================== */
@@ -397,35 +475,8 @@ body {
 .steps-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
+  gap: 24px;
   margin-top: 64px;
-  border-top: 1px solid var(--veyla-border);
-  border-left: 1px solid var(--veyla-border);
-}
-
-.step-item {
-  padding: 48px 40px;
-  border-right: 1px solid var(--veyla-border);
-  border-bottom: 1px solid var(--veyla-border);
-  transition: background 0.4s ease;
-  position: relative;
-}
-
-.step-item::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at top left, rgba(123, 57, 252, 0.06), transparent 70%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.step-item:hover::before {
-  opacity: 1;
-}
-
-.step-item:hover {
-  background: var(--veyla-surface);
 }
 
 .step-number {
@@ -460,17 +511,8 @@ body {
 .stack-list {
   display: flex;
   flex-direction: column;
+  gap: 24px;
   margin-top: 64px;
-}
-
-.stack-item {
-  padding: 40px 0;
-  border-top: 1px solid var(--veyla-border);
-  transition: all 0.3s ease;
-}
-
-.stack-item:last-child {
-  border-bottom: 1px solid var(--veyla-border);
 }
 
 .stack-header {
@@ -754,4 +796,103 @@ body {
   .manifesto-heading-hero {
     font-size: 34px;
   }
+}
+
+/* ========================================
+   WEB3 GLOWING CARD COMPONENT
+   ======================================== */
+
+.glowing-card-wrapper {
+  position: relative;
+  border-radius: 24px;
+  background: rgba(5, 5, 5, 0.4);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  transition: box-shadow 0.4s ease;
+  z-index: 1;
+}
+
+.glowing-card-wrapper:hover {
+  box-shadow: 0 20px 40px -20px rgba(123, 57, 252, 0.15);
+  border: 1px solid transparent;
+  /* Border overridden by glowing gradient */
+}
+
+.glowing-card-border {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 24px;
+  padding: 1px;
+  background: transparent;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.glowing-card-inner-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 24px;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  mix-blend-mode: screen;
+}
+
+.glowing-card-content {
+  position: relative;
+  z-index: 3;
+  padding: 48px 40px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Web3 Icon Container */
+.web3-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.web3-icon-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(123, 57, 252, 0.4) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.glowing-card-wrapper:hover .web3-icon-wrap::before {
+  opacity: 1;
+}
+
+.web3-icon {
+  color: #fff;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.glowing-card-wrapper:hover .web3-icon {
+  transform: scale(1.1);
+  color: #c4a1ff;
 }
