@@ -18,7 +18,8 @@ export default function Home() {
       <section className="hero-cinematic" id="hero">
         <div className="hero-video-container">
           <video autoPlay loop muted playsInline className="hero-video" poster="/video-poster-placeholder.jpg">
-            <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260215_121759_424f8e9c-d8bd-4974-9567-52709dfb6842.mp4" type="video/mp4" />
+            {/* <source src="/hero-video.webm" type="video/webm" /> */}
+            <source src="/hero-video.mp4" type="video/mp4" />
           </video>
           <div className="hero-video-overlay" />
         </div>
