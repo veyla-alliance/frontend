@@ -11,10 +11,12 @@ const TheVision = dynamic(() => import("@/components/sections/TheVision"));
 const Footer = dynamic(() => import("@/components/sections/Footer"));
 
 import { Noise } from "@/components/Noise";
+import { PixelGrid } from "@/components/PixelGrid";
 
 export default function Home() {
   return (
     <main className="layout-wrapper">
+      <PixelGrid />
       <Noise />
       <Navbar />
       <Hero />

@@ -1,4 +1,7 @@
+"use client";
+
 import { FadeIn } from "@/components/FadeIn";
+import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
     return (
@@ -15,9 +18,25 @@ export default function Hero() {
                 <FadeIn>
                     <h1 className="hero-wordmark">VEYLA</h1>
                 </FadeIn>
-                <FadeIn delay={0.2} className="hero-statement">
-                    <p className="hero-statement-line-1">Deposit once.</p>
-                    <p className="hero-statement-line-2">Earn everywhere.</p>
+                <FadeIn delay={0.15}>
+                    <p className="hero-headline">
+                        Your assets, routed for maximum yield.
+                    </p>
+                </FadeIn>
+                <FadeIn delay={0.3}>
+                    <p className="hero-subtitle">
+                        Deposit into one vault on Polkadot Hub. Veyla finds and captures
+                        the best yields across every chain — automatically.
+                    </p>
+                </FadeIn>
+                <FadeIn delay={0.45}>
+                    <div className="hero-ctas">
+                        <button className="btn-primary btn-shimmer">
+                            <span>Start Earning</span>
+                            <ArrowRight size={16} />
+                        </button>
+                        <a href="#" className="btn-secondary">Read Docs</a>
+                    </div>
                 </FadeIn>
             </div>
 
