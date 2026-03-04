@@ -4,7 +4,7 @@ export default function Hero() {
     return (
         <section className="hero-cinematic" id="hero">
             <div className="hero-video-container">
-                <video autoPlay loop muted playsInline className="hero-video" poster="/video-poster-placeholder.jpg">
+                <video autoPlay loop muted playsInline className="hero-video">
                     {/* <source src="/hero-video.webm" type="video/webm" /> */}
                     <source src="/hero-video.mp4" type="video/mp4" />
                 </video>

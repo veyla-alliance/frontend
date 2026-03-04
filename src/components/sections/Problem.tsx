@@ -2,6 +2,25 @@ import { FadeIn } from "@/components/FadeIn";
 import { TextReveal } from "@/components/TextReveal";
 import { Coins, AlertTriangle, Blocks } from "lucide-react";
 
+/* Pre-generated positions to avoid SSR ↔ client hydration mismatch */
+const DOT_POSITIONS = [
+    { left: '18%', bottom: '32%', delay: '0.4s', opacity: 0.35 },
+    { left: '72%', bottom: '58%', delay: '1.1s', opacity: 0.55 },
+    { left: '33%', bottom: '15%', delay: '0.7s', opacity: 0.28 },
+    { left: '85%', bottom: '42%', delay: '1.8s', opacity: 0.48 },
+    { left: '51%', bottom: '78%', delay: '0.2s', opacity: 0.62 },
+    { left: '12%', bottom: '65%', delay: '1.5s', opacity: 0.33 },
+    { left: '67%', bottom: '22%', delay: '0.9s', opacity: 0.42 },
+    { left: '28%', bottom: '88%', delay: '1.3s', opacity: 0.52 },
+    { left: '90%', bottom: '72%', delay: '0.6s', opacity: 0.38 },
+    { left: '45%', bottom: '45%', delay: '1.7s', opacity: 0.55 },
+    { left: '58%', bottom: '12%', delay: '0.1s', opacity: 0.30 },
+    { left: '22%', bottom: '52%', delay: '1.0s', opacity: 0.45 },
+    { left: '78%', bottom: '35%', delay: '1.6s', opacity: 0.60 },
+    { left: '40%', bottom: '82%', delay: '0.5s', opacity: 0.25 },
+    { left: '62%', bottom: '28%', delay: '1.4s', opacity: 0.50 },
+];
+
 export default function Problem() {
     return (
         <>
@@ -31,15 +50,15 @@ export default function Problem() {
                         </p>
                         <div className="bento-visual">
                             <div className="fake-dots-container">
-                                {[...Array(15)].map((_, i) => (
+                                {DOT_POSITIONS.map((dot, i) => (
                                     <div
                                         key={i}
                                         className="fake-dot"
                                         style={{
-                                            left: `${Math.random() * 80 + 10}%`,
-                                            bottom: `${Math.random() * 80 + 10}%`,
-                                            animationDelay: `${Math.random() * 2}s`,
-                                            opacity: Math.random() * 0.5 + 0.2
+                                            left: dot.left,
+                                            bottom: dot.bottom,
+                                            animationDelay: dot.delay,
+                                            opacity: dot.opacity,
                                         }}
                                     />
                                 ))}

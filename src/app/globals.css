@@ -505,6 +505,109 @@ body {
 }
 
 /* ========================================
+   WORKFLOW TIMELINE (How It Works)
+   ======================================== */
+
+.workflow-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 64px;
+  position: relative;
+  padding-left: 64px;
+}
+
+.workflow-circuit-line {
+  position: absolute;
+  left: 19px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom,
+      transparent 0%,
+      rgba(123, 57, 252, 0.25) 8%,
+      rgba(123, 57, 252, 0.25) 92%,
+      transparent 100%);
+}
+
+.workflow-particle {
+  position: absolute;
+  left: -2.5px;
+  width: 6px;
+  height: 80px;
+  border-radius: 100px;
+  background: linear-gradient(to bottom, transparent, var(--veyla-purple), transparent);
+  filter: blur(1px);
+  animation: particle-travel 4s ease-in-out infinite;
+}
+
+@keyframes particle-travel {
+  0% {
+    top: -80px;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    top: calc(100% + 80px);
+    opacity: 0;
+  }
+}
+
+.workflow-step-wrapper {
+  position: relative;
+}
+
+.workflow-node {
+  position: absolute;
+  left: -52px;
+  top: 36px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--veyla-dark);
+  border: 2px solid rgba(123, 57, 252, 0.5);
+  box-shadow: 0 0 16px rgba(123, 57, 252, 0.25);
+  z-index: 2;
+}
+
+.workflow-node::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: var(--veyla-purple);
+  opacity: 0.6;
+}
+
+.workflow-card .glowing-card-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 36px 32px;
+}
+
+.workflow-icon-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.workflow-content {
+  flex: 1;
+}
+
+/* ========================================
    STACK LIST (The Stack / Tech)
    ======================================== */
 
@@ -755,6 +858,27 @@ body {
 
   .step-item {
     padding: 32px 24px;
+  }
+
+  .workflow-container {
+    padding-left: 44px;
+  }
+
+  .workflow-circuit-line {
+    left: 11px;
+  }
+
+  .workflow-node {
+    left: -40px;
+    width: 12px;
+    height: 12px;
+    top: 32px;
+  }
+
+  .workflow-card .glowing-card-content {
+    flex-direction: column;
+    gap: 16px;
+    padding: 28px 24px;
   }
 
   .vision-quote {

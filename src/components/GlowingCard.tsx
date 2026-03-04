@@ -12,6 +12,14 @@ export const GlowingCard = ({ children, className = "" }: GlowingCardProps) => {
     const cardRef = useRef<HTMLDivElement>(null);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!cardRef.current) return;
@@ -47,7 +55,7 @@ export const GlowingCard = ({ children, className = "" }: GlowingCardProps) => {
             <div
                 className="glowing-card-inner-glow"
                 style={{
-                    opacity: isHovered ? window.innerWidth > 768 ? 1 : 0 : 0, // only show inner glow on hover (and desktop) to not clash with mobile tap
+                    opacity: isHovered && !isMobile ? 1 : 0,
                     background: `radial-gradient(
                         400px circle at ${mousePosition.x}px ${mousePosition.y}px,
                         var(--veyla-purple-glow),
