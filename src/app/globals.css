@@ -896,3 +896,222 @@ body {
   transform: scale(1.1);
   color: #c4a1ff;
 }
+
+/* ========================================
+   MICRO-NOISE TEXTURE (PHASE 1)
+   ======================================== */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+}
+
+/* ========================================
+   BENTO GRID SYSTEM (PHASE 2)
+   ======================================== */
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+.bento-item {
+  position: relative;
+  background: var(--veyla-surface);
+  border: 1px solid var(--veyla-border);
+  border-radius: 24px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.bento-item:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
+}
+
+.bento-no-padding {
+  padding: 0 !important;
+}
+
+.bento-icon-wrapper {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.bento-title {
+  font-family: var(--font-geist-sans), 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--veyla-text-main);
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.bento-desc {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--veyla-text-muted);
+}
+
+.bento-tall {
+  grid-row: span 2;
+}
+
+.bento-col-span-2 {
+  grid-column: span 2;
+}
+
+.bento-visual {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+/* Visual: Fragmented UI (Fake Dots) */
+.fake-dots-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+}
+
+.fake-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--veyla-purple);
+  opacity: 0.6;
+  animation: float-dot 4s ease-in-out infinite alternate;
+}
+
+@keyframes float-dot {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: translateY(-20px) scale(1.5);
+    opacity: 0.8;
+  }
+}
+
+/* Visual: Unified Vault */
+.vault-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vault-core {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--veyla-purple) 0%, #3a1a7c 100%);
+  box-shadow: 0 0 60px var(--veyla-purple-glow);
+  z-index: 10;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vault-core::after {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  border: 1px solid rgba(123, 57, 252, 0.3);
+  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.vault-orbit {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  animation: spin-slow 20s linear infinite;
+}
+
+@keyframes spin-slow {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.vault-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 60px 40px 40px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(5, 5, 5, 0) 100%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vault-overlay-title {
+  font-family: var(--font-geist-sans), 'Inter', sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+}
+
+.vault-overlay-desc {
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 680px;
+}
+
+@media (max-width: 768px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bento-tall,
+  .bento-col-span-2 {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+}

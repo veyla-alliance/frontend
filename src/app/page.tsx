@@ -10,9 +10,12 @@ const TheStack = dynamic(() => import("@/components/sections/TheStack"));
 const TheVision = dynamic(() => import("@/components/sections/TheVision"));
 const Footer = dynamic(() => import("@/components/sections/Footer"));
 
+import { Noise } from "@/components/Noise";
+
 export default function Home() {
   return (
     <main className="layout-wrapper">
+      <Noise />
       <Navbar />
       <Hero />
 
