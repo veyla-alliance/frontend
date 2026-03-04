@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { FadeIn } from "@/components/FadeIn";
 
 export default function Home() {
@@ -11,148 +10,260 @@ export default function Home() {
             <a href="#" className="nav-logo" aria-label="Veyla Home">VEYLA</a>
             <nav className="nav-links" aria-label="Main Navigation">
               <a href="#" className="nav-link active">Home</a>
-              <a href="#" className="nav-link" aria-haspopup="true" aria-expanded="false">
-                Ecosystem
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style={{ marginTop: '2px' }}>
-                  <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </a>
-              <a href="#" className="nav-link">Routing</a>
+              <a href="#the-problem" className="nav-link">Protocol</a>
+              <a href="#how-it-works" className="nav-link">Routing</a>
               <a href="#" className="nav-link">Docs</a>
             </nav>
           </div>
           <div className="nav-right">
             <button className="btn-signin">Sign In</button>
-            <button className="btn-getstarted"><span>Get Started</span></button>
+            <button className="btn-getstarted"><span>Launch App</span></button>
           </div>
         </header>
       </div>
 
-      {/* Hero Section */}
-      <section className="hero-wrapper">
-        <div className="hero-bg-container">
-          <video autoPlay loop muted playsInline className="background-video" poster="/video-poster-placeholder.jpg">
+      {/* ===== HERO: Full-screen video ===== */}
+      <section className="hero-cinematic" id="hero">
+        <div className="hero-video-container">
+          <video autoPlay loop muted playsInline className="hero-video" poster="/video-poster-placeholder.jpg">
             <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260215_121759_424f8e9c-d8bd-4974-9567-52709dfb6842.mp4" type="video/mp4" />
           </video>
-          {/* Blurred Background Element to enhance text legibility */}
-          <div className="blur-pill" aria-hidden="true"></div>
+          <div className="hero-video-overlay" />
         </div>
 
-        <div className="hero-content">
+        <div className="hero-center-content">
           <FadeIn>
-            <div className="eyebrow-badge">
-              <span className="dot"></span> PVM Routing Live on Polkadot
-            </div>
+            <h1 className="hero-wordmark">VEYLA</h1>
           </FadeIn>
-
-          <FadeIn className="heading-block" delay={0.1}>
-            <h1 className="heading-line-1 text-gradient">Intelligent router.</h1>
-            <h1 className="heading-line-2">Yield focused.</h1>
-          </FadeIn>
-
-          <FadeIn delay={0.2}>
-            <p className="hero-subtitle">
-              An automated yield optimization protocol built natively on Polkadot Hub.
-              By leveraging the high-performance PolkaVM and XCM, Veyla serves as a smart solution to the problem of liquidity fragmentation.
-            </p>
-          </FadeIn>
-
-          <FadeIn delay={0.3} className="cta-container">
-            <button className="btn-cta-primary">
-              Launch App
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <button className="btn-cta-secondary">Read Documentation</button>
+          <FadeIn delay={0.3}>
+            <p className="hero-tagline">The Intelligent Yield Router</p>
           </FadeIn>
         </div>
+
+        <FadeIn delay={0.6} className="scroll-indicator-container">
+          <div className="scroll-indicator">
+            <span className="scroll-text">Scroll</span>
+            <div className="scroll-line" />
+          </div>
+        </FadeIn>
       </section>
 
-      <div className="content-layer">
-        {/* Dashboard Image / Phase 2 Mockup Area */}
-        <section className="dashboard-section" aria-label="Platform Preview">
-          <FadeIn delay={0.5} className="dashboard-outer">
-            <div className="dashboard-inner relative w-full aspect-[2070/1380]">
-              <Image
-                src="https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2070&auto=format&fit=crop"
-                alt="Preview of the Veyla Dashboard Interface"
-                width={2070}
-                height={1380}
-                priority
-                className="dashboard-img"
-              />
-            </div>
+      {/* ===== TEXT MANIFESTO ===== */}
+      <div className="manifesto-layer">
+
+        {/* Section 01 — The Problem */}
+        <section className="manifesto-section" id="the-problem">
+          <FadeIn>
+            <span className="section-label">01 — The Problem</span>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <h2 className="manifesto-heading">
+              Liquidity is <em>scattered</em><br />
+              across a thousand chains.
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <p className="manifesto-body">
+              Every new parachain fragments the ecosystem further. Users are forced to manually hunt for the best yields, bridge assets through risky third-party protocols, and constantly monitor shifting APYs across dozens of platforms.
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.3}>
+            <p className="manifesto-body muted">
+              The result? Billions in idle capital. Missed opportunities. Unnecessary complexity for the people who actually build and use DeFi.
+            </p>
           </FadeIn>
         </section>
 
-        {/* Features / Solusi Veyla */}
-        <section className="features-section-new">
-          <FadeIn className="section-header">
-            <h2 className="section-title text-gradient">Your Crypto Personal Executive</h2>
-            <p className="section-subtitle">A simple workflow for the user, yet sophisticated under the hood.</p>
+        {/* Divider */}
+        <div className="manifesto-divider" />
+
+        {/* Section 02 — The Answer */}
+        <section className="manifesto-section" id="the-answer">
+          <FadeIn>
+            <span className="section-label">02 — The Answer</span>
           </FadeIn>
-          <div className="features-grid-new">
-            <FadeIn delay={0.1}>
-              <div className="feature-card-new">
-                <h3 className="feature-title-new">Single Deposit</h3>
-                <p className="feature-desc-new">Users deposit assets (such as DOT or USDT) into a single gateway—the Veyla Vault on Polkadot Hub.</p>
+          <FadeIn delay={0.1}>
+            <h2 className="manifesto-heading-hero">
+              One deposit.<br />
+              <span className="text-gradient-purple">Every chain.</span><br />
+              Maximum yield.
+            </h2>
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <p className="manifesto-body">
+              Veyla is an automated yield optimization protocol built natively on Polkadot Hub. It acts as your personal executive — you deposit once into the Veyla Vault, and our routing engine handles the rest.
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.3}>
+            <p className="manifesto-body">
+              No bridges. No manual rebalancing. No multi-tab spreadsheets tracking yields. Just deposit and earn.
+            </p>
+          </FadeIn>
+        </section>
+
+        {/* Divider */}
+        <div className="manifesto-divider" />
+
+        {/* Section 03 — How It Works */}
+        <section className="manifesto-section" id="how-it-works">
+          <FadeIn>
+            <span className="section-label">03 — How It Works</span>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <h2 className="manifesto-heading">
+              A simple workflow for the user.<br />
+              <em>Sophisticated</em> under the hood.
+            </h2>
+          </FadeIn>
+
+          <div className="steps-grid">
+            <FadeIn delay={0.15}>
+              <div className="step-item">
+                <span className="step-number">01</span>
+                <h3 className="step-title">Deposit</h3>
+                <p className="step-desc">
+                  Users deposit assets — DOT, USDT, USDC — into a single gateway: the Veyla Vault on Polkadot Hub. One transaction. One entry point.
+                </p>
               </div>
             </FadeIn>
-            <FadeIn delay={0.2}>
-              <div className="feature-card-new">
-                <h3 className="feature-title-new">Cross-Chain Discovery</h3>
-                <p className="feature-desc-new">Veyla's backend intelligence monitors staking and lending opportunities across multiple parachains in real-time.</p>
+            <FadeIn delay={0.25}>
+              <div className="step-item">
+                <span className="step-number">02</span>
+                <h3 className="step-title">Discover</h3>
+                <p className="step-desc">
+                  Veyla&apos;s backend intelligence continuously monitors staking, lending, and liquidity opportunities across every connected parachain — in real-time.
+                </p>
               </div>
             </FadeIn>
-            <FadeIn delay={0.3}>
-              <div className="feature-card-new">
-                <h3 className="feature-title-new">Automatic Routing</h3>
-                <p className="feature-desc-new">Utilizing XCM technology, Veyla automatically routes liquidity to the parachain with the highest yield without requiring manual user intervention.</p>
+            <FadeIn delay={0.35}>
+              <div className="step-item">
+                <span className="step-number">03</span>
+                <h3 className="step-title">Route</h3>
+                <p className="step-desc">
+                  Using XCM cross-chain messaging, Veyla automatically routes your liquidity to the parachain offering the highest risk-adjusted yield. No manual intervention needed.
+                </p>
               </div>
             </FadeIn>
-            <FadeIn delay={0.4}>
-              <div className="feature-card-new">
-                <h3 className="feature-title-new">Efficiency & Performance</h3>
-                <p className="feature-desc-new">Executed on PVM, every asset transition is performed with minimal gas fees and high-speed finality.</p>
+            <FadeIn delay={0.45}>
+              <div className="step-item">
+                <span className="step-number">04</span>
+                <h3 className="step-title">Earn</h3>
+                <p className="step-desc">
+                  Yields are compounded and rebalanced automatically. As market conditions shift, Veyla re-routes to maintain optimal positioning. You earn more by doing less.
+                </p>
               </div>
             </FadeIn>
           </div>
         </section>
 
-        {/* Technical Edge / Backend Power */}
-        <section className="technical-section">
-          <FadeIn className="technical-container">
-            <div className="technical-content">
-              <h2 className="section-title text-gradient">Technical Excellence</h2>
-              <p className="section-subtitle">Developed by the Veyla Alliance, the infrastructure acts as a core layer, not just a DeFi application.</p>
-              <ul className="tech-list" style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '32px' }}>
-                <li style={{ position: 'relative', paddingLeft: '24px', color: 'var(--veyla-text-muted)' }}>
-                  <span style={{ position: 'absolute', left: 0, color: 'var(--veyla-purple)' }}>→</span>
-                  <strong style={{ color: '#fff' }}>Native Interoperability:</strong> Veyla bypasses third-party bridges, relying solely on Polkadot's native security for all cross-chain operations.
-                </li>
-                <li style={{ position: 'relative', paddingLeft: '24px', color: 'var(--veyla-text-muted)' }}>
-                  <span style={{ position: 'absolute', left: 0, color: 'var(--veyla-purple)' }}>→</span>
-                  <strong style={{ color: '#fff' }}>PVM-Optimized:</strong> The protocol utilizes precompiled contracts for heavy routing calculations, making it computationally superior and cost-effective.
-                </li>
-                <li style={{ position: 'relative', paddingLeft: '24px', color: 'var(--veyla-text-muted)' }}>
-                  <span style={{ position: 'absolute', left: 0, color: 'var(--veyla-purple)' }}>→</span>
-                  <strong style={{ color: '#fff' }}>Open-Source Integrity:</strong> Fully compliant with hackathon requirements, Veyla maintains a transparent codebase and a verified on-chain identity.
-                </li>
-              </ul>
-            </div>
-          </FadeIn>
-        </section>
+        {/* Divider */}
+        <div className="manifesto-divider" />
 
-        {/* Vision Section */}
-        <section className="vision-section">
-          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-            <FadeIn className="vision-content">
-              <h2 className="vision-title">Vision of the Veyla Alliance</h2>
-              <p className="vision-text">Building a future where managing assets across a thousand blockchains is as effortless as managing a single bank account.</p>
+        {/* Section 04 — The Stack */}
+        <section className="manifesto-section" id="the-stack">
+          <FadeIn>
+            <span className="section-label">04 — The Stack</span>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <h2 className="manifesto-heading">
+              Not just a DeFi app.<br />
+              A <em>core infrastructure</em> layer.
+            </h2>
+          </FadeIn>
+
+          <div className="stack-list">
+            <FadeIn delay={0.15}>
+              <div className="stack-item">
+                <div className="stack-header">
+                  <span className="stack-tag">PVM</span>
+                  <h3 className="stack-title">PolkaVM Optimized</h3>
+                </div>
+                <p className="stack-desc">
+                  The protocol utilizes precompiled contracts on PolkaVM for heavy routing calculations — making every asset transition computationally superior, with minimal gas fees and high-speed finality.
+                </p>
+              </div>
+            </FadeIn>
+            <FadeIn delay={0.25}>
+              <div className="stack-item">
+                <div className="stack-header">
+                  <span className="stack-tag">XCM</span>
+                  <h3 className="stack-title">Native Interoperability</h3>
+                </div>
+                <p className="stack-desc">
+                  Veyla bypasses third-party bridges entirely. All cross-chain operations rely solely on Polkadot&apos;s native XCM messaging — inheriting the relay chain&apos;s full security guarantees.
+                </p>
+              </div>
+            </FadeIn>
+            <FadeIn delay={0.35}>
+              <div className="stack-item">
+                <div className="stack-header">
+                  <span className="stack-tag">OSS</span>
+                  <h3 className="stack-title">Open-Source Integrity</h3>
+                </div>
+                <p className="stack-desc">
+                  Fully transparent codebase. Verified on-chain identity. Built in compliance with the Polkadot ecosystem&apos;s open standards and hackathon requirements.
+                </p>
+              </div>
             </FadeIn>
           </div>
         </section>
+
+        {/* Divider */}
+        <div className="manifesto-divider" />
+
+        {/* Section 05 — The Vision */}
+        <section className="manifesto-section vision" id="the-vision">
+          <FadeIn>
+            <span className="section-label">05 — The Vision</span>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <blockquote className="vision-quote">
+              Building a future where managing assets across a thousand blockchains is as effortless as managing a single bank account.
+            </blockquote>
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <p className="vision-attribution">— The Veyla Alliance</p>
+          </FadeIn>
+        </section>
+
+        {/* Footer */}
+        <footer className="site-footer">
+          <div className="footer-inner">
+            <div className="footer-top">
+              <div className="footer-brand">
+                <span className="footer-logo">VEYLA</span>
+                <p className="footer-tagline">The Intelligent Yield Router<br />for Polkadot Hub.</p>
+              </div>
+              <div className="footer-links-grid">
+                <div className="footer-col">
+                  <h4 className="footer-col-title">Protocol</h4>
+                  <a href="#" className="footer-link">Launch App</a>
+                  <a href="#" className="footer-link">Documentation</a>
+                  <a href="#" className="footer-link">Audit Reports</a>
+                </div>
+                <div className="footer-col">
+                  <h4 className="footer-col-title">Community</h4>
+                  <a href="#" className="footer-link">Twitter / X</a>
+                  <a href="#" className="footer-link">Discord</a>
+                  <a href="#" className="footer-link">Telegram</a>
+                </div>
+                <div className="footer-col">
+                  <h4 className="footer-col-title">Developers</h4>
+                  <a href="#" className="footer-link">GitHub</a>
+                  <a href="#" className="footer-link">SDK</a>
+                  <a href="#" className="footer-link">Bug Bounty</a>
+                </div>
+              </div>
+            </div>
+            <div className="footer-bottom">
+              <p className="footer-copy">© 2026 Veyla Alliance. All rights reserved.</p>
+              <div className="footer-bottom-links">
+                <a href="#" className="footer-link-sm">Privacy</a>
+                <a href="#" className="footer-link-sm">Terms</a>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
     </main>
   );
