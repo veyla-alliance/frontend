@@ -3,20 +3,12 @@ import { FadeIn } from "@/components/FadeIn";
 export default function Home() {
   return (
     <main className="layout-wrapper">
-      {/* Sticky Navbar */}
+      {/* Navbar */}
       <div className="navbar-wrapper">
         <header className="navbar-new">
-          <div className="nav-left">
-            <a href="#" className="nav-logo" aria-label="Veyla Home">VEYLA</a>
-            <nav className="nav-links" aria-label="Main Navigation">
-              <a href="#" className="nav-link active">Home</a>
-              <a href="#the-problem" className="nav-link">Protocol</a>
-              <a href="#how-it-works" className="nav-link">Routing</a>
-              <a href="#" className="nav-link">Docs</a>
-            </nav>
-          </div>
+          <a href="#" className="nav-logo" aria-label="Veyla Home">VEYLA</a>
           <div className="nav-right">
-            <button className="btn-signin">Sign In</button>
+            <a href="#" className="nav-link">Docs</a>
             <button className="btn-getstarted"><span>Launch App</span></button>
           </div>
         </header>
