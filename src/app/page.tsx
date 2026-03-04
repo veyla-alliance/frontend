@@ -35,12 +35,13 @@ export default function Home() {
           <FadeIn>
             <h1 className="hero-wordmark">VEYLA</h1>
           </FadeIn>
-          <FadeIn delay={0.3}>
-            <p className="hero-tagline">The Intelligent Yield Router</p>
+          <FadeIn delay={0.2} className="hero-statement">
+            <p className="hero-statement-line-1">Deposit once.</p>
+            <p className="hero-statement-line-2">Earn everywhere.</p>
           </FadeIn>
         </div>
 
-        <FadeIn delay={0.6} className="scroll-indicator-container">
+        <FadeIn delay={0.7} className="scroll-indicator-container">
           <div className="scroll-indicator">
             <span className="scroll-text">Scroll</span>
             <div className="scroll-line" />
