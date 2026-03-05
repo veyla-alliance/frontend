@@ -22,14 +22,14 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
         if (href) {
             return (
                 <a href={href} className={classes} ref={ref as React.ForwardedRef<HTMLAnchorElement>} {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
-                    {shimmer ? <span>{children}</span> : children}
+                    {shimmer ? <span className="flex items-center justify-center gap-2 w-full">{children}</span> : children}
                 </a>
             );
         }
 
         return (
             <button className={classes} ref={ref as React.ForwardedRef<HTMLButtonElement>} {...(props as React.ButtonHTMLAttributes<HTMLButtonElement>)}>
-                {shimmer ? <span>{children}</span> : children}
+                {shimmer ? <span className="flex items-center justify-center gap-2 w-full">{children}</span> : children}
             </button>
         );
     }
