@@ -24,12 +24,12 @@ export default function Hero() {
                     </h1>
                 </FadeIn>
                 <FadeIn delay={0.15}>
-                    <p className="[font-family:'Instrument_Serif',serif] italic text-[28px] font-normal text-white/85 mt-6 leading-[1.4] max-[1024px]:text-[24px] max-[768px]:text-[22px] max-[480px]:text-[20px]">
+                    <p className="[font-family:'Instrument_Serif',serif] italic text-[28px] font-normal text-white/85 mt-6 leading-[1.4] max-[1024px]:text-[26px] max-[768px]:text-[24px] max-[480px]:text-[22px]">
                         Your assets, routed for maximum yield.
                     </p>
                 </FadeIn>
                 <FadeIn delay={0.3}>
-                    <p className="text-[16px] leading-[1.7] text-[var(--veyla-text-muted)] mt-4 max-w-[520px] max-[768px]:text-[14px]">
+                    <p className="text-[18px] leading-[1.7] text-[var(--veyla-text-muted)] mt-4 max-w-[520px] max-[768px]:text-[16px]">
                         Deposit into one vault on Polkadot Hub. Veyla finds and captures
                         the best yields across every chain — automatically.
                     </p>

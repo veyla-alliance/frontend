@@ -5,9 +5,9 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Wallet, Repeat, TrendingUp } from "lucide-react";
 
 const iconBox = "w-[72px] h-[72px] rounded-[20px] bg-gradient-to-br from-[rgba(123,57,252,0.1)] to-[rgba(123,57,252,0.02)] border border-[rgba(123,57,252,0.15)] flex items-center justify-center mx-auto mb-6 transition-all duration-300 group-hover:border-[rgba(123,57,252,0.35)] group-hover:shadow-[0_0_30px_rgba(123,57,252,0.15)] group-hover:-translate-y-0.5";
-const cardNum = "text-[13px] font-semibold text-[var(--veyla-text-dim)] tracking-[2px] mb-4 block";
-const cardTitle = "text-[24px] font-semibold text-[var(--veyla-text-main)] mb-3 tracking-[-0.3px] transition-colors duration-300 group-hover:text-white";
-const cardDesc = "text-[15px] leading-[1.7] text-[var(--veyla-text-muted)] max-w-[300px] mx-auto";
+const cardNum = "text-[15px] font-semibold text-[var(--veyla-text-dim)] tracking-[2px] mb-4 block";
+const cardTitle = "text-[26px] font-semibold text-[var(--veyla-text-main)] mb-3 tracking-[-0.3px] transition-colors duration-300 group-hover:text-white";
+const cardDesc = "text-[17px] leading-[1.7] text-[var(--veyla-text-muted)] max-w-[300px] mx-auto";
 
 export default function HowItWorks() {
     return (
@@ -24,7 +24,7 @@ export default function HowItWorks() {
                 <SectionHeader
                     label="How It Works"
                     title="Three steps. Zero complexity."
-                    labelClassName="block text-[12px] font-semibold tracking-[3px] uppercase text-[var(--veyla-purple)] mb-6"
+                    labelClassName="block text-[14px] font-semibold tracking-[3px] uppercase text-[var(--veyla-purple)] mb-6"
                     titleClassName="[font-family:'Instrument_Serif',serif] italic text-[56px] font-normal leading-[1.15] tracking-[-1px] text-[var(--veyla-text-main)] text-center mb-20 max-w-[700px] max-lg:text-[36px] max-lg:mb-12"
                 />
 

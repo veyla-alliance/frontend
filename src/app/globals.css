@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -41,7 +41,7 @@
   body {
     background-color: var(--veyla-dark);
     color: var(--veyla-text-main);
-    font-family: 'Space Grotesk', var(--font-geist-sans), -apple-system, sans-serif;
+    font-family: 'Outfit', var(--font-geist-sans), -apple-system, sans-serif;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -193,8 +193,8 @@
   }
 
   .flow-preview-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -202,8 +202,8 @@
   }
 
   .flow-preview-amount {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
     font-weight: 700;
     color: #4ade80;
     letter-spacing: -0.5px;
@@ -239,8 +239,8 @@
   }
 
   .flow-preview-apy {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 24px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 26px;
     font-weight: 800;
     color: var(--veyla-cyan);
     letter-spacing: -1px;
@@ -343,7 +343,7 @@
     top: -10px;
     left: 50%;
     transform: translateX(-50%);
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Outfit', sans-serif;
     font-size: 9px;
     font-weight: 700;
     letter-spacing: 2px;
@@ -415,7 +415,7 @@
   }
 
   .footer-link {
-    font-size: 14px;
+    font-size: 16px;
     color: var(--veyla-text-dim);
     text-decoration: none;
     transition: color 0.3s ease;

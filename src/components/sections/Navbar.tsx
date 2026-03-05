@@ -25,7 +25,7 @@ export default function Navbar() {
             <header className="w-full max-w-[1400px] mx-auto px-12 flex justify-between items-center max-[768px]:px-5">
                 <a
                     href="#"
-                    className="[font-family:var(--font-geist-pixel-square),monospace] text-[13px] font-medium text-white/70 tracking-[4px] no-underline transition-colors duration-300 hover:text-white"
+                    className="[font-family:var(--font-geist-pixel-square),monospace] text-[15px] font-medium text-white/70 tracking-[4px] no-underline transition-colors duration-300 hover:text-white"
                     aria-label="Veyla Home"
                 >
                     VEYLA
@@ -33,7 +33,7 @@ export default function Navbar() {
                 <div className="flex gap-7 items-center">
                     <a
                         href="#"
-                        className="text-[13px] text-white/50 no-underline transition-colors duration-300 hover:text-white"
+                        className="text-[15px] text-white/50 no-underline transition-colors duration-300 hover:text-white"
                     >
                         Docs
                     </a>

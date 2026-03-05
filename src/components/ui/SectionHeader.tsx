@@ -10,7 +10,7 @@ interface SectionHeaderProps {
 export const SectionHeader = ({
     label,
     title,
-    labelClassName = "block text-[12px] font-semibold tracking-[3px] uppercase text-[var(--veyla-purple)] mb-6",
+    labelClassName = "block text-[14px] font-semibold tracking-[3px] uppercase text-[var(--veyla-purple)] mb-6",
     titleClassName = "[font-family:'Instrument_Serif',serif] italic text-[56px] font-normal leading-[1.15] tracking-[-1px] text-[var(--veyla-text-main)] text-center mb-20 max-w-[700px]"
 }: SectionHeaderProps) => {
     return (

@@ -17,7 +17,7 @@ export default function ProblemTeaser() {
                 </h2>
             </FadeIn>
             <FadeIn delay={0.2}>
-                <p className="mt-5 text-[16px] leading-[1.7] text-[var(--veyla-text-muted)] max-w-[520px]">
+                <p className="mt-5 text-[18px] leading-[1.7] text-[var(--veyla-text-muted)] max-w-[520px]">
                     Every parachain has its own pools, rates, and mechanics.
                     Managing them manually means bridge risk, idle capital, and constant overhead.
                 </p>

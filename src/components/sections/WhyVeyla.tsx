@@ -19,8 +19,8 @@ const BENEFITS = [
 
 const cardBase = "p-10 flex flex-col gap-5 rounded-3xl bg-white/[0.02] border border-white/[0.06] transition-all duration-300 hover:bg-white/[0.04] hover:border-[rgba(123,57,252,0.2)] hover:-translate-y-1 hover:shadow-[0_20px_40px_-20px_rgba(123,57,252,0.12)] group";
 const iconBase = "w-[52px] h-[52px] rounded-2xl bg-gradient-to-br from-[rgba(123,57,252,0.12)] to-[rgba(123,57,252,0.04)] border border-[rgba(123,57,252,0.15)] flex items-center justify-center transition-all duration-300 group-hover:border-[rgba(123,57,252,0.35)] group-hover:shadow-[0_0_24px_rgba(123,57,252,0.15)]";
-const titleBase = "text-[22px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.3px] transition-colors duration-300 group-hover:text-white";
-const descBase = "text-[15px] leading-[1.7] text-[var(--veyla-text-muted)]";
+const titleBase = "text-[24px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.3px] transition-colors duration-300 group-hover:text-white";
+const descBase = "text-[17px] leading-[1.7] text-[var(--veyla-text-muted)]";
 
 export default function WhyVeyla() {
     return (
@@ -28,7 +28,7 @@ export default function WhyVeyla() {
             <SectionHeader
                 label="Why Veyla"
                 title="Built different. By design."
-                labelClassName="block text-[12px] font-semibold tracking-[3px] uppercase text-[var(--veyla-purple)] mb-6"
+                labelClassName="block text-[14px] font-semibold tracking-[3px] uppercase text-[var(--veyla-purple)] mb-6"
                 titleClassName="[font-family:'Instrument_Serif',serif] italic text-[56px] font-normal leading-[1.15] tracking-[-1px] text-[var(--veyla-text-main)] text-center mb-20 max-w-[700px] max-lg:text-[36px] max-lg:mb-12"
             />
 
