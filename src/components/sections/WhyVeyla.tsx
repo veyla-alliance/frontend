@@ -1,48 +1,46 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { FadeIn } from "@/components/FadeIn";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Shield, Zap, Code } from "lucide-react";
 
 const BENEFITS = [
     {
-        icon: Shield,
-        title: "No Bridges",
         desc: "Zero third-party bridge risk. Everything runs on Polkadot\u2019s native XCM protocol \u2014 the most secure cross-chain messaging in crypto.",
     },
     {
-        icon: Zap,
-        title: "Fully Automated",
         desc: "Set it and forget it. Veyla monitors, rebalances, and re-routes your positions 24/7 as market conditions shift.",
     },
     {
-        icon: Code,
-        title: "Open Source",
         desc: "Every line of code is public. Built on PolkaVM for maximum transparency. Don\u2019t trust \u2014 verify.",
     },
 ];
 
+const cardBase = "p-10 flex flex-col gap-5 rounded-3xl bg-white/[0.02] border border-white/[0.06] transition-all duration-300 hover:bg-white/[0.04] hover:border-[rgba(123,57,252,0.2)] hover:-translate-y-1 hover:shadow-[0_20px_40px_-20px_rgba(123,57,252,0.12)] group";
+const iconBase = "w-[52px] h-[52px] rounded-2xl bg-gradient-to-br from-[rgba(123,57,252,0.12)] to-[rgba(123,57,252,0.04)] border border-[rgba(123,57,252,0.15)] flex items-center justify-center transition-all duration-300 group-hover:border-[rgba(123,57,252,0.35)] group-hover:shadow-[0_0_24px_rgba(123,57,252,0.15)]";
+const titleBase = "text-[22px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.3px] transition-colors duration-300 group-hover:text-white";
+const descBase = "text-[15px] leading-[1.7] text-[var(--veyla-text-muted)]";
+
 export default function WhyVeyla() {
     return (
-        <section className="why-section" id="why-veyla">
+        <section className="why-section w-full px-20 py-[160px] flex flex-col items-center max-lg:px-6 max-lg:py-[100px]" id="why-veyla">
             <SectionHeader
                 label="Why Veyla"
                 title="Built different. By design."
-                labelClassName="why-section-label"
-                titleClassName="why-section-heading"
+                labelClassName="block text-[12px] font-semibold tracking-[3px] uppercase text-[var(--veyla-purple)] mb-6"
+                titleClassName="[font-family:'Instrument_Serif',serif] italic text-[56px] font-normal leading-[1.15] tracking-[-1px] text-[var(--veyla-text-main)] text-center mb-20 max-w-[700px] max-lg:text-[36px] max-lg:mb-12"
             />
 
-            <div className="why-grid">
+            <div className="grid grid-cols-2 gap-4 max-w-[1100px] w-full max-md:grid-cols-1">
                 {/* Tall card — No Bridges */}
-                <FadeIn delay={0.15} className="why-card-tall">
-                    <div className="why-card h-full">
-                        <div className="why-card-icon">
+                <FadeIn delay={0.15} className="row-span-2 max-md:row-span-1">
+                    <div className={cn(cardBase, "h-full")}>
+                        <div className={iconBase}>
                             <Shield size={24} color="#c4a1ff" />
                         </div>
-                        <h3 className="why-card-title">No Bridges</h3>
-                        <p className="why-card-desc">
-                            {BENEFITS[0].desc}
-                        </p>
+                        <h3 className={titleBase}>No Bridges</h3>
+                        <p className={descBase}>{BENEFITS[0].desc}</p>
                         <div className="xcm-visual">
                             <div className="xcm-hub">HUB</div>
                             <div className="xcm-line">
@@ -57,24 +55,23 @@ export default function WhyVeyla() {
                     </div>
                 </FadeIn>
 
-                {/* Right column — normal cards */}
                 <FadeIn delay={0.25}>
-                    <div className="why-card">
-                        <div className="why-card-icon">
+                    <div className={cardBase}>
+                        <div className={iconBase}>
                             <Zap size={24} color="#c4a1ff" />
                         </div>
-                        <h3 className="why-card-title">Fully Automated</h3>
-                        <p className="why-card-desc">{BENEFITS[1].desc}</p>
+                        <h3 className={titleBase}>Fully Automated</h3>
+                        <p className={descBase}>{BENEFITS[1].desc}</p>
                     </div>
                 </FadeIn>
 
                 <FadeIn delay={0.35}>
-                    <div className="why-card">
-                        <div className="why-card-icon">
+                    <div className={cardBase}>
+                        <div className={iconBase}>
                             <Code size={24} color="#c4a1ff" />
                         </div>
-                        <h3 className="why-card-title">Open Source</h3>
-                        <p className="why-card-desc">{BENEFITS[2].desc}</p>
+                        <h3 className={titleBase}>Open Source</h3>
+                        <p className={descBase}>{BENEFITS[2].desc}</p>
                     </div>
                 </FadeIn>
             </div>
