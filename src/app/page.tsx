@@ -16,14 +16,14 @@ import { MagneticCursor } from "@/components/effects/MagneticCursor";
 
 export default function Home() {
   return (
-    <main className="layout-wrapper">
+    <main className="relative w-screen min-h-screen overflow-hidden bg-[var(--veyla-dark)]">
       <PixelGrid />
       <Noise />
       <MagneticCursor />
       <Navbar />
       <Hero />
 
-      <div className="manifesto-layer relative">
+      <div className="relative z-[2] w-full bg-[var(--veyla-dark)]">
         <ProofBar />
         <ProblemTeaser />
         <HowItWorks />

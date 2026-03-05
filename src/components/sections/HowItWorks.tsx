@@ -104,7 +104,9 @@ export default function HowItWorks() {
                     </FadeIn>
                 </div>
             </section>
-            <div className="manifesto-divider" />
+            <div className="w-full px-20 max-lg:px-6">
+                <div className="h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+            </div>
         </>
     );
 }
