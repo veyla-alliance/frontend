@@ -13,7 +13,6 @@ export default function Hero() {
             {/* Video background */}
             <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_50%_60%,#1a0840_0%,#0a0520_40%,var(--veyla-dark)_100%)]">
                 <video autoPlay loop muted playsInline className="w-full h-full object-cover object-center">
-                    <source src="/hero-video.webm" type="video/webm" />
                     <source src="/hero-video.mp4" type="video/mp4" />
                 </video>
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(5,5,5,0.3)_0%,rgba(5,5,5,0.7)_70%,rgba(5,5,5,0.95)_100%),linear-gradient(to_bottom,transparent_0%,transparent_60%,var(--veyla-dark)_100%)]" />
