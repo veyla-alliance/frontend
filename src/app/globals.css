@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -41,7 +41,7 @@
   body {
     background-color: var(--veyla-dark);
     color: var(--veyla-text-main);
-    font-family: 'Inter', var(--font-geist-sans), -apple-system, sans-serif;
+    font-family: 'Space Grotesk', var(--font-geist-sans), -apple-system, sans-serif;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -193,7 +193,7 @@
   }
 
   .flow-preview-label {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 2px;
@@ -202,7 +202,7 @@
   }
 
   .flow-preview-amount {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 20px;
     font-weight: 700;
     color: #4ade80;
@@ -239,7 +239,7 @@
   }
 
   .flow-preview-apy {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 24px;
     font-weight: 800;
     color: var(--veyla-cyan);
@@ -343,7 +343,7 @@
     top: -10px;
     left: 50%;
     transform: translateX(-50%);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 9px;
     font-weight: 700;
     letter-spacing: 2px;
