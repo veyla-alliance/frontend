@@ -817,6 +817,50 @@ body {
 }
 
 /* ========================================
+   PROBLEM TEASER
+   ======================================== */
+
+.problem-teaser {
+  width: 100%;
+  padding: 80px 80px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.problem-teaser-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--veyla-text-dim);
+  display: block;
+  margin-bottom: 24px;
+}
+
+.problem-teaser-heading {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+  color: var(--veyla-text-main);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.problem-teaser-body {
+  margin-top: 20px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--veyla-text-muted);
+  max-width: 520px;
+}
+
+/* ========================================
    WHY VEYLA (Benefit Cards)
    ======================================== */
 
@@ -829,7 +873,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: var(--veyla-dark);
 }
 
 .why-section-label {
@@ -857,14 +900,18 @@ body {
 
 .why-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
   max-width: 1100px;
   width: 100%;
 }
 
+.why-card-tall {
+  grid-row: span 2;
+}
+
 .why-card {
-  padding: 48px 36px;
+  padding: 40px 36px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -872,6 +919,72 @@ body {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.06);
   transition: all 0.4s ease;
+}
+
+/* XCM visualization inside tall card */
+.xcm-visual {
+  margin-top: auto;
+  padding-top: 36px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.xcm-hub {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(123, 57, 252, 0.1);
+  border: 1px solid rgba(123, 57, 252, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-geist-pixel-square), monospace;
+  font-size: 7px;
+  letter-spacing: 1px;
+  color: var(--veyla-purple-soft);
+}
+
+.xcm-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(123, 57, 252, 0.5), rgba(0, 212, 255, 0.5));
+  position: relative;
+}
+
+.xcm-line-label {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--veyla-text-dim);
+}
+
+.xcm-chains {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.xcm-chain {
+  width: 44px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(0, 212, 255, 0.05);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-geist-pixel-square), monospace;
+  font-size: 7px;
+  letter-spacing: 0.5px;
+  color: var(--veyla-cyan);
 }
 
 .why-card:hover {
@@ -1202,8 +1315,21 @@ body {
 
 .site-footer {
   width: 100%;
-  border-top: 1px solid var(--veyla-border);
   background: var(--veyla-dark);
+  position: relative;
+}
+
+.site-footer::before {
+  content: '';
+  display: block;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(123, 57, 252, 0.5) 30%,
+    rgba(0, 212, 255, 0.4) 70%,
+    transparent 100%
+  );
 }
 
 .footer-inner {
@@ -1421,6 +1547,10 @@ body {
     padding-right: 24px;
   }
 
+  .problem-teaser {
+    padding: 60px 24px 40px;
+  }
+
   .manifesto-heading {
     font-size: 36px;
     letter-spacing: -1px;
@@ -1477,6 +1607,14 @@ body {
   .why-grid {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .why-card-tall {
+    grid-row: span 1;
+  }
+
+  .xcm-visual {
+    padding-top: 24px;
   }
 
   .why-card {

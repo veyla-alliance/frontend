@@ -4,6 +4,7 @@ import Hero from "@/components/sections/Hero";
 
 // Lazy load below-the-fold sections
 const ProofBar = dynamic(() => import("@/components/sections/ProofBar"));
+const ProblemTeaser = dynamic(() => import("@/components/sections/ProblemTeaser"));
 const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks"));
 const WhyVeyla = dynamic(() => import("@/components/sections/WhyVeyla"));
 const CallToAction = dynamic(() => import("@/components/sections/CallToAction"));
@@ -24,6 +25,7 @@ export default function Home() {
 
       <div className="manifesto-layer relative">
         <ProofBar />
+        <ProblemTeaser />
         <HowItWorks />
         <WhyVeyla />
         <CallToAction />

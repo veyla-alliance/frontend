@@ -33,17 +33,50 @@ export default function WhyVeyla() {
             />
 
             <div className="why-grid">
-                {BENEFITS.map((benefit, i) => (
-                    <FadeIn delay={0.15 + i * 0.1} key={i}>
-                        <div className="why-card">
-                            <div className="why-card-icon">
-                                <benefit.icon size={24} color="#c4a1ff" />
-                            </div>
-                            <h3 className="why-card-title">{benefit.title}</h3>
-                            <p className="why-card-desc">{benefit.desc}</p>
+                {/* Tall card — No Bridges */}
+                <FadeIn delay={0.15} className="why-card-tall">
+                    <div className="why-card h-full">
+                        <div className="why-card-icon">
+                            <Shield size={24} color="#c4a1ff" />
                         </div>
-                    </FadeIn>
-                ))}
+                        <h3 className="why-card-title">No Bridges</h3>
+                        <p className="why-card-desc">
+                            {BENEFITS[0].desc}
+                        </p>
+                        <div className="xcm-visual">
+                            <div className="xcm-hub">HUB</div>
+                            <div className="xcm-line">
+                                <span className="xcm-line-label">XCM</span>
+                            </div>
+                            <div className="xcm-chains">
+                                <div className="xcm-chain">DOT</div>
+                                <div className="xcm-chain">ASTR</div>
+                                <div className="xcm-chain">HDX</div>
+                            </div>
+                        </div>
+                    </div>
+                </FadeIn>
+
+                {/* Right column — normal cards */}
+                <FadeIn delay={0.25}>
+                    <div className="why-card">
+                        <div className="why-card-icon">
+                            <Zap size={24} color="#c4a1ff" />
+                        </div>
+                        <h3 className="why-card-title">Fully Automated</h3>
+                        <p className="why-card-desc">{BENEFITS[1].desc}</p>
+                    </div>
+                </FadeIn>
+
+                <FadeIn delay={0.35}>
+                    <div className="why-card">
+                        <div className="why-card-icon">
+                            <Code size={24} color="#c4a1ff" />
+                        </div>
+                        <h3 className="why-card-title">Open Source</h3>
+                        <p className="why-card-desc">{BENEFITS[2].desc}</p>
+                    </div>
+                </FadeIn>
             </div>
         </section>
     );
