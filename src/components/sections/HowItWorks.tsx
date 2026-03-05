@@ -32,6 +32,10 @@ export default function HowItWorks() {
                             Drop your assets into the Veyla Vault on Polkadot Hub.
                             One transaction. One entry point.
                         </p>
+                        <div className="flow-card-preview">
+                            <span className="flow-preview-label">Vault deposit</span>
+                            <span className="flow-preview-amount">+$1,000.00</span>
+                        </div>
                     </FadeIn>
 
                     {/* Arrow 1 → */}
@@ -52,6 +56,16 @@ export default function HowItWorks() {
                             Veyla&apos;s engine finds the best yields across all
                             connected chains and routes your liquidity — automatically.
                         </p>
+                        <div className="flow-card-preview">
+                            <span className="flow-preview-label">Best yield found</span>
+                            <div className="flow-preview-chains">
+                                <div className="flow-preview-chain">DOT</div>
+                                <div className="flow-preview-chain-line" />
+                                <div className="flow-preview-chain flow-preview-chain-active">ASTR</div>
+                                <div className="flow-preview-chain-line" />
+                                <div className="flow-preview-chain">HDX</div>
+                            </div>
+                        </div>
                     </FadeIn>
 
                     {/* Arrow 2 → */}
@@ -75,6 +89,10 @@ export default function HowItWorks() {
                             Yields auto-compound and rebalance 24/7. Market shifts?
                             Veyla re-routes. You earn more by doing nothing.
                         </p>
+                        <div className="flow-card-preview">
+                            <span className="flow-preview-label">Current APY</span>
+                            <span className="flow-preview-apy">12.4%</span>
+                        </div>
                     </FadeIn>
                 </div>
             </section>
