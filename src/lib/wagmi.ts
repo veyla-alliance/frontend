@@ -1,6 +1,6 @@
 import { createConfig, http } from "wagmi";
 import { defineChain } from "viem";
-import { injected } from "wagmi/connectors";
+import { injected, coinbaseWallet } from "wagmi/connectors";
 
 // Polkadot Hub Testnet (Passet Hub — Paseo)
 // Verify latest RPC: https://docs.polkadot.com/develop/smart-contracts/
@@ -28,7 +28,10 @@ export const passetHub = defineChain({
 
 export const wagmiConfig = createConfig({
     chains: [passetHub],
-    connectors: [injected()],
+    connectors: [
+        injected(),
+        coinbaseWallet({ appName: "Veyla" }),
+    ],
     transports: {
         [passetHub.id]: http(),
     },
