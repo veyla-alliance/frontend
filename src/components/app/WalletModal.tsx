@@ -5,6 +5,7 @@ import { useConnect } from "wagmi";
 import { injected, coinbaseWallet } from "wagmi/connectors";
 import { X, ChevronRight, Loader2, ExternalLink } from "lucide-react";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -138,8 +139,15 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
     }
 
     const noneDetected = detected.length === 0;
+    const [mounted, setMounted] = useState(false);
 
-    return (
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return null;
+
+    return createPortal(
         <AnimatePresence>
             {isOpen && (
                 <>
@@ -286,6 +294,7 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                     </motion.div>
                 </>
             )}
-        </AnimatePresence>
+        </AnimatePresence>,
+        document.body
     );
 }
