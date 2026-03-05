@@ -12,7 +12,7 @@ const styles = {
     description: "text-[17px] leading-[1.7] text-[var(--veyla-text-muted)] max-w-[300px] mx-auto",
     card: "text-center px-4 group max-lg:max-w-[400px] max-lg:w-full",
     arrow: "flex items-center justify-center pt-9 max-lg:hidden",
-    glowBlob: "absolute rounded-full pointer-events-none z-0 bg-[conic-gradient(from_180deg_at_50%_50%,#7b39fc_0deg,#3a1a7c_360deg)] w-[600px] h-[600px] blur-[120px] opacity-[0.15] max-[768px]:w-[300px] max-[768px]:h-[300px] max-[768px]:blur-[60px] max-[768px]:opacity-[0.08]",
+    glowBlob: "absolute rounded-full pointer-events-none z-0 bg-[conic-gradient(from_180deg_at_50%_50%,#7b39fc_0deg,#3a1a7c_360deg)] w-[600px] h-[600px] blur-[120px] opacity-[0.15] max-md:hidden",
     previewBox: "mt-7 pt-5 border-t border-white/[0.05] flex flex-col items-center gap-2.5",
     previewLabel: "text-[12px] font-semibold tracking-[2px] uppercase text-[var(--veyla-text-dim)]",
     previewAmount: "text-[22px] font-bold text-[#4ade80] tracking-[-0.5px]",

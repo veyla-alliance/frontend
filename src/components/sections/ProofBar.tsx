@@ -51,7 +51,7 @@ export default function ProofBar() {
     return (
         <section
             ref={ref}
-            className="w-full max-w-7xl mx-auto relative z-10 border border-white/[0.08] rounded-[20px] bg-[rgba(8,8,14,0.75)] backdrop-blur-[24px] p-6 sm:p-9 md:p-12 shadow-[0_0_0_1px_rgba(123,57,252,0.1),0_32px_64px_rgba(0,0,0,0.45),0_0_80px_rgba(123,57,252,0.07)]"
+            className="w-full max-w-7xl mx-auto relative z-10 border border-white/[0.08] rounded-[20px] bg-[rgba(8,8,14,0.75)] backdrop-blur-[24px] max-md:backdrop-blur-none max-md:bg-[rgba(8,8,14,0.95)] p-6 sm:p-9 md:p-12 shadow-[0_0_0_1px_rgba(123,57,252,0.1),0_32px_64px_rgba(0,0,0,0.45),0_0_80px_rgba(123,57,252,0.07)]"
         >
             <div className="grid grid-cols-4 gap-8 max-[768px]:grid-cols-2 max-[768px]:gap-7">
                 {STATS.map((stat, i) => (

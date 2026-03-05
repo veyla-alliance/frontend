@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
 import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 
@@ -7,9 +8,17 @@ const SCROLL_RANGE = [0, 50] as const;
 
 export default function Navbar() {
     const { scrollY } = useScroll();
+    const [isMobile, setIsMobile] = useState(false);
 
-    const background = useTransform(scrollY, [...SCROLL_RANGE], ["rgba(5, 5, 8, 0)", "rgba(5, 5, 8, 0.8)"]);
-    const backdropBlur = useTransform(scrollY, [...SCROLL_RANGE], [0, 20]);
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth < 768);
+        check();
+        window.addEventListener("resize", check);
+        return () => window.removeEventListener("resize", check);
+    }, []);
+
+    const background = useTransform(scrollY, [...SCROLL_RANGE], ["rgba(5, 5, 8, 0)", isMobile ? "rgba(5, 5, 8, 0.95)" : "rgba(5, 5, 8, 0.8)"]);
+    const backdropBlur = useTransform(scrollY, [...SCROLL_RANGE], [0, isMobile ? 0 : 20]);
     const borderColor = useTransform(scrollY, [...SCROLL_RANGE], ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.06)"]);
     const filter = useMotionTemplate`blur(${backdropBlur}px)`;
 
