@@ -3,8 +3,11 @@
 import { FadeIn } from "@/components/FadeIn";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Hero() {
+    const { scrollY } = useScroll();
+    const scrollOpacity = useTransform(scrollY, [0, 100], [1, 0]);
     return (
         <section className="relative w-full min-h-[100svh] flex flex-col justify-center items-center overflow-hidden pb-10" id="hero">
             {/* Video background */}
@@ -46,13 +49,13 @@ export default function Hero() {
             </div>
 
             {/* Scroll indicator */}
-            <FadeIn delay={0.7} className="absolute bottom-12 z-[2] max-md:hidden">
-                <div className="flex flex-col items-center gap-3">
+            <FadeIn delay={0.7} className="absolute bottom-4 md:bottom-12 z-[2]">
+                <motion.div style={{ opacity: scrollOpacity }} className="flex flex-col items-center gap-3">
                     <span className="text-[10px] font-semibold tracking-[4px] uppercase text-[var(--veyla-text-dim)]">
                         Scroll
                     </span>
                     <div className="scroll-line" />
-                </div>
+                </motion.div>
             </FadeIn>
         </section>
     );

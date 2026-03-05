@@ -24,7 +24,7 @@ export default function Home() {
       <Hero />
 
       <div className="relative z-[2] w-full bg-[var(--veyla-dark)]">
-        <div className="w-full px-4 sm:px-8 md:px-12 lg:px-20 -mt-10 sm:-mt-16">
+        <div className="w-full px-4 sm:px-8 md:px-12 lg:px-20 pt-10 sm:pt-16">
           <ProofBar />
         </div>
         <ProblemTeaser />
