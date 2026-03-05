@@ -26,7 +26,7 @@ export default function CallToAction() {
             </FadeIn>
 
             <FadeIn delay={0.15} className="relative z-10">
-                <Button variant="primary" shimmer>
+                <Button variant="primary" href="/app" shimmer>
                     Launch App
                     <ArrowRight size={16} />
                 </Button>

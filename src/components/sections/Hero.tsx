@@ -47,7 +47,7 @@ export default function Hero() {
 
                 <FadeIn delay={0.45}>
                     <div className="flex gap-4 items-center mt-10 max-[768px]:flex-col max-[768px]:w-full max-[768px]:max-w-[280px]">
-                        <Button variant="primary" shimmer>
+                        <Button variant="primary" href="/app" shimmer>
                             Start Earning
                             <ArrowRight size={16} />
                         </Button>

@@ -38,7 +38,7 @@ export default function Navbar() {
                     >
                         Docs
                     </a>
-                    <Button variant="navbar" shimmer>Launch App</Button>
+                    <Button variant="navbar" href="/app" shimmer>Launch App</Button>
                 </div>
             </header>
         </motion.div>
