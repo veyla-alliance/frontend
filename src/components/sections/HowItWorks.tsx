@@ -1,6 +1,7 @@
 "use client";
 
 import { FadeIn } from "@/components/FadeIn";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Wallet, Repeat, TrendingUp } from "lucide-react";
 
 export default function HowItWorks() {
@@ -12,14 +13,12 @@ export default function HowItWorks() {
                     style={{ top: "30%", right: "-15%" }}
                 />
 
-                <FadeIn>
-                    <span className="flow-section-label">How It Works</span>
-                </FadeIn>
-                <FadeIn delay={0.1}>
-                    <h2 className="flow-section-heading">
-                        Three steps. Zero complexity.
-                    </h2>
-                </FadeIn>
+                <SectionHeader
+                    label="How It Works"
+                    title="Three steps. Zero complexity."
+                    labelClassName="flow-section-label"
+                    titleClassName="flow-section-heading"
+                />
 
                 <div className="flow-grid">
                     {/* Card 1: Deposit */}

@@ -1,14 +1,15 @@
 "use client";
 
 import { FadeIn } from "@/components/FadeIn";
+import { Button } from "@/components/ui/Button";
 import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
     return (
         <section className="hero-cinematic" id="hero">
             <div className="hero-video-container">
-                <video autoPlay loop muted playsInline className="hero-video">
-                    {/* <source src="/hero-video.webm" type="video/webm" /> */}
+                <video autoPlay loop muted playsInline className="hero-video" poster="/hero-placeholder.jpg">
+                    <source src="/hero-video.webm" type="video/webm" />
                     <source src="/hero-video.mp4" type="video/mp4" />
                 </video>
                 <div className="hero-video-overlay" />
@@ -31,11 +32,11 @@ export default function Hero() {
                 </FadeIn>
                 <FadeIn delay={0.45}>
                     <div className="hero-ctas">
-                        <button className="btn-primary btn-shimmer">
-                            <span>Start Earning</span>
+                        <Button variant="primary" shimmer>
+                            Start Earning
                             <ArrowRight size={16} />
-                        </button>
-                        <a href="#" className="btn-secondary">Read Docs</a>
+                        </Button>
+                        <Button variant="secondary" href="#">Read Docs</Button>
                     </div>
                 </FadeIn>
             </div>

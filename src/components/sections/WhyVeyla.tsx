@@ -1,6 +1,7 @@
 "use client";
 
 import { FadeIn } from "@/components/FadeIn";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Shield, Zap, Code } from "lucide-react";
 
 const BENEFITS = [
@@ -24,14 +25,12 @@ const BENEFITS = [
 export default function WhyVeyla() {
     return (
         <section className="why-section" id="why-veyla">
-            <FadeIn>
-                <span className="why-section-label">Why Veyla</span>
-            </FadeIn>
-            <FadeIn delay={0.1}>
-                <h2 className="why-section-heading">
-                    Built different. By design.
-                </h2>
-            </FadeIn>
+            <SectionHeader
+                label="Why Veyla"
+                title="Built different. By design."
+                labelClassName="why-section-label"
+                titleClassName="why-section-heading"
+            />
 
             <div className="why-grid">
                 {BENEFITS.map((benefit, i) => (

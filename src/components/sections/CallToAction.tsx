@@ -1,6 +1,7 @@
 "use client";
 
 import { FadeIn } from "@/components/FadeIn";
+import { Button } from "@/components/ui/Button";
 import { ArrowRight } from "lucide-react";
 
 export default function CallToAction() {
@@ -12,10 +13,10 @@ export default function CallToAction() {
                 </h2>
             </FadeIn>
             <FadeIn delay={0.15}>
-                <button className="btn-primary btn-shimmer">
-                    <span>Launch App</span>
+                <Button variant="primary" shimmer>
+                    Launch App
                     <ArrowRight size={16} />
-                </button>
+                </Button>
             </FadeIn>
             <FadeIn delay={0.3}>
                 <div className="cta-badges">

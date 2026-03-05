@@ -1,3 +1,5 @@
+import { siteConfig } from "@/config/site";
+
 export default function Footer() {
     return (
         <footer className="site-footer">
@@ -8,24 +10,14 @@ export default function Footer() {
                         <p className="footer-tagline">The Intelligent Yield Router<br />for Polkadot Hub.</p>
                     </div>
                     <div className="footer-links-grid">
-                        <div className="footer-col">
-                            <h4 className="footer-col-title">Protocol</h4>
-                            <a href="#" className="footer-link">Launch App</a>
-                            <a href="#" className="footer-link">Documentation</a>
-                            <a href="#" className="footer-link">Audit Reports</a>
-                        </div>
-                        <div className="footer-col">
-                            <h4 className="footer-col-title">Community</h4>
-                            <a href="#" className="footer-link">Twitter / X</a>
-                            <a href="#" className="footer-link">Discord</a>
-                            <a href="#" className="footer-link">Telegram</a>
-                        </div>
-                        <div className="footer-col">
-                            <h4 className="footer-col-title">Developers</h4>
-                            <a href="#" className="footer-link">GitHub</a>
-                            <a href="#" className="footer-link">SDK</a>
-                            <a href="#" className="footer-link">Bug Bounty</a>
-                        </div>
+                        {siteConfig.footer.map((col, index) => (
+                            <div className="footer-col" key={index}>
+                                <h4 className="footer-col-title">{col.title}</h4>
+                                {col.links.map((link, i) => (
+                                    <a href={link.href} className="footer-link" key={i}>{link.title}</a>
+                                ))}
+                            </div>
+                        ))}
                     </div>
                 </div>
                 <div className="footer-bottom">

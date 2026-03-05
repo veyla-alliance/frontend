@@ -1,5 +1,6 @@
 import { FadeIn } from "@/components/FadeIn";
 import { GlowingCard } from "@/components/GlowingCard";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Layers, Shield, Zap } from "lucide-react";
 
 export default function TheStack() {
@@ -9,15 +10,17 @@ export default function TheStack() {
                 {/* Glow blob */}
                 <div className="glow-blob glow-purple" style={{ bottom: '-15%', right: '-10%' }} />
 
-                <FadeIn>
-                    <span className="section-label relative z-10">04 — The Stack</span>
-                </FadeIn>
-                <FadeIn delay={0.1}>
-                    <h2 className="manifesto-heading relative z-10">
-                        Not just a DeFi app.<br />
-                        A <em>core infrastructure</em> layer.
-                    </h2>
-                </FadeIn>
+                <div className="relative z-10" style={{ textAlign: "left" }}>
+                    <SectionHeader
+                        label="04 — The Stack"
+                        title={
+                            <>
+                                Not just a DeFi app.<br />
+                                A <em>core infrastructure</em> layer.
+                            </>
+                        }
+                    />
+                </div>
 
                 <div className="stack-list relative z-10">
                     <FadeIn delay={0.15}>

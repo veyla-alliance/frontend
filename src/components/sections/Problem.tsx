@@ -1,5 +1,6 @@
 import { FadeIn } from "@/components/FadeIn";
 import { TextReveal } from "@/components/TextReveal";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Coins, AlertTriangle, Blocks } from "lucide-react";
 
 /* Pre-generated positions to avoid SSR ↔ client hydration mismatch */
@@ -28,15 +29,21 @@ export default function Problem() {
                 {/* Ambient Glow */}
                 <div className="glow-blob glow-neon" style={{ top: '-10%', left: '-5%' }} />
 
-                <FadeIn>
-                    <span className="section-label">01 — The Problem</span>
-                </FadeIn>
-                <TextReveal delay={0.1}>
-                    <h2 className="manifesto-heading relative z-10" style={{ marginBottom: "64px" }}>
-                        Liquidity is <em className="text-gradient">scattered</em><br />
-                        across a thousand chains.
-                    </h2>
-                </TextReveal>
+                <div className="relative z-10" style={{ textAlign: "left", marginBottom: "64px" }}>
+                    <SectionHeader
+                        label="01 — The Problem"
+                        title={
+                            <TextReveal delay={0.1}>
+                                <span>
+                                    Liquidity is <em className="text-gradient">scattered</em><br />
+                                    across a thousand chains.
+                                </span>
+                            </TextReveal>
+                        }
+                        labelClassName="section-label"
+                        titleClassName="manifesto-heading"
+                    />
+                </div>
 
                 {/* BENTO GRID */}
                 <div className="bento-grid relative z-10">
