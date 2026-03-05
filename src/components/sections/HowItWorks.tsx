@@ -13,7 +13,7 @@ export default function HowItWorks() {
     return (
         <>
             <section
-                className="w-full py-[160px] px-20 flex flex-col items-center bg-[var(--veyla-dark)] relative max-lg:px-6 max-lg:py-[100px]"
+                className="w-full px-4 sm:px-8 md:px-12 lg:px-20 py-[100px] md:py-[160px] flex flex-col items-center bg-[var(--veyla-dark)] relative"
                 id="how-it-works"
             >
                 <div
@@ -25,7 +25,7 @@ export default function HowItWorks() {
                     label="How It Works"
                     title="Three steps. Zero complexity."
                     labelClassName="block text-[14px] font-semibold tracking-[3px] uppercase text-[var(--veyla-purple)] mb-6"
-                    titleClassName="[font-family:'Instrument_Serif',serif] italic text-[56px] font-normal leading-[1.15] tracking-[-1px] text-[var(--veyla-text-main)] text-center mb-20 max-w-[700px] max-lg:text-[36px] max-lg:mb-12"
+                    titleClassName="[font-family:'Instrument_Serif',serif] italic text-[clamp(36px,5vw,56px)] max-lg:mb-12"
                 />
 
                 <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-start w-full max-w-[1100px] max-lg:flex max-lg:flex-col max-lg:gap-10 max-lg:items-center">
@@ -104,7 +104,7 @@ export default function HowItWorks() {
                     </FadeIn>
                 </div>
             </section>
-            <div className="w-full px-20 max-lg:px-6">
+            <div className="w-full px-4 sm:px-8 md:px-12 lg:px-20">
                 <div className="h-px bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
             </div>
         </>

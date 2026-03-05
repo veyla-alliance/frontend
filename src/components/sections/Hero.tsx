@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
     return (
-        <section className="relative w-full h-screen flex flex-col justify-center items-center overflow-hidden" id="hero">
+        <section className="relative w-full min-h-[100svh] flex flex-col justify-center items-center overflow-hidden pb-10" id="hero">
             {/* Video background */}
             <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_50%_60%,#1a0840_0%,#0a0520_40%,var(--veyla-dark)_100%)]">
                 <video autoPlay loop muted playsInline className="w-full h-full object-cover object-center">
@@ -17,14 +17,14 @@ export default function Hero() {
             </div>
 
             {/* Center content */}
-            <div className="relative z-[2] flex flex-col items-center text-center max-w-[800px] px-6">
+            <div className="relative z-[2] flex flex-col items-center text-center max-w-[800px] px-4 sm:px-6">
                 <FadeIn>
-                    <h1 className="[font-family:var(--font-geist-pixel-square),monospace] text-[120px] font-medium tracking-[24px] text-white [text-shadow:0_0_80px_rgba(123,57,252,0.35),0_0_160px_rgba(123,57,252,0.1)] m-0 max-[1024px]:text-[100px] max-[1024px]:tracking-[20px] max-[768px]:text-[56px] max-[768px]:tracking-[10px] max-[480px]:text-[40px] max-[480px]:tracking-[6px]">
+                    <h1 className="[font-family:var(--font-geist-pixel-square),monospace] text-[clamp(40px,10vw,120px)] font-medium tracking-[clamp(6px,2vw,24px)] text-white [text-shadow:0_0_80px_rgba(123,57,252,0.35),0_0_160px_rgba(123,57,252,0.1)] m-0 leading-none">
                         VEYLA
                     </h1>
                 </FadeIn>
                 <FadeIn delay={0.15}>
-                    <p className="[font-family:'Instrument_Serif',serif] italic text-[28px] font-normal text-white/85 mt-6 leading-[1.4] max-[1024px]:text-[26px] max-[768px]:text-[24px] max-[480px]:text-[22px]">
+                    <p className="[font-family:'Instrument_Serif',serif] italic text-[28px] font-normal text-white/85 mt-6 leading-[1.4] max-[1024px]:text-[26px] max-[768px]:text-[24px] max-[480px]:text-[18px] max-[320px]:text-[16px]">
                         Your assets, routed for maximum yield.
                     </p>
                 </FadeIn>
@@ -46,7 +46,7 @@ export default function Hero() {
             </div>
 
             {/* Scroll indicator */}
-            <FadeIn delay={0.7} className="absolute bottom-12 z-[2]">
+            <FadeIn delay={0.7} className="absolute bottom-12 z-[2] max-md:hidden">
                 <div className="flex flex-col items-center gap-3">
                     <span className="text-[10px] font-semibold tracking-[4px] uppercase text-[var(--veyla-text-dim)]">
                         Scroll

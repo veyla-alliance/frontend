@@ -24,12 +24,12 @@ const descBase = "text-[17px] leading-[1.7] text-[var(--veyla-text-muted)]";
 
 export default function WhyVeyla() {
     return (
-        <section className="why-section w-full px-20 py-[160px] flex flex-col items-center max-lg:px-6 max-lg:py-[100px]" id="why-veyla">
+        <section className="why-section w-full px-20 py-[160px] flex flex-col items-center max-lg:px-4 sm:px-6 max-lg:py-[100px]" id="why-veyla">
             <SectionHeader
                 label="Why Veyla"
                 title="Built different. By design."
                 labelClassName="block text-[14px] font-semibold tracking-[3px] uppercase text-[var(--veyla-purple)] mb-6"
-                titleClassName="[font-family:'Instrument_Serif',serif] italic text-[56px] font-normal leading-[1.15] tracking-[-1px] text-[var(--veyla-text-main)] text-center mb-20 max-w-[700px] max-lg:text-[36px] max-lg:mb-12"
+                titleClassName="[font-family:'Instrument_Serif',serif] italic text-[clamp(36px,5vw,56px)] max-lg:mb-12"
             />
 
             <div className="grid grid-cols-2 gap-4 max-w-[1100px] w-full max-md:grid-cols-1">

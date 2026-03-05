@@ -22,15 +22,15 @@ export default function Navbar() {
                 borderBottomColor: borderColor
             }}
         >
-            <header className="w-full max-w-[1400px] mx-auto px-12 flex justify-between items-center max-[768px]:px-5">
+            <header className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex justify-between items-center max-[768px]:px-5 max-[480px]:px-4">
                 <a
                     href="#"
-                    className="[font-family:var(--font-geist-pixel-square),monospace] text-[15px] font-medium text-white/70 tracking-[4px] no-underline transition-colors duration-300 hover:text-white"
+                    className="[font-family:var(--font-geist-pixel-square),monospace] text-[15px] font-medium text-white/70 tracking-[4px] no-underline transition-colors duration-300 hover:text-white max-[480px]:text-[12px] max-[320px]:text-[10px]"
                     aria-label="Veyla Home"
                 >
                     VEYLA
                 </a>
-                <div className="flex gap-7 items-center">
+                <div className="flex gap-7 items-center max-[480px]:gap-4">
                     <a
                         href="#"
                         className="text-[15px] text-white/50 no-underline transition-colors duration-300 hover:text-white"

@@ -3,7 +3,7 @@ import { siteConfig } from "@/config/site";
 export default function Footer() {
     return (
         <footer className="site-footer w-full bg-[var(--veyla-dark)]">
-            <div className="w-full mx-auto px-20 py-20 pb-10 max-lg:px-6">
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 md:px-12 lg:px-20 py-12 md:py-20">
                 <div className="flex justify-between gap-16 mb-20 max-lg:flex-col max-lg:gap-10 max-lg:mb-12">
                     <div className="shrink-0">
                         <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[16px] font-medium tracking-[3px] text-white block mb-4">
