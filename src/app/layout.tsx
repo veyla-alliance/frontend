@@ -9,7 +9,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Veyla | The Intelligent Yield Router",
     description: "Your Personal Executive for crypto assets on the Polkadot ecosystem.",
-  }
+    type: "website",
+    siteName: "Veyla",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Veyla | The Intelligent Yield Router",
+    description: "Your Personal Executive for crypto assets on the Polkadot ecosystem.",
+  },
 };
 
 export default function RootLayout({

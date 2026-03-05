@@ -45,7 +45,7 @@ const sectionBg = "radial-gradient(ellipse 70% 50% at 95% 0%, rgba(0, 212, 255, 
 export default function WhyVeyla() {
     return (
         <section
-            className="w-full px-20 py-[160px] flex flex-col items-center max-lg:px-4 sm:px-6 max-lg:py-[100px]"
+            className="w-full px-4 sm:px-6 md:px-12 lg:px-20 py-[100px] lg:py-[160px] flex flex-col items-center"
             style={{ background: sectionBg }}
             id="why-veyla"
         >

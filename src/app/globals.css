@@ -217,6 +217,24 @@
     width: 100%;
   }
 
+  /* ── Reduced Motion ─────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    .btn-shimmer::before,
+    .scroll-line::after,
+    .flow-arrow-particle {
+      animation: none;
+    }
+
+    .proof-stat-bar-fill {
+      animation: none;
+      width: 100%;
+    }
+  }
+
   /* ── Footer Top Border (::before) ───────────────────────── */
   .site-footer::before {
     content: '';
