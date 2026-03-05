@@ -329,6 +329,7 @@ body {
   position: absolute;
   inset: 0;
   z-index: 0;
+  background: radial-gradient(ellipse at 50% 60%, #1a0840 0%, #0a0520 40%, var(--veyla-dark) 100%);
 }
 
 .hero-video {
@@ -580,13 +581,21 @@ body {
    ======================================== */
 
 .proof-bar {
-  width: 100%;
-  border-top: 1px solid var(--veyla-border);
-  border-bottom: 1px solid var(--veyla-border);
-  background: rgba(5, 5, 8, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  padding: 56px 80px;
+  width: calc(100% - 160px);
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  background: rgba(8, 8, 14, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 48px 64px;
+  box-shadow:
+    0 0 0 1px rgba(123, 57, 252, 0.1),
+    0 32px 64px rgba(0, 0, 0, 0.45),
+    0 0 80px rgba(123, 57, 252, 0.07);
 }
 
 .proof-bar-inner {
@@ -657,6 +666,9 @@ body {
   width: 100%;
   max-width: 100%;
   padding: 160px 80px;
+  background:
+    radial-gradient(ellipse 70% 50% at 5% 0%, rgba(123, 57, 252, 0.05) 0%, transparent 60%),
+    var(--veyla-dark);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -811,6 +823,9 @@ body {
 .why-section {
   width: 100%;
   padding: 160px 80px;
+  background:
+    radial-gradient(ellipse 70% 50% at 95% 0%, rgba(0, 212, 255, 0.04) 0%, transparent 60%),
+    var(--veyla-dark);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -903,50 +918,71 @@ body {
 
 .cta-section {
   width: 100%;
-  padding: 140px 80px;
+  padding: 160px 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: linear-gradient(180deg, var(--veyla-dark) 0%, rgba(123, 57, 252, 0.04) 50%, var(--veyla-dark) 100%);
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 50%, rgba(123, 57, 252, 0.13) 0%, transparent 65%),
+    var(--veyla-dark);
   position: relative;
+  overflow: hidden;
+}
+
+.cta-wordmark-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-geist-pixel-square), monospace;
+  font-size: clamp(100px, 18vw, 260px);
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(123, 57, 252, 0.09);
+  pointer-events: none;
+  white-space: nowrap;
+  user-select: none;
+  z-index: 0;
 }
 
 .cta-heading {
   font-family: 'Instrument Serif', serif;
   font-style: italic;
-  font-size: 52px;
+  font-size: 60px;
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: -0.5px;
   color: var(--veyla-text-main);
   margin-bottom: 40px;
-  max-width: 600px;
+  max-width: 640px;
+  position: relative;
+  z-index: 1;
 }
 
 .cta-badges {
   display: flex;
-  gap: 24px;
+  gap: 12px;
   align-items: center;
   margin-top: 48px;
   flex-wrap: wrap;
   justify-content: center;
+  position: relative;
+  z-index: 1;
 }
 
 .cta-badge {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--veyla-text-dim);
-}
-
-.cta-badge-dot {
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: var(--veyla-text-dim);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 6px 14px;
+  border-radius: 100px;
 }
 
 /* ========================================
@@ -1327,6 +1363,9 @@ body {
   }
 
   .proof-bar {
+    width: calc(100% - 48px);
+    margin: 0 auto;
+    border-radius: 16px;
     padding: 36px 24px;
   }
 
@@ -1445,16 +1484,16 @@ body {
   }
 
   .cta-section {
-    padding: 100px 24px;
+    padding: 120px 24px;
   }
 
   .cta-heading {
-    font-size: 32px;
+    font-size: 36px;
     letter-spacing: -1px;
   }
 
   .cta-badges {
-    gap: 16px;
+    gap: 8px;
   }
 
   .vision-quote {
