@@ -1,6 +1,7 @@
 import { Providers } from "@/lib/providers";
 import { AppSidebar } from "@/components/app/AppSidebar";
 import { AppTopbar } from "@/components/app/AppTopbar";
+import { AuthGuard } from "@/components/app/AuthGuard";
 import { Toaster } from "sonner";
 import { Noise } from "@/components/Noise";
 
@@ -18,7 +19,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
                     <AppTopbar />
                     <main className="flex-1 overflow-y-auto flex flex-col">
-                        {children}
+                        <AuthGuard>{children}</AuthGuard>
                     </main>
                 </div>
             </div>

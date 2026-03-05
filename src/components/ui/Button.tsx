@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef } from 'react';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 type ButtonVariant = 'primary' | 'secondary' | 'navbar';
@@ -17,6 +18,10 @@ const variantStyles: Record<ButtonVariant, string> = {
     navbar: "bg-gradient-to-br from-[var(--veyla-purple)] to-[#5b1fd6] py-[10px] px-6 rounded-full font-medium text-[15px] text-white border border-[rgba(123,57,252,0.4)] cursor-pointer transition-all duration-300 shadow-[0_0_20px_rgba(123,57,252,0.15)] hover:shadow-[0_0_30px_rgba(123,57,252,0.3)] hover:border-[rgba(123,57,252,0.6)] hover:-translate-y-px",
 };
 
+function isInternal(href: string) {
+    return href.startsWith('/') || href.startsWith('#');
+}
+
 export const Button = forwardRef<
     HTMLButtonElement | HTMLAnchorElement,
     ButtonProps & React.AnchorHTMLAttributes<HTMLAnchorElement>
@@ -27,6 +32,18 @@ export const Button = forwardRef<
         : children;
 
     if (href) {
+        if (isInternal(href)) {
+            return (
+                <Link
+                    href={href}
+                    className={classes}
+                    ref={ref as React.Ref<HTMLAnchorElement>}
+                >
+                    {content}
+                </Link>
+            );
+        }
+
         return (
             <a
                 href={href}

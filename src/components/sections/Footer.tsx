@@ -1,4 +1,15 @@
+import Link from "next/link";
 import { siteConfig } from "@/config/site";
+
+function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
+    const className = "footer-link text-[16px] text-[var(--veyla-text-dim)] no-underline transition-colors duration-300 relative w-fit hover:text-[var(--veyla-text-muted)]";
+
+    if (href.startsWith('/') || href.startsWith('#')) {
+        return <Link href={href} className={className}>{children}</Link>;
+    }
+
+    return <a href={href} className={className}>{children}</a>;
+}
 
 export default function Footer() {
     return (
@@ -20,9 +31,9 @@ export default function Footer() {
                                     {col.title}
                                 </h4>
                                 {col.links.map((link, i) => (
-                                    <a href={link.href} className="footer-link text-[16px] text-[var(--veyla-text-dim)] no-underline transition-colors duration-300 relative w-fit hover:text-[var(--veyla-text-muted)]" key={i}>
+                                    <FooterLink href={link.href} key={i}>
                                         {link.title}
-                                    </a>
+                                    </FooterLink>
                                 ))}
                             </div>
                         ))}
@@ -30,11 +41,11 @@ export default function Footer() {
                 </div>
                 <div className="flex justify-between items-center pt-8 border-t border-[var(--veyla-border)] max-md:flex-col max-md:gap-4 max-md:text-center">
                     <p className="text-[15px] text-[var(--veyla-text-dim)]">
-                        © 2026 Veyla Alliance. All rights reserved.
+                        &copy; 2026 Veyla Alliance. All rights reserved.
                     </p>
                     <div className="flex gap-6">
-                        <a href="#" className="text-[15px] text-[var(--veyla-text-dim)] no-underline transition-colors duration-300 hover:text-[var(--veyla-text-muted)]">Privacy</a>
-                        <a href="#" className="text-[15px] text-[var(--veyla-text-dim)] no-underline transition-colors duration-300 hover:text-[var(--veyla-text-muted)]">Terms</a>
+                        <FooterLink href="#">Privacy</FooterLink>
+                        <FooterLink href="#">Terms</FooterLink>
                     </div>
                 </div>
             </div>
