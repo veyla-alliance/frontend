@@ -3,33 +3,35 @@
 import { useEffect, useState } from "react";
 import { motion, useSpring } from "framer-motion";
 
+const SIZE = 400;
+const OFFSET = SIZE / 2;
+const MOBILE_BREAKPOINT = 768;
+const SPRING_CONFIG = { damping: 25, stiffness: 120, mass: 0.5 };
+
 export const MagneticCursor = () => {
     const [isVisible, setIsVisible] = useState(false);
-
-    const cursorX = useSpring(0, { damping: 25, stiffness: 120, mass: 0.5 });
-    const cursorY = useSpring(0, { damping: 25, stiffness: 120, mass: 0.5 });
+    const cursorX = useSpring(0, SPRING_CONFIG);
+    const cursorY = useSpring(0, SPRING_CONFIG);
 
     useEffect(() => {
-        // Only show on desktop
-        if (window.innerWidth <= 768) return;
+        if (window.innerWidth <= MOBILE_BREAKPOINT) return;
 
-        const moveCursor = (e: MouseEvent) => {
+        const onMove = (e: MouseEvent) => {
             if (!isVisible) setIsVisible(true);
-            cursorX.set(e.clientX - 200); // offset by half the width
-            cursorY.set(e.clientY - 200); // offset by half the height
+            cursorX.set(e.clientX - OFFSET);
+            cursorY.set(e.clientY - OFFSET);
         };
+        const hide = () => setIsVisible(false);
+        const show = () => setIsVisible(true);
 
-        const handleMouseLeave = () => setIsVisible(false);
-        const handleMouseEnter = () => setIsVisible(true);
-
-        window.addEventListener("mousemove", moveCursor);
-        document.addEventListener("mouseleave", handleMouseLeave);
-        document.addEventListener("mouseenter", handleMouseEnter);
+        window.addEventListener("mousemove", onMove);
+        document.addEventListener("mouseleave", hide);
+        document.addEventListener("mouseenter", show);
 
         return () => {
-            window.removeEventListener("mousemove", moveCursor);
-            document.removeEventListener("mouseleave", handleMouseLeave);
-            document.removeEventListener("mouseenter", handleMouseEnter);
+            window.removeEventListener("mousemove", onMove);
+            document.removeEventListener("mouseleave", hide);
+            document.removeEventListener("mouseenter", show);
         };
     }, [cursorX, cursorY, isVisible]);
 
@@ -43,8 +45,8 @@ export const MagneticCursor = () => {
                 top: 0,
                 x: cursorX,
                 y: cursorY,
-                width: 400,
-                height: 400,
+                width: SIZE,
+                height: SIZE,
                 borderRadius: "50%",
                 background: "radial-gradient(circle, rgba(123, 57, 252, 0.08) 0%, rgba(0, 0, 0, 0) 70%)",
                 pointerEvents: "none",

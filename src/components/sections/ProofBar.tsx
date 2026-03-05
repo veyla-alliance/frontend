@@ -3,43 +3,35 @@
 import { useRef, useState, useEffect } from "react";
 import { useInView } from "framer-motion";
 
-const STATS = [
+interface Stat {
+    value: number;
+    suffix: string;
+    prefix: string;
+    label: string;
+    decimals: number;
+}
+
+const STATS: Stat[] = [
     { value: 2.4, suffix: "M", prefix: "$", label: "TVL", decimals: 1 },
     { value: 12.4, suffix: "%", prefix: "", label: "AVG APY", decimals: 1 },
     { value: 6, suffix: "", prefix: "", label: "CHAINS", decimals: 0 },
     { value: 99.9, suffix: "%", prefix: "", label: "UPTIME", decimals: 1 },
 ];
 
-function AnimatedCounter({
-    value,
-    suffix,
-    prefix,
-    decimals,
-    shouldAnimate,
-}: {
-    value: number;
-    suffix: string;
-    prefix: string;
-    decimals: number;
-    shouldAnimate: boolean;
-}) {
+const COUNTER_DURATION_MS = 2_000;
+
+function AnimatedCounter({ value, suffix, prefix, decimals, shouldAnimate }: Stat & { shouldAnimate: boolean }) {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
         if (!shouldAnimate) return;
 
-        const duration = 2000;
         const startTime = performance.now();
-
-        const animate = (currentTime: number) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
+        const animate = (now: number) => {
+            const progress = Math.min((now - startTime) / COUNTER_DURATION_MS, 1);
             const eased = 1 - Math.pow(1 - progress, 3);
             setCount(eased * value);
-
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            }
+            if (progress < 1) requestAnimationFrame(animate);
         };
 
         requestAnimationFrame(animate);
@@ -47,9 +39,7 @@ function AnimatedCounter({
 
     return (
         <span className="text-[clamp(28px,4vw,32px)] font-bold text-[var(--veyla-cyan)] tracking-[-0.5px]">
-            {prefix}
-            {count.toFixed(decimals)}
-            {suffix}
+            {prefix}{count.toFixed(decimals)}{suffix}
         </span>
     );
 }
@@ -65,7 +55,7 @@ export default function ProofBar() {
         >
             <div className="grid grid-cols-4 gap-8 max-[768px]:grid-cols-2 max-[768px]:gap-7">
                 {STATS.map((stat, i) => (
-                    <div className="flex flex-col items-center text-center gap-2" key={i}>
+                    <div className="flex flex-col items-center text-center gap-2" key={stat.label}>
                         <AnimatedCounter {...stat} shouldAnimate={isInView} />
                         <span className="text-[11px] font-semibold tracking-[3px] uppercase text-[var(--veyla-text-dim)]">
                             {stat.label}

@@ -4,11 +4,16 @@ import { FadeIn } from "@/components/FadeIn";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight } from "lucide-react";
 
-const badge = "text-[11px] font-semibold tracking-[1.5px] uppercase text-[var(--veyla-text-dim)] bg-white/[0.03] border border-white/[0.07] px-[14px] py-[6px] rounded-full";
+const TRUST_BADGES = ["Built on Polkadot", "Audited", "Open Source"] as const;
+
+const badgeClass = "text-[11px] font-semibold tracking-[1.5px] uppercase text-[var(--veyla-text-dim)] bg-white/[0.03] border border-white/[0.07] px-[14px] py-[6px] rounded-full";
 
 export default function CallToAction() {
     return (
-        <section className="cta-section w-full px-4 sm:px-8 md:px-20 py-[120px] md:py-[160px] flex flex-col items-center text-center relative overflow-hidden" id="cta">
+        <section
+            className="cta-section w-full px-4 sm:px-8 md:px-20 py-[120px] md:py-[160px] flex flex-col items-center text-center relative overflow-hidden"
+            id="cta"
+        >
             <div className="cta-wordmark-bg" aria-hidden="true">VEYLA</div>
 
             <FadeIn>
@@ -16,17 +21,19 @@ export default function CallToAction() {
                     Ready to put your assets to work?
                 </h2>
             </FadeIn>
+
             <FadeIn delay={0.15} className="relative z-10">
                 <Button variant="primary" shimmer>
                     Launch App
                     <ArrowRight size={16} />
                 </Button>
             </FadeIn>
+
             <FadeIn delay={0.3}>
                 <div className="flex gap-3 items-center mt-12 flex-wrap justify-center relative z-10 max-md:gap-2">
-                    <span className={badge}>Built on Polkadot</span>
-                    <span className={badge}>Audited</span>
-                    <span className={badge}>Open Source</span>
+                    {TRUST_BADGES.map((label) => (
+                        <span key={label} className={badgeClass}>{label}</span>
+                    ))}
                 </div>
             </FadeIn>
         </section>

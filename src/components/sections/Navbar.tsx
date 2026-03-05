@@ -3,13 +3,14 @@
 import { Button } from "@/components/ui/Button";
 import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 
+const SCROLL_RANGE = [0, 50] as const;
+
 export default function Navbar() {
     const { scrollY } = useScroll();
 
-    const background = useTransform(scrollY, [0, 50], ["rgba(5, 5, 8, 0)", "rgba(5, 5, 8, 0.8)"]);
-    const backdropBlur = useTransform(scrollY, [0, 50], [0, 20]);
-    const borderColor = useTransform(scrollY, [0, 50], ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.06)"]);
-
+    const background = useTransform(scrollY, [...SCROLL_RANGE], ["rgba(5, 5, 8, 0)", "rgba(5, 5, 8, 0.8)"]);
+    const backdropBlur = useTransform(scrollY, [...SCROLL_RANGE], [0, 20]);
+    const borderColor = useTransform(scrollY, [...SCROLL_RANGE], ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.06)"]);
     const filter = useMotionTemplate`blur(${backdropBlur}px)`;
 
     return (
@@ -19,7 +20,7 @@ export default function Navbar() {
                 background,
                 backdropFilter: filter,
                 WebkitBackdropFilter: filter,
-                borderBottomColor: borderColor
+                borderBottomColor: borderColor,
             }}
         >
             <header className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-12 flex justify-between items-center max-[768px]:px-5 max-[480px]:px-4">
