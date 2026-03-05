@@ -1,5 +1,6 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { FadeIn } from "@/components/FadeIn";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Wallet, Repeat, TrendingUp } from "lucide-react";
@@ -11,6 +12,15 @@ const styles = {
     description: "text-[17px] leading-[1.7] text-[var(--veyla-text-muted)] max-w-[300px] mx-auto",
     card: "text-center px-4 group max-lg:max-w-[400px] max-lg:w-full",
     arrow: "flex items-center justify-center pt-9 max-lg:hidden",
+    glowBlob: "absolute rounded-full pointer-events-none z-0 bg-[conic-gradient(from_180deg_at_50%_50%,#7b39fc_0deg,#3a1a7c_360deg)] w-[600px] h-[600px] blur-[120px] opacity-[0.15] max-[768px]:w-[300px] max-[768px]:h-[300px] max-[768px]:blur-[60px] max-[768px]:opacity-[0.08]",
+    previewBox: "mt-7 pt-5 border-t border-white/[0.05] flex flex-col items-center gap-2.5",
+    previewLabel: "text-[12px] font-semibold tracking-[2px] uppercase text-[var(--veyla-text-dim)]",
+    previewAmount: "text-[22px] font-bold text-[#4ade80] tracking-[-0.5px]",
+    previewChains: "flex items-center gap-1.5",
+    previewChain: "[font-family:var(--font-geist-pixel-square),monospace] text-[8px] tracking-[0.5px] text-[var(--veyla-text-dim)] bg-white/[0.04] border border-white/[0.08] py-[5px] px-2 rounded-[6px]",
+    previewChainActive: "[font-family:var(--font-geist-pixel-square),monospace] text-[8px] tracking-[0.5px] text-[var(--veyla-cyan)] bg-[rgba(0,212,255,0.08)] border border-[rgba(0,212,255,0.25)] py-[5px] px-2 rounded-[6px]",
+    previewChainLine: "w-[14px] h-px bg-white/10",
+    previewApy: "text-[26px] font-extrabold text-[var(--veyla-cyan)] tracking-[-1px]",
 };
 
 export default function HowItWorks() {
@@ -20,7 +30,7 @@ export default function HowItWorks() {
                 className="w-full px-4 sm:px-8 md:px-12 lg:px-20 py-[100px] md:py-[160px] flex flex-col items-center bg-[var(--veyla-dark)] relative"
                 id="how-it-works"
             >
-                <div className="glow-blob glow-purple" style={{ top: "30%", right: "-15%" }} />
+                <div className={styles.glowBlob} style={{ top: "30%", right: "-15%" }} />
 
                 <SectionHeader
                     label="How It Works"
@@ -41,9 +51,9 @@ export default function HowItWorks() {
                             Drop your assets into the Veyla Vault on Polkadot Hub.
                             One transaction. One entry point.
                         </p>
-                        <div className="flow-card-preview">
-                            <span className="flow-preview-label">Vault deposit</span>
-                            <span className="flow-preview-amount">+$1,000.00</span>
+                        <div className={styles.previewBox}>
+                            <span className={styles.previewLabel}>Vault deposit</span>
+                            <span className={styles.previewAmount}>+$1,000.00</span>
                         </div>
                     </FadeIn>
 
@@ -64,14 +74,14 @@ export default function HowItWorks() {
                             Veyla&apos;s engine finds the best yields across all
                             connected chains and routes your liquidity — automatically.
                         </p>
-                        <div className="flow-card-preview">
-                            <span className="flow-preview-label">Best yield found</span>
-                            <div className="flow-preview-chains">
-                                <div className="flow-preview-chain">DOT</div>
-                                <div className="flow-preview-chain-line" />
-                                <div className="flow-preview-chain flow-preview-chain-active">ASTR</div>
-                                <div className="flow-preview-chain-line" />
-                                <div className="flow-preview-chain">HDX</div>
+                        <div className={styles.previewBox}>
+                            <span className={styles.previewLabel}>Best yield found</span>
+                            <div className={styles.previewChains}>
+                                <div className={styles.previewChain}>DOT</div>
+                                <div className={styles.previewChainLine} />
+                                <div className={styles.previewChainActive}>ASTR</div>
+                                <div className={styles.previewChainLine} />
+                                <div className={styles.previewChain}>HDX</div>
                             </div>
                         </div>
                     </FadeIn>
@@ -93,9 +103,9 @@ export default function HowItWorks() {
                             Yields auto-compound and rebalance 24/7. Market shifts?
                             Veyla re-routes. You earn more by doing nothing.
                         </p>
-                        <div className="flow-card-preview">
-                            <span className="flow-preview-label">Current APY</span>
-                            <span className="flow-preview-apy">12.4%</span>
+                        <div className={styles.previewBox}>
+                            <span className={styles.previewLabel}>Current APY</span>
+                            <span className={styles.previewApy}>12.4%</span>
                         </div>
                     </FadeIn>
                 </div>

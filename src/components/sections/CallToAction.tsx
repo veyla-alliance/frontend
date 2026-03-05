@@ -8,10 +8,13 @@ const TRUST_BADGES = ["Built on Polkadot", "Audited", "Open Source"] as const;
 
 const badgeClass = "text-[11px] font-semibold tracking-[1.5px] uppercase text-[var(--veyla-text-dim)] bg-white/[0.03] border border-white/[0.07] px-[14px] py-[6px] rounded-full";
 
+const sectionBg = "radial-gradient(ellipse 90% 70% at 50% 50%, rgba(123, 57, 252, 0.13) 0%, transparent 65%), var(--veyla-dark)";
+
 export default function CallToAction() {
     return (
         <section
-            className="cta-section w-full px-4 sm:px-8 md:px-20 py-[120px] md:py-[160px] flex flex-col items-center text-center relative overflow-hidden"
+            className="w-full px-4 sm:px-8 md:px-20 py-[120px] md:py-[160px] flex flex-col items-center text-center relative overflow-hidden"
+            style={{ background: sectionBg }}
             id="cta"
         >
             <div className="cta-wordmark-bg" aria-hidden="true">VEYLA</div>

@@ -46,10 +46,8 @@
 }
 
 @layer components {
-  /* ========================================
-   TYPOGRAPHY UTILITIES
-   ======================================== */
 
+  /* ── Text Gradient (vendor prefixes) ────────────────────── */
   .text-gradient {
     background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.5) 100%);
     -webkit-background-clip: text;
@@ -57,8 +55,7 @@
     background-clip: text;
   }
 
-
-  /* ── Shimmer sweep on primary buttons ───────────────────── */
+  /* ── Button Shimmer (::before + keyframes) ──────────────── */
   .btn-shimmer {
     position: relative;
     overflow: hidden;
@@ -71,10 +68,7 @@
     left: -80%;
     width: 55%;
     height: 100%;
-    background: linear-gradient(90deg,
-        transparent,
-        rgba(255, 255, 255, 0.18),
-        transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
     animation: btn-sweep 4s ease-in-out infinite;
     pointer-events: none;
   }
@@ -84,41 +78,13 @@
       left: -80%;
     }
 
-    40% {
-      left: 130%;
-    }
-
+    40%,
     100% {
       left: 130%;
     }
   }
 
-  /* ── Ambient Glow Blobs ─────────────────────────────────── */
-  .glow-blob {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.15;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .glow-purple {
-    background: conic-gradient(from 180deg at 50% 50%, #7b39fc 0deg, #3a1a7c 360deg);
-  }
-
-  @media (max-width: 768px) {
-    .glow-blob {
-      width: 300px !important;
-      height: 300px !important;
-      filter: blur(60px) !important;
-      opacity: 0.08 !important;
-    }
-  }
-
-  /* Scroll Indicator */
+  /* ── Scroll Indicator (::after + keyframes) ─────────────── */
   .scroll-line {
     width: 1px;
     height: 48px;
@@ -139,23 +105,18 @@
   }
 
   @keyframes scroll-pulse {
-    0% {
+
+    0%,
+    100% {
       top: -48px;
     }
 
     50% {
       top: 48px;
     }
-
-    100% {
-      top: -48px;
-    }
   }
 
-  /* ========================================
-   PROOF BAR (Stats Strip)
-   ======================================== */
-
+  /* ── Proof Bar Fill (keyframes) ─────────────────────────── */
   .proof-stat-bar-fill {
     height: 100%;
     width: 0;
@@ -174,75 +135,7 @@
     }
   }
 
-  /* ========================================
-   FLOW SECTION (How It Works — 3-Step)
-   ======================================== */
-
-  /* Mini preview visuals inside flow cards */
-  .flow-card-preview {
-    margin-top: 28px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .flow-preview-label {
-    font-family: 'Outfit', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--veyla-text-dim);
-  }
-
-  .flow-preview-amount {
-    font-family: 'Outfit', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: #4ade80;
-    letter-spacing: -0.5px;
-  }
-
-  .flow-preview-chains {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .flow-preview-chain {
-    font-family: var(--font-geist-pixel-square), monospace;
-    font-size: 8px;
-    letter-spacing: 0.5px;
-    color: var(--veyla-text-dim);
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 5px 8px;
-    border-radius: 6px;
-  }
-
-  .flow-preview-chain-active {
-    color: var(--veyla-cyan);
-    background: rgba(0, 212, 255, 0.08);
-    border-color: rgba(0, 212, 255, 0.25);
-  }
-
-  .flow-preview-chain-line {
-    width: 14px;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  .flow-preview-apy {
-    font-family: 'Outfit', sans-serif;
-    font-size: 26px;
-    font-weight: 800;
-    color: var(--veyla-cyan);
-    letter-spacing: -1px;
-  }
-
+  /* ── Flow Arrow (::after + keyframes) ───────────────────── */
   .flow-arrow-line {
     width: 64px;
     height: 1px;
@@ -279,10 +172,7 @@
       opacity: 0;
     }
 
-    20% {
-      opacity: 1;
-    }
-
+    20%,
     80% {
       opacity: 1;
     }
@@ -293,92 +183,7 @@
     }
   }
 
-  /* ========================================
-   WHY VEYLA (Benefit Cards)
-   ======================================== */
-
-  .why-section {
-    background:
-      radial-gradient(ellipse 70% 50% at 95% 0%, rgba(0, 212, 255, 0.04) 0%, transparent 60%),
-      var(--veyla-dark);
-  }
-
-  /* XCM visualization inside tall card */
-  .xcm-visual {
-    margin-top: auto;
-    padding-top: 36px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .xcm-hub {
-    flex-shrink: 0;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: rgba(123, 57, 252, 0.1);
-    border: 1px solid rgba(123, 57, 252, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-geist-pixel-square), monospace;
-    font-size: 7px;
-    letter-spacing: 1px;
-    color: var(--veyla-purple-soft);
-  }
-
-  .xcm-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(123, 57, 252, 0.5), rgba(0, 212, 255, 0.5));
-    position: relative;
-  }
-
-  .xcm-line-label {
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Outfit', sans-serif;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: var(--veyla-text-dim);
-  }
-
-  .xcm-chains {
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .xcm-chain {
-    width: 44px;
-    height: 28px;
-    border-radius: 8px;
-    background: rgba(0, 212, 255, 0.05);
-    border: 1px solid rgba(0, 212, 255, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--font-geist-pixel-square), monospace;
-    font-size: 7px;
-    letter-spacing: 0.5px;
-    color: var(--veyla-cyan);
-  }
-
-  /* ========================================
-   CTA SECTION
-   ======================================== */
-
-  .cta-section {
-    background:
-      radial-gradient(ellipse 90% 70% at 50% 50%, rgba(123, 57, 252, 0.13) 0%, transparent 65%),
-      var(--veyla-dark);
-  }
-
+  /* ── CTA Wordmark (-webkit-text-stroke) ─────────────────── */
   .cta-wordmark-bg {
     position: absolute;
     top: 50%;
@@ -396,30 +201,7 @@
     z-index: 0;
   }
 
-  /* ========================================
-   FOOTER
-   ======================================== */
-
-  .site-footer::before {
-    content: '';
-    display: block;
-    height: 1px;
-    background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(123, 57, 252, 0.5) 30%,
-        rgba(0, 212, 255, 0.4) 70%,
-        transparent 100%);
-  }
-
-  .footer-link {
-    font-size: 16px;
-    color: var(--veyla-text-dim);
-    text-decoration: none;
-    transition: color 0.3s ease;
-    position: relative;
-    width: fit-content;
-  }
-
+  /* ── Footer Link Underline (::after) ────────────────────── */
   .footer-link::after {
     content: '';
     position: absolute;
@@ -431,29 +213,19 @@
     transition: width 0.3s ease;
   }
 
-  .footer-link:hover {
-    color: var(--veyla-text-muted);
-  }
-
   .footer-link:hover::after {
     width: 100%;
   }
 
-  /* ========================================
-   RESPONSIVE
-   ======================================== */
-
-  @media (max-width: 768px) {
-    .xcm-visual {
-      padding-top: 24px;
-    }
+  /* ── Footer Top Border (::before) ───────────────────────── */
+  .site-footer::before {
+    content: '';
+    display: block;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(123, 57, 252, 0.5) 30%, rgba(0, 212, 255, 0.4) 70%, transparent 100%);
   }
 
-
-
-  /* ========================================
-   MICRO-NOISE TEXTURE (PHASE 1)
-   ======================================== */
+  /* ── Noise Texture (SVG data URI) ───────────────────────── */
   .noise-overlay {
     position: fixed;
     inset: 0;

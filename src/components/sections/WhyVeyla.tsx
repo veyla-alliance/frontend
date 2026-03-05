@@ -34,12 +34,19 @@ const styles = {
     iconBox: "w-[52px] h-[52px] rounded-2xl bg-gradient-to-br from-[rgba(123,57,252,0.12)] to-[rgba(123,57,252,0.04)] border border-[rgba(123,57,252,0.15)] flex items-center justify-center transition-all duration-300 group-hover:border-[rgba(123,57,252,0.35)] group-hover:shadow-[0_0_24px_rgba(123,57,252,0.15)]",
     title: "text-[24px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.3px] transition-colors duration-300 group-hover:text-white",
     description: "text-[17px] leading-[1.7] text-[var(--veyla-text-muted)]",
+    xcmHub: "shrink-0 w-[52px] h-[52px] rounded-full bg-[rgba(123,57,252,0.1)] border border-[rgba(123,57,252,0.3)] flex items-center justify-center [font-family:var(--font-geist-pixel-square),monospace] text-[7px] tracking-[1px] text-[var(--veyla-purple-soft)]",
+    xcmLine: "flex-1 h-px bg-gradient-to-r from-[rgba(123,57,252,0.5)] to-[rgba(0,212,255,0.5)] relative",
+    xcmLineLabel: "absolute -top-2.5 left-1/2 -translate-x-1/2 text-[9px] font-bold tracking-[2px] text-[var(--veyla-text-dim)]",
+    xcmChain: "w-[44px] h-7 rounded-lg bg-[rgba(0,212,255,0.05)] border border-[rgba(0,212,255,0.15)] flex items-center justify-center [font-family:var(--font-geist-pixel-square),monospace] text-[7px] tracking-[0.5px] text-[var(--veyla-cyan)]",
 };
+
+const sectionBg = "radial-gradient(ellipse 70% 50% at 95% 0%, rgba(0, 212, 255, 0.04) 0%, transparent 60%), var(--veyla-dark)";
 
 export default function WhyVeyla() {
     return (
         <section
-            className="why-section w-full px-20 py-[160px] flex flex-col items-center max-lg:px-4 sm:px-6 max-lg:py-[100px]"
+            className="w-full px-20 py-[160px] flex flex-col items-center max-lg:px-4 sm:px-6 max-lg:py-[100px]"
+            style={{ background: sectionBg }}
             id="why-veyla"
         >
             <SectionHeader
@@ -61,15 +68,17 @@ export default function WhyVeyla() {
                                 </div>
                                 <h3 className={styles.title}>{title}</h3>
                                 <p className={styles.description}>{description}</p>
-                                <div className="xcm-visual">
-                                    <div className="xcm-hub">HUB</div>
-                                    <div className="xcm-line">
-                                        <span className="xcm-line-label">XCM</span>
+
+                                {/* XCM Visualization */}
+                                <div className="mt-auto pt-9 flex items-center gap-3 max-[768px]:pt-6">
+                                    <div className={styles.xcmHub}>HUB</div>
+                                    <div className={styles.xcmLine}>
+                                        <span className={styles.xcmLineLabel}>XCM</span>
                                     </div>
-                                    <div className="xcm-chains">
-                                        <div className="xcm-chain">DOT</div>
-                                        <div className="xcm-chain">ASTR</div>
-                                        <div className="xcm-chain">HDX</div>
+                                    <div className="shrink-0 flex flex-col gap-1.5">
+                                        <div className={styles.xcmChain}>DOT</div>
+                                        <div className={styles.xcmChain}>ASTR</div>
+                                        <div className={styles.xcmChain}>HDX</div>
                                     </div>
                                 </div>
                             </div>
