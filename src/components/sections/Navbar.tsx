@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 
@@ -11,6 +12,13 @@ const SCROLL_RANGE = [0, 50] as const;
 export default function Navbar() {
     const { scrollY } = useScroll();
     const [isMobile, setIsMobile] = useState(false);
+    const router = useRouter();
+
+    // Prefetch /app chunk as soon as landing page loads,
+    // so the bundle is cached before user clicks "Launch App"
+    useEffect(() => {
+        router.prefetch("/app");
+    }, [router]);
 
     useEffect(() => {
         const check = () => setIsMobile(window.innerWidth < 768);

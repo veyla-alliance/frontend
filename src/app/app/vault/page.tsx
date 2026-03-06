@@ -1,9 +1,7 @@
 ﻿"use client";
 
 import { useState } from "react";
-import { useAccount } from "wagmi";
 import { toast } from "sonner";
-import { ConnectPrompt } from "@/components/app/ConnectPrompt";
 import { AssetSelector, ASSETS } from "@/components/app/vault/AssetSelector";
 import { AmountInput } from "@/components/app/vault/AmountInput";
 import { DepositPreview } from "@/components/app/vault/DepositPreview";
@@ -14,12 +12,9 @@ import { cn } from "@/lib/utils";
 type Tab = "deposit" | "withdraw";
 
 export default function VaultPage() {
-    const { isConnected } = useAccount();
     const [tab, setTab] = useState<Tab>("deposit");
     const [asset, setAsset] = useState("DOT");
     const [amount, setAmount] = useState("");
-
-    if (!isConnected) return <ConnectPrompt />;
 
     const selectedAsset = ASSETS[asset];
     const parsedAmount = parseFloat(amount) || 0;
