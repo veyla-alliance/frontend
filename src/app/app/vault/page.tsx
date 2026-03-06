@@ -84,8 +84,7 @@ export default function VaultPage() {
                                 label={"Deposit Now"}
                             />
 
-                            <p className="text-center text-[13px] text-[var(--veyla-text-dim)]
-">
+                            <p className="text-center text-[13px] text-[var(--veyla-text-dim)]">
                                 Assets routed via XCM · No bridge risk · Auto-compounding
                             </p>
                         </>
