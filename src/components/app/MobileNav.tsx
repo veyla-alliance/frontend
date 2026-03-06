@@ -41,7 +41,7 @@ export function MobileNav() {
                             />
                             <span
                                 className={cn(
-                                    "[font-family:var(--font-geist-pixel-square),monospace] text-[8px] tracking-[0.5px]",
+                                    "[font-family:var(--font-geist-pixel-square),monospace] text-[10px] tracking-[0.5px]",
                                     isActive
                                         ? "text-[var(--veyla-purple-soft)]"
                                         : "text-[var(--veyla-text-dim)]"

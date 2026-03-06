@@ -57,7 +57,7 @@ export function TxButton({ onSubmit, disabled, label }: TxButtonProps) {
             onClick={handleClick}
             disabled={disabled || state === "loading"}
             className={cn(
-                "flex items-center justify-center gap-2 w-full py-4 rounded-xl text-[15px] font-semibold text-white transition-all duration-200",
+                "flex items-center justify-center gap-2 w-full py-4 rounded-xl text-[17px] font-semibold text-white transition-all duration-200",
                 "disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-y-0 disabled:shadow-none",
                 config.className
             )}

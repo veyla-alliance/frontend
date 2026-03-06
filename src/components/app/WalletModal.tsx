@@ -180,10 +180,10 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                 {/* Header */}
                                 <div className="flex items-start justify-between mb-6">
                                     <div>
-                                        <h2 className="text-[17px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.2px]">
+                                        <h2 className="text-[19px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.2px]">
                                             Connect Wallet
                                         </h2>
-                                        <p className="text-[12px] text-[var(--veyla-text-dim)] mt-0.5">
+                                        <p className="text-[14px] text-[var(--veyla-text-dim)] mt-0.5">
                                             {noneDetected
                                                 ? "No wallet detected in this browser"
                                                 : "Detected wallets in your browser"}
@@ -217,10 +217,10 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                                 >
                                                     {wallet.icon}
                                                     <div className="flex-1 min-w-0">
-                                                        <div className="text-[14px] font-semibold text-[var(--veyla-text-main)] group-hover:text-white transition-colors duration-150">
+                                                        <div className="text-[16px] font-semibold text-[var(--veyla-text-main)] group-hover:text-white transition-colors duration-150">
                                                             {wallet.name}
                                                         </div>
-                                                        <div className="text-[12px] text-[var(--veyla-text-dim)] mt-0.5">
+                                                        <div className="text-[14px] text-[var(--veyla-text-dim)] mt-0.5">
                                                             {wallet.description}
                                                         </div>
                                                     </div>
@@ -245,11 +245,11 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                 {noneDetected && (
                                     <div className="flex flex-col items-center gap-4 py-6 text-center">
                                         <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center">
-                                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[10px] text-[var(--veyla-text-dim)]">
+                                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[12px] text-[var(--veyla-text-dim)]">
                                                 EVM
                                             </span>
                                         </div>
-                                        <p className="text-[13px] text-[var(--veyla-text-muted)] max-w-[240px] leading-[1.6]">
+                                        <p className="text-[15px] text-[var(--veyla-text-muted)] max-w-[240px] leading-[1.6]">
                                             Install a browser wallet extension to connect to Veyla.
                                         </p>
                                         <div className="flex flex-col gap-2 w-full">
@@ -262,7 +262,7 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                                     className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.05] hover:border-white/[0.1] hover:bg-white/[0.04] transition-all duration-150 group"
                                                 >
                                                     {w.icon}
-                                                    <span className="flex-1 text-[13px] font-medium text-[var(--veyla-text-muted)] group-hover:text-white transition-colors duration-150">
+                                                    <span className="flex-1 text-[15px] font-medium text-[var(--veyla-text-muted)] group-hover:text-white transition-colors duration-150">
                                                         Install {w.name}
                                                     </span>
                                                     <ExternalLink size={12} className="text-[var(--veyla-text-dim)]" />
@@ -274,14 +274,14 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
 
                                 {/* Footer */}
                                 <div className="mt-5 pt-4 border-t border-white/[0.05] flex items-center justify-between">
-                                    <p className="text-[11px] text-[var(--veyla-text-dim)]">
+                                    <p className="text-[13px] text-[var(--veyla-text-dim)]">
                                         New to Web3?
                                     </p>
                                     <a
                                         href="https://ethereum.org/en/wallets/find-wallet"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center gap-1 text-[11px] text-[var(--veyla-text-muted)] hover:text-[var(--veyla-purple-soft)] transition-colors duration-150"
+                                        className="flex items-center gap-1 text-[13px] text-[var(--veyla-text-muted)] hover:text-[var(--veyla-purple-soft)] transition-colors duration-150"
                                     >
                                         Learn about wallets
                                         <ExternalLink size={10} />

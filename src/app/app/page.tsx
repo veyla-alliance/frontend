@@ -17,14 +17,14 @@ export default function DashboardPage() {
             {/* Greeting */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-[20px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.3px]">
+                    <h1 className="text-[22px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.3px]">
                         Dashboard
                     </h1>
-                    <p className="text-[13px] text-[var(--veyla-text-dim)] mt-0.5 [font-family:var(--font-geist-pixel-square),monospace] tracking-[0.5px]">
+                    <p className="text-[15px] text-[var(--veyla-text-dim)] mt-0.5 [font-family:var(--font-geist-pixel-square),monospace] tracking-[0.5px]">
                         {address?.slice(0, 6)}&hellip;{address?.slice(-4)}
                     </p>
                 </div>
-                <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[1.5px] text-[var(--veyla-text-dim)] uppercase">
+                <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[1.5px] text-[var(--veyla-text-dim)] uppercase">
                     Passet Hub Testnet
                 </span>
             </div>

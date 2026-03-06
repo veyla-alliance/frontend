@@ -100,7 +100,7 @@ export function ChainNode({ chain, compact }: ChainNodeProps) {
                 <span
                     className={cn(
                         "[font-family:var(--font-geist-pixel-square),monospace] rounded-md border shrink-0 text-center flex items-center justify-center",
-                        compact ? "text-[8px] w-6 h-6" : "text-[10px] w-8 h-8"
+                        compact ? "text-[10px] w-6 h-6" : "text-[12px] w-8 h-8"
                     )}
                     style={{
                         color: chain.color,
@@ -118,7 +118,7 @@ export function ChainNode({ chain, compact }: ChainNodeProps) {
                     <span
                         className={cn(
                             "font-semibold text-[var(--veyla-text-main)] truncate",
-                            compact ? "text-[12px]" : "text-[13px]"
+                            compact ? "text-[14px]" : "text-[15px]"
                         )}
                     >
                         {chain.label}
@@ -130,7 +130,7 @@ export function ChainNode({ chain, compact }: ChainNodeProps) {
                     )}
                 </div>
                 {!compact && (
-                    <div className="text-[11px] text-[var(--veyla-text-dim)] mt-0.5">
+                    <div className="text-[13px] text-[var(--veyla-text-dim)] mt-0.5">
                         {chain.protocol} · {chain.tvl} TVL
                     </div>
                 )}
@@ -140,7 +140,7 @@ export function ChainNode({ chain, compact }: ChainNodeProps) {
             <span
                 className={cn(
                     "font-bold tabular-nums shrink-0",
-                    compact ? "text-[14px]" : "text-[16px]",
+                    compact ? "text-[16px]" : "text-[18px]",
                     chain.active ? "text-[var(--veyla-cyan)]" : "text-[var(--veyla-text-muted)]"
                 )}
             >

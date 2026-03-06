@@ -36,10 +36,10 @@ export default function VaultPage() {
     return (
         <div className="flex flex-col gap-5 p-6 md:p-8 pb-24 lg:pb-8">
             <div>
-                <h1 className="text-[20px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.3px]">
+                <h1 className="text-[22px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.3px]">
                     Vault
                 </h1>
-                <p className="text-[13px] text-[var(--veyla-text-dim)] mt-0.5">
+                <p className="text-[15px] text-[var(--veyla-text-dim)] mt-0.5">
                     Deposit assets to start earning optimized yield
                 </p>
             </div>
@@ -54,7 +54,7 @@ export default function VaultPage() {
                                 key={t}
                                 onClick={() => setTab(t)}
                                 className={cn(
-                                    "px-5 py-2 rounded-lg text-[13px] font-semibold capitalize transition-all duration-150",
+                                    "px-5 py-2 rounded-lg text-[15px] font-semibold capitalize transition-all duration-150",
                                     tab === t
                                         ? "bg-[rgba(123,57,252,0.15)] text-white border border-[rgba(123,57,252,0.2)]"
                                         : "text-[var(--veyla-text-dim)] hover:text-[var(--veyla-text-muted)]"
@@ -78,7 +78,7 @@ export default function VaultPage() {
 
                             {/* Warning if over balance */}
                             {parsedAmount > selectedAsset.balance && (
-                                <p className="text-[12px] text-[#f87171]">
+                                <p className="text-[14px] text-[#f87171]">
                                     Amount exceeds your balance of {selectedAsset.balance.toLocaleString()} {asset}
                                 </p>
                             )}
@@ -89,17 +89,17 @@ export default function VaultPage() {
                                 label={"Deposit Now"}
                             />
 
-                            <p className="text-center text-[11px] text-[var(--veyla-text-dim)]
+                            <p className="text-center text-[13px] text-[var(--veyla-text-dim)]
 ">
                                 Assets routed via XCM · No bridge risk · Auto-compounding
                             </p>
                         </>
                     ) : (
                         <div className="flex flex-col items-center justify-center gap-3 py-12 text-center">
-                            <p className="text-[14px] text-[var(--veyla-text-muted)]">
+                            <p className="text-[16px] text-[var(--veyla-text-muted)]">
                                 Withdraw from your active positions
                             </p>
-                            <p className="text-[12px] text-[var(--veyla-text-dim)] max-w-[260px] leading-[1.6]">
+                            <p className="text-[14px] text-[var(--veyla-text-dim)] max-w-[260px] leading-[1.6]">
                                 Select a position from the Dashboard to withdraw funds.
                             </p>
                         </div>

@@ -52,7 +52,7 @@ export function AppMobileNav() {
                                     key={href}
                                     href={href}
                                     className={cn(
-                                        "flex items-center gap-3 px-4 py-3 rounded-xl text-[14px] font-medium transition-all duration-150 no-underline",
+                                        "flex items-center gap-3 px-4 py-3 rounded-xl text-[16px] font-medium transition-all duration-150 no-underline",
                                         isActive
                                             ? "bg-[rgba(123,57,252,0.1)] text-white border border-[rgba(123,57,252,0.15)]"
                                             : "text-[var(--veyla-text-muted)] hover:text-white hover:bg-white/[0.04] border border-transparent"
@@ -73,10 +73,10 @@ export function AppMobileNav() {
                         {/* Network badge */}
                         <div className="mt-2 mx-1 flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05]">
                             <span className="w-2 h-2 rounded-full bg-[#4ade80] shrink-0" />
-                            <span className="text-[11px] font-semibold text-[var(--veyla-text-muted)] tracking-[0.5px]">
+                            <span className="text-[13px] font-semibold text-[var(--veyla-text-muted)] tracking-[0.5px]">
                                 Passet Hub
                             </span>
-                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] text-[var(--veyla-text-dim)] tracking-[1px]">
+                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] text-[var(--veyla-text-dim)] tracking-[1px]">
                                 TESTNET
                             </span>
                         </div>

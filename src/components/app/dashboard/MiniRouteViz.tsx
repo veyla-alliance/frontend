@@ -13,10 +13,10 @@ export function MiniRouteViz() {
         <div className="flex flex-col rounded-2xl bg-white/[0.02] border border-white/[0.06] overflow-hidden">
             {/* Header */}
             <div className="px-5 py-4 border-b border-white/[0.05] flex items-center justify-between">
-                <h2 className="text-[14px] font-semibold text-[var(--veyla-text-main)]">Active Route</h2>
+                <h2 className="text-[16px] font-semibold text-[var(--veyla-text-main)]">Active Route</h2>
                 <span className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse" />
-                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[1px] text-[#4ade80]">LIVE</span>
+                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[1px] text-[#4ade80]">LIVE</span>
                 </span>
             </div>
 
@@ -30,8 +30,8 @@ export function MiniRouteViz() {
                         </div>
                     </div>
                     <div className="flex flex-col gap-0.5">
-                        <span className="text-[13px] font-semibold text-[var(--veyla-text-main)]">Polkadot Hub</span>
-                        <span className="text-[11px] text-[var(--veyla-text-dim)]">Entry point</span>
+                        <span className="text-[15px] font-semibold text-[var(--veyla-text-main)]">Polkadot Hub</span>
+                        <span className="text-[13px] text-[var(--veyla-text-dim)]">Entry point</span>
                     </div>
                 </div>
 
@@ -59,19 +59,19 @@ export function MiniRouteViz() {
                                     <div className={`relative w-4 h-4 rounded-sm overflow-hidden shrink-0 ${chain.isWhiteBg ? 'bg-white border border-white/20' : ''}`}>
                                         <Image src={chain.icon} alt={chain.name} fill className={chain.isWhiteBg ? 'object-contain p-1' : 'object-cover'} />
                                     </div>
-                                    <span className={`[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[0.5px] flex-1
+                                    <span className={`[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[0.5px] flex-1
                                         ${chain.active ? "text-[var(--veyla-cyan)]" : "text-[var(--veyla-text-dim)]"}`}
                                     >
                                         {chain.name}
                                     </span>
                                 </div>
-                                <span className={`text-[12px] font-semibold
+                                <span className={`text-[14px] font-semibold
                                     ${chain.active ? "text-[var(--veyla-cyan)]" : "text-[var(--veyla-text-dim)]"}`}
                                 >
                                     {chain.apy}%
                                 </span>
                                 {chain.active && (
-                                    <span className="text-[10px] text-[#4ade80] font-semibold">✓</span>
+                                    <span className="text-[12px] text-[#4ade80] font-semibold">✓</span>
                                 )}
                             </div>
                         </div>
@@ -80,8 +80,8 @@ export function MiniRouteViz() {
 
                 {/* Last routed */}
                 <div className="mt-1 pt-3 border-t border-white/[0.05] flex items-center justify-between">
-                    <span className="text-[11px] text-[var(--veyla-text-dim)]">Last routed</span>
-                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] text-[var(--veyla-text-dim)] tracking-[0.5px]">
+                    <span className="text-[13px] text-[var(--veyla-text-dim)]">Last routed</span>
+                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] text-[var(--veyla-text-dim)] tracking-[0.5px]">
                         2 min ago
                     </span>
                 </div>

@@ -85,8 +85,8 @@ export function ActivityFeed() {
         <div className="flex flex-col rounded-2xl bg-white/[0.02] border border-white/[0.06] overflow-hidden">
             {/* Header */}
             <div className="px-5 py-4 border-b border-white/[0.05] flex items-center justify-between">
-                <h2 className="text-[14px] font-semibold text-[var(--veyla-text-main)]">Recent Activity</h2>
-                <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[1px] text-[var(--veyla-text-dim)]">
+                <h2 className="text-[16px] font-semibold text-[var(--veyla-text-main)]">Recent Activity</h2>
+                <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[1px] text-[var(--veyla-text-dim)]">
                     {MOCK_ACTIVITY.length} EVENTS
                 </span>
             </div>
@@ -108,15 +108,15 @@ export function ActivityFeed() {
                             {/* Description */}
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2">
-                                    <span className="text-[13px] font-medium text-[var(--veyla-text-main)]">
+                                    <span className="text-[15px] font-medium text-[var(--veyla-text-main)]">
                                         {item.description}
                                     </span>
-                                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] px-1.5 py-0.5 rounded-md bg-white/[0.04] text-[var(--veyla-text-dim)] border border-white/[0.06]">
+                                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] px-1.5 py-0.5 rounded-md bg-white/[0.04] text-[var(--veyla-text-dim)] border border-white/[0.06]">
                                         {item.type.toUpperCase()}
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2 mt-0.5">
-                                    <span className="text-[11px] text-[var(--veyla-text-dim)]">
+                                    <span className="text-[13px] text-[var(--veyla-text-dim)]">
                                         {formatRelativeTime(item.timestamp)}
                                     </span>
                                     <span className="text-[var(--veyla-text-dim)]">·</span>
@@ -124,7 +124,7 @@ export function ActivityFeed() {
                                         href={`https://blockscout-passet-hub.parity-testnet.parity.io/tx/${item.txHash}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] text-[var(--veyla-text-dim)] hover:text-[var(--veyla-purple-soft)] transition-colors duration-150"
+                                        className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] text-[var(--veyla-text-dim)] hover:text-[var(--veyla-purple-soft)] transition-colors duration-150"
                                     >
                                         {item.txHash}
                                     </a>
@@ -132,7 +132,7 @@ export function ActivityFeed() {
                             </div>
 
                             {/* Amount */}
-                            <span className={`text-[13px] font-semibold shrink-0 ${config.amountColor}`}>
+                            <span className={`text-[15px] font-semibold shrink-0 ${config.amountColor}`}>
                                 {item.amount}
                             </span>
                         </div>

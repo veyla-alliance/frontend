@@ -23,10 +23,10 @@ export function AmountInput({ value, onChange, maxAmount, asset, usdValue }: Amo
     return (
         <div>
             <div className="flex items-center justify-between mb-2">
-                <label className="text-[11px] font-semibold tracking-[1.5px] uppercase text-[var(--veyla-text-dim)]">
+                <label className="text-[13px] font-semibold tracking-[1.5px] uppercase text-[var(--veyla-text-dim)]">
                     Amount
                 </label>
-                <span className="text-[11px] text-[var(--veyla-text-dim)]">
+                <span className="text-[13px] text-[var(--veyla-text-dim)]">
                     Balance:{" "}
                     <span className="text-[var(--veyla-text-muted)]">
                         {maxAmount.toLocaleString()} {asset}
@@ -42,16 +42,16 @@ export function AmountInput({ value, onChange, maxAmount, asset, usdValue }: Amo
                     placeholder="0.00"
                     value={value}
                     onChange={handleChange}
-                    className="flex-1 bg-transparent text-[20px] font-semibold text-[var(--veyla-text-main)] placeholder:text-[var(--veyla-text-dim)] outline-none min-w-0"
+                    className="flex-1 bg-transparent text-[22px] font-semibold text-[var(--veyla-text-main)] placeholder:text-[var(--veyla-text-dim)] outline-none min-w-0"
                 />
                 <div className="flex items-center gap-2 shrink-0">
-                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[10px] text-[var(--veyla-text-dim)] tracking-[1px]">
+                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[12px] text-[var(--veyla-text-dim)] tracking-[1px]">
                         {asset}
                     </span>
                     <button
                         type="button"
                         onClick={handleMax}
-                        className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[1px] px-2 py-1 rounded-md bg-[rgba(123,57,252,0.1)] border border-[rgba(123,57,252,0.2)] text-[var(--veyla-purple-soft)] hover:bg-[rgba(123,57,252,0.2)] transition-colors duration-150"
+                        className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[1px] px-2 py-1 rounded-md bg-[rgba(123,57,252,0.1)] border border-[rgba(123,57,252,0.2)] text-[var(--veyla-purple-soft)] hover:bg-[rgba(123,57,252,0.2)] transition-colors duration-150"
                     >
                         MAX
                     </button>
@@ -59,7 +59,7 @@ export function AmountInput({ value, onChange, maxAmount, asset, usdValue }: Amo
             </div>
 
             {/* USD equivalent */}
-            <div className="mt-2 text-[12px] text-[var(--veyla-text-dim)]">
+            <div className="mt-2 text-[14px] text-[var(--veyla-text-dim)]">
                 {usdValue > 0 ? (
                     <span>≈ ${usdValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 ) : (

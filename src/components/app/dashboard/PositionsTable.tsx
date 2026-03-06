@@ -30,7 +30,7 @@ const CHAIN_ICONS: Record<string, { url: string; whiteBg?: boolean }> = {
 
 function Badge({ label, colorClass }: { label: string; colorClass: string }) {
     return (
-        <span className={`[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[0.5px] px-2 py-1 rounded-md border ${colorClass}`}>
+        <span className={`[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[0.5px] px-2 py-1 rounded-md border ${colorClass}`}>
             {label}
         </span>
     );
@@ -41,11 +41,11 @@ export function PositionsTable() {
         return (
             <div className="flex flex-col rounded-2xl bg-white/[0.02] border border-white/[0.06] overflow-hidden">
                 <div className="px-5 py-4 border-b border-white/[0.05]">
-                    <h2 className="text-[14px] font-semibold text-[var(--veyla-text-main)]">Active Positions</h2>
+                    <h2 className="text-[16px] font-semibold text-[var(--veyla-text-main)]">Active Positions</h2>
                 </div>
                 <div className="flex flex-col items-center justify-center gap-3 py-16 text-center px-6">
-                    <p className="text-[14px] text-[var(--veyla-text-muted)]">No active positions yet.</p>
-                    <Link href="/app/vault" className="text-[13px] text-[var(--veyla-purple-soft)] hover:text-white transition-colors duration-150 underline underline-offset-2">
+                    <p className="text-[16px] text-[var(--veyla-text-muted)]">No active positions yet.</p>
+                    <Link href="/app/vault" className="text-[15px] text-[var(--veyla-purple-soft)] hover:text-white transition-colors duration-150 underline underline-offset-2">
                         Deposit to get started →
                     </Link>
                 </div>
@@ -57,8 +57,8 @@ export function PositionsTable() {
         <div className="flex flex-col rounded-2xl bg-white/[0.02] border border-white/[0.06] overflow-hidden">
             {/* Header */}
             <div className="px-5 py-4 border-b border-white/[0.05] flex items-center justify-between">
-                <h2 className="text-[14px] font-semibold text-[var(--veyla-text-main)]">Active Positions</h2>
-                <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[1px] text-[var(--veyla-text-dim)]">
+                <h2 className="text-[16px] font-semibold text-[var(--veyla-text-main)]">Active Positions</h2>
+                <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[1px] text-[var(--veyla-text-dim)]">
                     {MOCK_POSITIONS.length} ACTIVE
                 </span>
             </div>
@@ -71,7 +71,7 @@ export function PositionsTable() {
                             {["Asset", "Deployed to", "Deposited", "APY", "Earned", ""].map((col) => (
                                 <th
                                     key={col}
-                                    className="px-5 py-3 text-[11px] font-semibold text-[var(--veyla-text-dim)] tracking-[0.5px] uppercase whitespace-nowrap"
+                                    className="px-5 py-3 text-[13px] font-semibold text-[var(--veyla-text-dim)] tracking-[0.5px] uppercase whitespace-nowrap"
                                 >
                                     {col}
                                 </th>
@@ -95,7 +95,7 @@ export function PositionsTable() {
                                                     className={ASSET_ICONS[pos.asset].whiteBg ? 'object-contain p-[2px]' : 'object-cover'}
                                                 />
                                             </div>
-                                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[0.5px] text-[var(--veyla-text-main)]">
+                                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[0.5px] text-[var(--veyla-text-main)]">
                                                 {pos.asset}
                                             </span>
                                         </div>
@@ -117,7 +117,7 @@ export function PositionsTable() {
                                                     className={CHAIN_ICONS[pos.chain].whiteBg ? 'object-contain p-1' : 'object-cover'}
                                                 />
                                             </div>
-                                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[0.5px] text-[var(--veyla-text-main)]">
+                                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[0.5px] text-[var(--veyla-text-main)]">
                                                 {pos.chain}
                                             </span>
                                         </div>
@@ -128,23 +128,23 @@ export function PositionsTable() {
                                         />
                                     )}
                                 </td>
-                                <td className="px-5 py-4 text-[14px] font-medium text-[var(--veyla-text-main)] whitespace-nowrap">
-                                    {pos.deposited.toLocaleString()} <span className="text-[11px] text-[var(--veyla-text-dim)]">{pos.asset}</span>
+                                <td className="px-5 py-4 text-[16px] font-medium text-[var(--veyla-text-main)] whitespace-nowrap">
+                                    {pos.deposited.toLocaleString()} <span className="text-[13px] text-[var(--veyla-text-dim)]">{pos.asset}</span>
                                 </td>
                                 <td className="px-5 py-4">
-                                    <span className="text-[14px] font-semibold text-[var(--veyla-cyan)]">
+                                    <span className="text-[16px] font-semibold text-[var(--veyla-cyan)]">
                                         {pos.apy}%
                                     </span>
                                 </td>
                                 <td className="px-5 py-4">
-                                    <span className="text-[14px] font-semibold text-[#4ade80]">
-                                        +{pos.earned} <span className="text-[11px] font-medium text-[var(--veyla-text-dim)]">{pos.asset}</span>
+                                    <span className="text-[16px] font-semibold text-[#4ade80]">
+                                        +{pos.earned} <span className="text-[13px] font-medium text-[var(--veyla-text-dim)]">{pos.asset}</span>
                                     </span>
                                 </td>
                                 <td className="px-5 py-4">
                                     <Link
                                         href="/app/vault"
-                                        className="flex items-center gap-1 text-[12px] text-[var(--veyla-text-dim)] hover:text-white transition-colors duration-150 opacity-0 group-hover:opacity-100"
+                                        className="flex items-center gap-1 text-[14px] text-[var(--veyla-text-dim)] hover:text-white transition-colors duration-150 opacity-0 group-hover:opacity-100"
                                     >
                                         Withdraw
                                         <ArrowUpRight size={11} />

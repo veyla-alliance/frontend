@@ -31,7 +31,7 @@ export function AssetSelector({ value, onChange }: AssetSelectorProps) {
 
     return (
         <div className="relative">
-            <label className="block text-[11px] font-semibold tracking-[1.5px] uppercase text-[var(--veyla-text-dim)] mb-2">
+            <label className="block text-[13px] font-semibold tracking-[1.5px] uppercase text-[var(--veyla-text-dim)] mb-2">
                 Asset
             </label>
 
@@ -48,10 +48,10 @@ export function AssetSelector({ value, onChange }: AssetSelectorProps) {
                 </div>
 
                 <div className="flex-1 text-left">
-                    <div className="text-[14px] font-semibold text-[var(--veyla-text-main)]">
+                    <div className="text-[16px] font-semibold text-[var(--veyla-text-main)]">
                         {selected.symbol}
                     </div>
-                    <div className="text-[11px] text-[var(--veyla-text-dim)]">
+                    <div className="text-[13px] text-[var(--veyla-text-dim)]">
                         Balance: {selected.balance.toLocaleString()} {selected.symbol}
                     </div>
                 </div>
@@ -83,10 +83,10 @@ export function AssetSelector({ value, onChange }: AssetSelectorProps) {
                                     </div>
                                 </div>
                                 <div className="flex-1 text-left">
-                                    <div className="text-[13px] font-semibold text-[var(--veyla-text-muted)] group-hover:text-white transition-colors duration-100">
+                                    <div className="text-[15px] font-semibold text-[var(--veyla-text-muted)] group-hover:text-white transition-colors duration-100">
                                         {asset.symbol}
                                     </div>
-                                    <div className="text-[11px] text-[var(--veyla-text-dim)]">
+                                    <div className="text-[13px] text-[var(--veyla-text-dim)]">
                                         {asset.balance.toLocaleString()} available · {asset.apy}% APY
                                     </div>
                                 </div>

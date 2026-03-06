@@ -43,16 +43,16 @@ export function RouteMap() {
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.05]">
                 <div>
-                    <h2 className="text-[14px] font-semibold text-[var(--veyla-text-main)]">
+                    <h2 className="text-[16px] font-semibold text-[var(--veyla-text-main)]">
                         Live Routing Map
                     </h2>
-                    <p className="text-[12px] text-[var(--veyla-text-dim)] mt-0.5">
+                    <p className="text-[14px] text-[var(--veyla-text-dim)] mt-0.5">
                         Real-time XCM route selection
                     </p>
                 </div>
                 <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[rgba(74,222,128,0.08)] border border-[rgba(74,222,128,0.2)]">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse" />
-                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[8px] text-[#4ade80] tracking-[1px]">
+                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[10px] text-[#4ade80] tracking-[1px]">
                         LIVE
                     </span>
                 </div>

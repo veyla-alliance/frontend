@@ -15,13 +15,13 @@ export function VaultStats() {
                     key={stat.label}
                     className="flex flex-col gap-1.5 px-5 py-4 rounded-2xl bg-white/[0.02] border border-white/[0.05]"
                 >
-                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[1.5px] uppercase text-[var(--veyla-text-dim)]">
+                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[1.5px] uppercase text-[var(--veyla-text-dim)]">
                         {stat.label}
                     </span>
-                    <span className="text-[20px] font-bold text-[var(--veyla-text-main)] tracking-[-0.3px]">
+                    <span className="text-[22px] font-bold text-[var(--veyla-text-main)] tracking-[-0.3px]">
                         {stat.value}
                     </span>
-                    <span className="text-[11px] text-[var(--veyla-text-dim)]">
+                    <span className="text-[13px] text-[var(--veyla-text-dim)]">
                         {stat.sub}
                     </span>
                 </div>

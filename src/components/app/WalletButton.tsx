@@ -23,7 +23,7 @@ export function WalletButton({ className }: { className?: string }) {
                 <button
                     onClick={() => setShowMenu((v) => !v)}
                     className={cn(
-                        "flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[var(--veyla-text-main)] text-[14px] font-medium transition-all duration-200 hover:bg-white/[0.07] hover:border-white/[0.14]",
+                        "flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[var(--veyla-text-main)] text-[16px] font-medium transition-all duration-200 hover:bg-white/[0.07] hover:border-white/[0.14]",
                         className
                     )}
                 >
@@ -37,7 +37,7 @@ export function WalletButton({ className }: { className?: string }) {
                         <div className="absolute right-0 top-full mt-2 z-50 bg-[#0d0d14] border border-white/[0.08] rounded-xl p-1 min-w-[160px] shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
                             <button
                                 onClick={() => { disconnect(); setShowMenu(false); }}
-                                className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-lg text-[13px] text-[var(--veyla-text-muted)] hover:text-white hover:bg-white/[0.05] transition-colors duration-150"
+                                className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-lg text-[15px] text-[var(--veyla-text-muted)] hover:text-white hover:bg-white/[0.05] transition-colors duration-150"
                             >
                                 <LogOut size={13} />
                                 Disconnect
@@ -55,7 +55,7 @@ export function WalletButton({ className }: { className?: string }) {
             <button
                 onClick={() => setShowModal(true)}
                 className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[var(--veyla-purple)] to-[#5b1fd6] text-white text-[14px] font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(123,57,252,0.3)] hover:-translate-y-px active:translate-y-0",
+                    "flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[var(--veyla-purple)] to-[#5b1fd6] text-white text-[16px] font-semibold transition-all duration-200 hover:shadow-[0_0_20px_rgba(123,57,252,0.3)] hover:-translate-y-px active:translate-y-0",
                     className
                 )}
             >

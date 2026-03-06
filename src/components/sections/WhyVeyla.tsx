@@ -35,11 +35,11 @@ const styles = {
     iconBox: "w-[52px] h-[52px] rounded-2xl bg-gradient-to-br from-[rgba(123,57,252,0.12)] to-[rgba(123,57,252,0.04)] border border-[rgba(123,57,252,0.15)] flex items-center justify-center transition-all duration-300 group-hover:border-[rgba(123,57,252,0.35)] group-hover:shadow-[0_0_24px_rgba(123,57,252,0.15)]",
     title: "text-[24px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.3px] transition-colors duration-300 group-hover:text-white",
     description: "text-[17px] leading-[1.7] text-[var(--veyla-text-muted)]",
-    xcmHub: "shrink-0 w-[52px] h-[52px] rounded-full bg-[rgba(123,57,252,0.1)] border border-[rgba(123,57,252,0.3)] flex items-center justify-center [font-family:var(--font-geist-pixel-square),monospace] text-[7px] tracking-[1px] text-[var(--veyla-purple-soft)]",
+    xcmHub: "shrink-0 w-[64px] h-[64px] rounded-full bg-[rgba(123,57,252,0.1)] border border-[rgba(123,57,252,0.3)] flex items-center justify-center [font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[1px] text-[var(--veyla-purple-soft)]",
     xcmLine: "flex-1 h-px bg-gradient-to-r from-[rgba(123,57,252,0.5)] to-[rgba(0,212,255,0.5)] relative",
-    xcmLineLabel: "absolute -top-2.5 left-1/2 -translate-x-1/2 text-[9px] font-bold tracking-[2px] text-[var(--veyla-text-dim)]",
-    xcmChain: "h-7 px-2 rounded-lg bg-[rgba(0,212,255,0.05)] border border-[rgba(0,212,255,0.15)] flex items-center justify-center gap-1.5",
-    xcmChainText: "[font-family:var(--font-geist-pixel-square),monospace] text-[7px] tracking-[0.5px] text-[var(--veyla-cyan)]",
+    xcmLineLabel: "absolute -top-3 left-1/2 -translate-x-1/2 text-[11px] font-bold tracking-[2px] text-[var(--veyla-text-dim)]",
+    xcmChain: "h-9 px-3 rounded-xl bg-[rgba(0,212,255,0.05)] border border-[rgba(0,212,255,0.15)] flex items-center justify-center gap-2",
+    xcmChainText: "[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[0.5px] text-[var(--veyla-cyan)]",
 };
 
 const sectionBg = "radial-gradient(ellipse 70% 50% at 95% 0%, rgba(0, 212, 255, 0.04) 0%, transparent 60%), var(--veyla-dark)";
@@ -79,19 +79,19 @@ export default function WhyVeyla() {
                                     </div>
                                     <div className="shrink-0 flex flex-col gap-1.5 items-start">
                                         <div className={styles.xcmChain}>
-                                            <div className="relative w-3.5 h-3.5 rounded-sm overflow-hidden shrink-0">
+                                            <div className="relative w-4 h-4 rounded-sm overflow-hidden shrink-0">
                                                 <Image src="/polkadot.jpg" alt="Polkadot" fill className="object-cover" />
                                             </div>
                                             <span className={styles.xcmChainText}>DOT</span>
                                         </div>
                                         <div className={styles.xcmChain}>
-                                            <div className="relative w-3.5 h-3.5 rounded-sm bg-white overflow-hidden shrink-0 border border-white/20">
+                                            <div className="relative w-4 h-4 rounded-sm bg-white overflow-hidden shrink-0 border border-white/20">
                                                 <Image src="/astar.jpg" alt="Astar" fill className="object-contain p-[1.5px]" />
                                             </div>
                                             <span className={styles.xcmChainText}>ASTR</span>
                                         </div>
                                         <div className={styles.xcmChain}>
-                                            <div className="relative w-3.5 h-3.5 rounded-sm overflow-hidden shrink-0">
+                                            <div className="relative w-4 h-4 rounded-sm overflow-hidden shrink-0">
                                                 <Image src="/hydration.jpg" alt="Hydration" fill className="object-cover" />
                                             </div>
                                             <span className={styles.xcmChainText}>HDX</span>

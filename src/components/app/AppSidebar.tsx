@@ -22,7 +22,7 @@ export function AppSidebar() {
             <div className="px-6 py-5 border-b border-white/[0.05]">
                 <Link
                     href="/"
-                    className="flex items-center gap-3 group [font-family:var(--font-geist-pixel-square),monospace] text-[15px] font-medium text-white/70 tracking-[4px] no-underline transition-all duration-200 hover:text-white"
+                    className="flex items-center gap-3 group [font-family:var(--font-geist-pixel-square),monospace] text-[17px] font-medium text-white/70 tracking-[4px] no-underline transition-all duration-200 hover:text-white"
                 >
                     <div className="relative w-6 h-6 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity duration-200">
                         <Image src="/veyla-icon.svg" alt="Veyla Logo" fill />
@@ -40,7 +40,7 @@ export function AppSidebar() {
                             key={href}
                             href={href}
                             className={cn(
-                                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-medium transition-all duration-150 no-underline group relative",
+                                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[16px] font-medium transition-all duration-150 no-underline group relative",
                                 isActive
                                     ? "bg-[rgba(123,57,252,0.1)] text-white border border-[rgba(123,57,252,0.15)]"
                                     : "text-[var(--veyla-text-muted)] hover:text-white hover:bg-white/[0.04] border border-transparent"
@@ -67,10 +67,10 @@ export function AppSidebar() {
                 <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05]">
                     <span className="w-2 h-2 rounded-full bg-[#4ade80] shrink-0" />
                     <div className="flex flex-col gap-0.5">
-                        <span className="text-[11px] font-semibold text-[var(--veyla-text-muted)] tracking-[0.5px]">
+                        <span className="text-[13px] font-semibold text-[var(--veyla-text-muted)] tracking-[0.5px]">
                             Passet Hub
                         </span>
-                        <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] text-[var(--veyla-text-dim)] tracking-[1px]">
+                        <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] text-[var(--veyla-text-dim)] tracking-[1px]">
                             TESTNET
                         </span>
                     </div>
