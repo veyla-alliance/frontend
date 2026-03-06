@@ -4,30 +4,12 @@ import { FadeIn } from "@/components/FadeIn";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef } from "react";
 
 const SCROLL_FADE = { range: [0, 100], opacity: [1, 0] } as const;
 
 export default function Hero() {
     const { scrollY } = useScroll();
     const scrollOpacity = useTransform(scrollY, [...SCROLL_FADE.range], [...SCROLL_FADE.opacity]);
-
-    const desktopVideoRef = useRef<HTMLVideoElement>(null);
-    const mobileVideoRef = useRef<HTMLVideoElement>(null);
-
-    useEffect(() => {
-        // Force play on mount to handle strict mobile browser autoplay policies
-        const playVideo = (videoRef: React.RefObject<HTMLVideoElement | null>) => {
-            if (videoRef.current) {
-                videoRef.current.play().catch((error) => {
-                    console.log("Video autoplay failed:", error);
-                });
-            }
-        };
-
-        playVideo(desktopVideoRef);
-        playVideo(mobileVideoRef);
-    }, []);
 
     return (
         <section
@@ -37,12 +19,12 @@ export default function Hero() {
             {/* Video background */}
             <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_50%_60%,#1a0840_0%,#0a0520_40%,var(--veyla-dark)_100%)]">
                 {/* Desktop: full-res webm → mp4 fallback */}
-                <video ref={desktopVideoRef} autoPlay loop muted playsInline preload="auto" className="w-full h-full object-cover object-center hidden md:block">
+                <video autoPlay loop muted playsInline preload="metadata" poster="/hero-poster.jpg" className="w-full h-full object-cover object-center hidden md:block">
                     <source src="/hero-video.webm" type="video/webm" />
                     <source src="/hero-video.mp4" type="video/mp4" />
                 </video>
                 {/* Mobile: lightweight 720p webm */}
-                <video ref={mobileVideoRef} autoPlay loop muted playsInline preload="auto" className="w-full h-full object-cover object-center md:hidden">
+                <video autoPlay loop muted playsInline preload="metadata" poster="/hero-poster.jpg" className="w-full h-full object-cover object-center md:hidden">
                     <source src="/hero-video-mobile.webm" type="video/webm" />
                     <source src="/hero-video.mp4" type="video/mp4" />
                 </video>
