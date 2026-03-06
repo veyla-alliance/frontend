@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -23,21 +24,6 @@ interface WalletDef {
     detect: () => boolean;
 }
 
-// ── Icon ──────────────────────────────────────────────────────────────────────
-
-function IconBox({ label, from, to }: { label: string; from: string; to: string }) {
-    return (
-        <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-            style={{ background: `linear-gradient(135deg, ${from}, ${to})` }}
-        >
-            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] font-medium text-white">
-                {label}
-            </span>
-        </div>
-    );
-}
-
 // ── Wallet definitions ────────────────────────────────────────────────────────
 
 const WALLETS: WalletDef[] = [
@@ -45,7 +31,11 @@ const WALLETS: WalletDef[] = [
         id: "metamask",
         name: "MetaMask",
         description: "Most popular browser extension",
-        icon: <IconBox label="M" from="#F6851B" to="#E2761B" />,
+        icon: (
+            <div className="relative w-10 h-10 rounded-xl overflow-hidden shrink-0 border border-white/[0.08]">
+                <Image src="/metamask.jpg" alt="MetaMask" fill className="object-cover" />
+            </div>
+        ),
         installUrl: "https://metamask.io/download",
         getConnector: () => injected(),
         detect: () => {
@@ -59,7 +49,11 @@ const WALLETS: WalletDef[] = [
         id: "rabby",
         name: "Rabby",
         description: "Built-in contract risk scanner",
-        icon: <IconBox label="R" from="#7B5BB6" to="#4E3589" />,
+        icon: (
+            <div className="relative w-10 h-10 rounded-xl overflow-hidden shrink-0 border border-white/[0.08]">
+                <Image src="/rabby.jpg" alt="Rabby" fill className="object-cover" />
+            </div>
+        ),
         installUrl: "https://rabby.io",
         getConnector: () => injected(),
         detect: () => {
@@ -73,7 +67,11 @@ const WALLETS: WalletDef[] = [
         id: "coinbase",
         name: "Coinbase Wallet",
         description: "Standalone wallet by Coinbase",
-        icon: <IconBox label="C" from="#0052FF" to="#003ACC" />,
+        icon: (
+            <div className="relative w-10 h-10 rounded-xl overflow-hidden shrink-0 border border-white/[0.08] bg-white">
+                <Image src="/coinbase.png" alt="Coinbase Wallet" fill className="object-contain p-[2px]" />
+            </div>
+        ),
         installUrl: "https://www.coinbase.com/wallet",
         getConnector: () => coinbaseWallet({ appName: "Veyla" }),
         detect: () => {

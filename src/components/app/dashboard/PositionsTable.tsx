@@ -17,9 +17,9 @@ const MOCK_POSITIONS: Position[] = [
     { asset: "USDT", chain: "Moonbeam", deposited: 500, apy: 9.8, earned: 3.1 },
 ];
 
-const ASSET_COLORS: Record<string, string> = {
-    DOT: "bg-[rgba(232,65,196,0.12)] text-[#e841c4] border-[rgba(232,65,196,0.2)]",
-    USDT: "bg-[rgba(38,161,123,0.12)] text-[#26a17b] border-[rgba(38,161,123,0.2)]",
+const ASSET_ICONS: Record<string, { url: string; whiteBg?: boolean }> = {
+    DOT: { url: "/polkadot.jpg" },
+    USDT: { url: "/usdt.svg" },
 };
 
 const CHAIN_ICONS: Record<string, { url: string; whiteBg?: boolean }> = {
@@ -85,20 +85,36 @@ export function PositionsTable() {
                                 className="border-b border-white/[0.03] last:border-0 hover:bg-white/[0.02] transition-colors duration-100 group"
                             >
                                 <td className="px-5 py-4">
-                                    <Badge
-                                        label={pos.asset}
-                                        colorClass={ASSET_COLORS[pos.asset] ?? "bg-white/[0.05] text-white border-white/[0.1]"}
-                                    />
+                                    {ASSET_ICONS[pos.asset] ? (
+                                        <div className="flex items-center gap-2">
+                                            <div className={`relative w-5 h-5 rounded-full overflow-hidden shrink-0 ${ASSET_ICONS[pos.asset].whiteBg ? 'bg-white' : ''}`}>
+                                                <Image
+                                                    src={ASSET_ICONS[pos.asset].url}
+                                                    alt={pos.asset}
+                                                    fill
+                                                    className={ASSET_ICONS[pos.asset].whiteBg ? 'object-contain p-[2px]' : 'object-cover'}
+                                                />
+                                            </div>
+                                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[0.5px] text-[var(--veyla-text-main)]">
+                                                {pos.asset}
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <Badge
+                                            label={pos.asset}
+                                            colorClass="bg-white/[0.05] text-white border-white/[0.1]"
+                                        />
+                                    )}
                                 </td>
                                 <td className="px-5 py-4">
                                     {CHAIN_ICONS[pos.chain] ? (
                                         <div className="flex items-center gap-2">
-                                            <div className={`relative w-5 h-5 rounded-md overflow-hidden shrink-0 ${CHAIN_ICONS[pos.chain].whiteBg ? 'bg-white' : ''}`}>
+                                            <div className={`relative w-5 h-5 rounded-md overflow-hidden shrink-0 ${CHAIN_ICONS[pos.chain].whiteBg ? 'bg-white border border-white/20' : ''}`}>
                                                 <Image
                                                     src={CHAIN_ICONS[pos.chain].url}
                                                     alt={pos.chain}
                                                     fill
-                                                    className={CHAIN_ICONS[pos.chain].whiteBg ? 'object-contain p-0.5' : 'object-cover'}
+                                                    className={CHAIN_ICONS[pos.chain].whiteBg ? 'object-contain p-1' : 'object-cover'}
                                                 />
                                             </div>
                                             <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[0.5px] text-[var(--veyla-text-main)]">
@@ -113,7 +129,7 @@ export function PositionsTable() {
                                     )}
                                 </td>
                                 <td className="px-5 py-4 text-[14px] font-medium text-[var(--veyla-text-main)] whitespace-nowrap">
-                                    {pos.deposited.toLocaleString()} {pos.asset}
+                                    {pos.deposited.toLocaleString()} <span className="text-[11px] text-[var(--veyla-text-dim)]">{pos.asset}</span>
                                 </td>
                                 <td className="px-5 py-4">
                                     <span className="text-[14px] font-semibold text-[var(--veyla-cyan)]">
@@ -122,7 +138,7 @@ export function PositionsTable() {
                                 </td>
                                 <td className="px-5 py-4">
                                     <span className="text-[14px] font-semibold text-[#4ade80]">
-                                        +{pos.earned} {pos.asset}
+                                        +{pos.earned} <span className="text-[11px] font-medium text-[var(--veyla-text-dim)]">{pos.asset}</span>
                                     </span>
                                 </td>
                                 <td className="px-5 py-4">

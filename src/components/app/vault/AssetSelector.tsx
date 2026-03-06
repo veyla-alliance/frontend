@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown, Check } from "lucide-react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 export interface Asset {
@@ -11,11 +12,12 @@ export interface Asset {
     apy: number;
     route: string;
     color: string;
+    icon: string;
 }
 
 export const ASSETS: Record<string, Asset> = {
-    DOT: { symbol: "DOT", balance: 250.5, price: 7.85, apy: 14.2, route: "Hydration", color: "#e841c4" },
-    USDT: { symbol: "USDT", balance: 1000, price: 1.00, apy: 9.8, route: "Moonbeam", color: "#26a17b" },
+    DOT: { symbol: "DOT", balance: 250.5, price: 7.85, apy: 14.2, route: "Hydration", color: "#e841c4", icon: "/polkadot.jpg" },
+    USDT: { symbol: "USDT", balance: 1000, price: 1.00, apy: 9.8, route: "Moonbeam", color: "#26a17b", icon: "/usdt.svg" },
 };
 
 interface AssetSelectorProps {
@@ -39,16 +41,11 @@ export function AssetSelector({ value, onChange }: AssetSelectorProps) {
                 className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-white/[0.14] transition-colors duration-150"
             >
                 {/* Asset badge */}
-                <span
-                    className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] px-2 py-1 rounded-md border font-medium"
-                    style={{
-                        color: selected.color,
-                        background: `${selected.color}18`,
-                        borderColor: `${selected.color}40`,
-                    }}
-                >
-                    {selected.symbol}
-                </span>
+                <div className="flex items-center gap-2 shrink-0">
+                    <div className="relative w-6 h-6 rounded-full overflow-hidden">
+                        <Image src={selected.icon} alt={selected.symbol} fill className="object-cover" />
+                    </div>
+                </div>
 
                 <div className="flex-1 text-left">
                     <div className="text-[14px] font-semibold text-[var(--veyla-text-main)]">
@@ -80,16 +77,11 @@ export function AssetSelector({ value, onChange }: AssetSelectorProps) {
                                 onClick={() => { onChange(asset.symbol); setOpen(false); }}
                                 className="flex items-center gap-3 w-full px-3 py-3 rounded-lg hover:bg-white/[0.04] transition-colors duration-100 group"
                             >
-                                <span
-                                    className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] px-2 py-1 rounded-md border font-medium"
-                                    style={{
-                                        color: asset.color,
-                                        background: `${asset.color}18`,
-                                        borderColor: `${asset.color}40`,
-                                    }}
-                                >
-                                    {asset.symbol}
-                                </span>
+                                <div className="flex items-center gap-2 shrink-0">
+                                    <div className="relative w-6 h-6 rounded-full overflow-hidden">
+                                        <Image src={asset.icon} alt={asset.symbol} fill className="object-cover" />
+                                    </div>
+                                </div>
                                 <div className="flex-1 text-left">
                                     <div className="text-[13px] font-semibold text-[var(--veyla-text-muted)] group-hover:text-white transition-colors duration-100">
                                         {asset.symbol}

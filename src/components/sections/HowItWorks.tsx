@@ -81,12 +81,15 @@ export default function HowItWorks() {
                             <span className={styles.previewLabel}>Best yield found</span>
                             <div className={styles.previewChains}>
                                 <div className={styles.previewChain}>
+                                    <div className="relative w-3.5 h-3.5 rounded-sm overflow-hidden shrink-0">
+                                        <Image src="/polkadot.jpg" alt="Polkadot" fill className="object-cover" />
+                                    </div>
                                     <span className={styles.previewChainText}>DOT</span>
                                 </div>
                                 <div className={styles.previewChainLine} />
                                 <div className={styles.previewChainActive}>
-                                    <div className="relative w-3.5 h-3.5 rounded-sm bg-white overflow-hidden shrink-0">
-                                        <Image src="/astar.jpg" alt="Astar" fill className="object-contain p-[1px]" />
+                                    <div className="relative w-3.5 h-3.5 rounded-sm bg-white overflow-hidden shrink-0 border border-white/20">
+                                        <Image src="/astar.jpg" alt="Astar" fill className="object-contain p-[1.5px]" />
                                     </div>
                                     <span className={styles.previewChainTextActive}>ASTR</span>
                                 </div>

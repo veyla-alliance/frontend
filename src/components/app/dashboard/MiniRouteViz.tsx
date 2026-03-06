@@ -56,8 +56,8 @@ export function MiniRouteViz() {
                                 }`}
                             >
                                 <div className="flex items-center gap-2 flex-1">
-                                    <div className={`relative w-4 h-4 rounded-sm overflow-hidden shrink-0 ${chain.isWhiteBg ? 'bg-white' : ''}`}>
-                                        <Image src={chain.icon} alt={chain.name} fill className={chain.isWhiteBg ? 'object-contain p-0.5' : 'object-cover'} />
+                                    <div className={`relative w-4 h-4 rounded-sm overflow-hidden shrink-0 ${chain.isWhiteBg ? 'bg-white border border-white/20' : ''}`}>
+                                        <Image src={chain.icon} alt={chain.name} fill className={chain.isWhiteBg ? 'object-contain p-1' : 'object-cover'} />
                                     </div>
                                     <span className={`[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[0.5px] flex-1
                                         ${chain.active ? "text-[var(--veyla-cyan)]" : "text-[var(--veyla-text-dim)]"}`}

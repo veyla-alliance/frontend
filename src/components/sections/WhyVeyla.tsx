@@ -79,11 +79,14 @@ export default function WhyVeyla() {
                                     </div>
                                     <div className="shrink-0 flex flex-col gap-1.5 items-start">
                                         <div className={styles.xcmChain}>
+                                            <div className="relative w-3.5 h-3.5 rounded-sm overflow-hidden shrink-0">
+                                                <Image src="/polkadot.jpg" alt="Polkadot" fill className="object-cover" />
+                                            </div>
                                             <span className={styles.xcmChainText}>DOT</span>
                                         </div>
                                         <div className={styles.xcmChain}>
-                                            <div className="relative w-3.5 h-3.5 rounded-sm bg-white overflow-hidden shrink-0">
-                                                <Image src="/astar.jpg" alt="Astar" fill className="object-contain p-[1px]" />
+                                            <div className="relative w-3.5 h-3.5 rounded-sm bg-white overflow-hidden shrink-0 border border-white/20">
+                                                <Image src="/astar.jpg" alt="Astar" fill className="object-contain p-[1.5px]" />
                                             </div>
                                             <span className={styles.xcmChainText}>ASTR</span>
                                         </div>

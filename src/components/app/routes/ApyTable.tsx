@@ -68,8 +68,8 @@ export function ApyTable() {
                     <div
                         key={chain.id}
                         className={`grid grid-cols-5 px-5 py-4 border-b border-white/[0.03] last:border-0 transition-colors duration-150 ${chain.active
-                                ? "bg-[rgba(0,212,255,0.02)]"
-                                : "hover:bg-white/[0.02]"
+                            ? "bg-[rgba(0,212,255,0.02)]"
+                            : "hover:bg-white/[0.02]"
                             }`}
                     >
                         {/* Chain */}
@@ -78,7 +78,7 @@ export function ApyTable() {
                                 <div
                                     className={cn(
                                         "relative shrink-0 overflow-hidden w-6 h-6 rounded-md",
-                                        chain.id === "astar" && "bg-white"
+                                        chain.id === "astar" && "bg-white border border-white/20"
                                     )}
                                 >
                                     <Image
@@ -118,8 +118,8 @@ export function ApyTable() {
                         <div className="flex items-center">
                             <span
                                 className={`text-[15px] font-bold tabular-nums ${chain.active
-                                        ? "text-[var(--veyla-cyan)]"
-                                        : "text-[var(--veyla-text-main)]"
+                                    ? "text-[var(--veyla-cyan)]"
+                                    : "text-[var(--veyla-text-main)]"
                                     }`}
                             >
                                 {chain.apy}%

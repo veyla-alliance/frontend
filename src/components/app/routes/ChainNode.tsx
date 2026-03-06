@@ -84,7 +84,7 @@ export function ChainNode({ chain, compact }: ChainNodeProps) {
                     className={cn(
                         "relative shrink-0 overflow-hidden",
                         compact ? "w-6 h-6 rounded-md" : "w-8 h-8 rounded-lg",
-                        chain.id === "astar" && "bg-white"
+                        chain.id === "astar" && "bg-white border border-white/20"
                     )}
                 >
                     <Image
@@ -92,7 +92,7 @@ export function ChainNode({ chain, compact }: ChainNodeProps) {
                         alt={chain.label}
                         fill
                         className={cn(
-                            chain.id === "astar" ? "object-contain p-1" : "object-cover"
+                            chain.id === "astar" ? "object-contain p-1.5" : "object-cover"
                         )}
                     />
                 </div>
