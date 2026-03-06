@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Vault, Route, History, Menu, X } from "lucide-react";
+import { LayoutDashboard, Vault, Route, History, Menu, X, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
@@ -41,10 +41,14 @@ export function AppMobileNav() {
             {open && (
                 <>
                     <div
-                        className="fixed inset-0 z-[90] bg-black/50"
+                        className="fixed inset-0 top-16 z-[9998] bg-black/80 backdrop-blur-md"
                         onClick={() => setOpen(false)}
+                        style={{ height: 'calc(100vh - 64px)' }}
                     />
-                    <nav className="fixed top-16 left-0 right-0 z-[91] bg-[#07070d] border-b border-white/[0.06] p-3 flex flex-col gap-0.5">
+                    <nav
+                        className="fixed top-16 left-0 right-0 z-[9999] bg-[var(--veyla-dark)] border-t border-white/[0.06] p-4 flex flex-col gap-1 shadow-2xl overflow-y-auto"
+                        style={{ height: 'calc(100vh - 64px)' }}
+                    >
                         {NAV_ITEMS.map(({ label, href, icon: Icon }) => {
                             const isActive = pathname === href;
                             return (
@@ -69,6 +73,16 @@ export function AppMobileNav() {
                                 </Link>
                             );
                         })}
+                        {/* Back to Website */}
+                        <div className="mt-2 pt-2 border-t border-white/[0.05] flex flex-col gap-0.5">
+                            <Link
+                                href="/"
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl text-[16px] font-medium transition-all duration-150 no-underline text-[var(--veyla-text-muted)] hover:text-white hover:bg-white/[0.04] border border-transparent"
+                            >
+                                <ArrowLeft size={16} className="shrink-0 text-[var(--veyla-text-dim)]" />
+                                Back to Website
+                            </Link>
+                        </div>
 
                         {/* Network badge */}
                         <div className="mt-2 mx-1 flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05]">

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Vault, Route, History } from "lucide-react";
+import { LayoutDashboard, Vault, Route, History, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
@@ -61,6 +61,17 @@ export function AppSidebar() {
                     );
                 })}
             </nav>
+
+            {/* Back to Website */}
+            <div className="px-3 pt-4 border-t border-white/[0.05]">
+                <Link
+                    href="/"
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[16px] font-medium transition-all duration-150 no-underline group relative text-[var(--veyla-text-muted)] hover:text-white hover:bg-white/[0.04] border border-transparent"
+                >
+                    <ArrowLeft size={16} className="shrink-0 transition-colors duration-150 text-[var(--veyla-text-dim)] group-hover:text-[var(--veyla-text-muted)]" />
+                    Back to Website
+                </Link>
+            </div>
 
             {/* Network badge */}
             <div className="px-4 py-4 border-t border-white/[0.05]">
