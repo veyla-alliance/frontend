@@ -65,10 +65,10 @@ export default function Footer() {
                         &copy; 2026 Veyla Alliance. All rights reserved.
                     </p>
                     <div className="flex gap-5">
-                        <Link href="#" className="text-[15px] text-[var(--veyla-text-dim)] hover:text-[var(--veyla-text-muted)] transition-colors duration-200">
+                        <Link href="/privacy" target="_blank" rel="noopener noreferrer" className="text-[15px] text-[var(--veyla-text-dim)] hover:text-[var(--veyla-text-muted)] transition-colors duration-200">
                             Privacy
                         </Link>
-                        <Link href="#" className="text-[15px] text-[var(--veyla-text-dim)] hover:text-[var(--veyla-text-muted)] transition-colors duration-200">
+                        <Link href="/terms" target="_blank" rel="noopener noreferrer" className="text-[15px] text-[var(--veyla-text-dim)] hover:text-[var(--veyla-text-muted)] transition-colors duration-200">
                             Terms
                         </Link>
                     </div>
