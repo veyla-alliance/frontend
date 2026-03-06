@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Veyla",
   },
+  icons: {
+    icon: "/veyla-icon.svg",
+  },
   twitter: {
     card: "summary_large_image",
     title: "Veyla | The Intelligent Yield Router",

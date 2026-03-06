@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, Vault, Route, History } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -21,8 +22,11 @@ export function AppSidebar() {
             <div className="px-6 py-5 border-b border-white/[0.05]">
                 <Link
                     href="/"
-                    className="[font-family:var(--font-geist-pixel-square),monospace] text-[15px] font-medium text-white/70 tracking-[4px] no-underline transition-colors duration-200 hover:text-white"
+                    className="flex items-center gap-3 group [font-family:var(--font-geist-pixel-square),monospace] text-[15px] font-medium text-white/70 tracking-[4px] no-underline transition-all duration-200 hover:text-white"
                 >
+                    <div className="relative w-6 h-6 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity duration-200">
+                        <Image src="/veyla-icon.svg" alt="Veyla Logo" fill />
+                    </div>
                     VEYLA
                 </Link>
             </div>

@@ -69,7 +69,7 @@ export function ChainNode({ chain, compact }: ChainNodeProps) {
                 compact ? "px-3 py-2" : "px-4 py-3",
                 chain.active
                     ? "bg-[rgba(0,212,255,0.05)] border-[rgba(0,212,255,0.2)]"
-                    : "bg-white/[0.02] border-white/[0.05]"
+                    : "bg-white/[0.04] border-white/[0.1] hover:bg-white/[0.06] hover:border-white/[0.15]"
             )}
         >
             {/* Chain badge */}

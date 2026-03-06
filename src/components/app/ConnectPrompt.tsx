@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { WalletModal } from "./WalletModal";
 
 export function ConnectPrompt() {
@@ -10,9 +11,14 @@ export function ConnectPrompt() {
         <>
             <div className="flex-1 flex flex-col items-center justify-center gap-6 py-24">
                 {/* Logo */}
-                <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[28px] font-medium tracking-[6px] text-white/20">
-                    VEYLA
-                </span>
+                <div className="flex items-center gap-4">
+                    <div className="relative w-10 h-10 flex items-center justify-center opacity-40">
+                        <Image src="/veyla-icon.svg" alt="Veyla Logo" fill />
+                    </div>
+                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[28px] font-medium tracking-[6px] text-white/20">
+                        VEYLA
+                    </span>
+                </div>
 
                 <div className="flex flex-col items-center gap-2 text-center">
                     <p className="text-[18px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.2px]">

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { CHAINS, ChainNode } from "./ChainNode";
 
@@ -18,7 +19,7 @@ function Particle({ toY, active, delay }: ParticleProps) {
     return (
         <motion.circle
             r={active ? 1.2 : 0.8}
-            fill={active ? "#00d4ff" : "rgba(255,255,255,0.25)"}
+            fill={active ? "#00d4ff" : "rgba(255,255,255,0.4)"}
             style={active ? { filter: "drop-shadow(0 0 2px #00d4ff)" } : undefined}
             animate={{
                 cx: [0, 100],
@@ -75,12 +76,11 @@ export function RouteMap() {
                         <div className="relative">
                             {/* Purple glow behind */}
                             <div className="absolute inset-0 rounded-xl bg-[rgba(123,57,252,0.25)] blur-2xl -z-10 scale-[1.6]" />
-                            <div className="px-5 py-4 rounded-xl bg-[rgba(123,57,252,0.1)] border border-[rgba(123,57,252,0.3)]">
-                                <div className="[font-family:var(--font-geist-pixel-square),monospace] text-[7px] text-[var(--veyla-text-dim)] tracking-[1.5px] mb-1 uppercase">
-                                    Source
-                                </div>
-                                <div className="[font-family:var(--font-geist-pixel-square),monospace] text-[16px] text-[var(--veyla-purple-soft)] tracking-[4px]">
-                                    HUB
+                            <div className="px-3 py-2 rounded-xl bg-[rgba(123,57,252,0.1)] border border-[rgba(123,57,252,0.3)]">
+                                <div className="flex items-center gap-3">
+                                    <div className="relative w-8 h-8 flex items-center justify-center">
+                                        <Image src="/veyla-purple-icon.svg" alt="Veyla Logo" fill />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -104,11 +104,11 @@ export function RouteMap() {
                                         stroke={
                                             chain.active
                                                 ? "#00d4ff"
-                                                : "rgba(255,255,255,0.07)"
+                                                : "rgba(255,255,255,0.2)"
                                         }
-                                        strokeWidth={chain.active ? 0.5 : 0.3}
+                                        strokeWidth={chain.active ? 0.5 : 0.4}
                                         strokeDasharray={
-                                            chain.active ? undefined : "1.5 1.5"
+                                            chain.active ? undefined : "2 2"
                                         }
                                     />
                                     {/* Animated particle */}

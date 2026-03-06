@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { siteConfig } from "@/config/site";
 
 function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
@@ -17,9 +18,14 @@ export default function Footer() {
             <div className="w-full max-w-7xl mx-auto px-4 sm:px-8 md:px-12 lg:px-20 py-12 md:py-20">
                 <div className="flex justify-between gap-16 mb-20 max-lg:flex-col max-lg:gap-10 max-lg:mb-12">
                     <div className="shrink-0">
-                        <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[16px] font-medium tracking-[3px] text-white block mb-4">
-                            VEYLA
-                        </span>
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="relative w-6 h-6 flex items-center justify-center">
+                                <Image src="/veyla-icon.svg" alt="Veyla Logo" fill />
+                            </div>
+                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[16px] font-medium tracking-[3px] text-white block">
+                                VEYLA
+                            </span>
+                        </div>
                         <p className="text-[16px] leading-[1.6] text-[var(--veyla-text-dim)]">
                             The Intelligent Yield Router<br />for Polkadot Hub.
                         </p>
