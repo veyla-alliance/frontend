@@ -24,11 +24,14 @@ export const ASSETS: Record<string, Asset> = {
 interface AssetSelectorProps {
     value: string;
     onChange: (asset: string) => void;
+    /** Real on-chain balances keyed by symbol. Falls back to mock balance if undefined. */
+    balances?: Record<string, number>;
 }
 
-export function AssetSelector({ value, onChange }: AssetSelectorProps) {
+export function AssetSelector({ value, onChange, balances }: AssetSelectorProps) {
     const [open, setOpen] = useState(false);
     const selected = ASSETS[value];
+    const selectedBalance = balances?.[value] ?? selected.balance;
 
     return (
         <div className="relative">
@@ -53,7 +56,7 @@ export function AssetSelector({ value, onChange }: AssetSelectorProps) {
                         {selected.symbol}
                     </div>
                     <div className="text-[13px] text-[var(--veyla-text-dim)]">
-                        Balance: {selected.balance.toLocaleString()} {selected.symbol}
+                        Balance: {selectedBalance.toLocaleString()} {selected.symbol}
                     </div>
                 </div>
 
@@ -88,7 +91,7 @@ export function AssetSelector({ value, onChange }: AssetSelectorProps) {
                                         {asset.symbol}
                                     </div>
                                     <div className="text-[13px] text-[var(--veyla-text-dim)]">
-                                        {asset.balance.toLocaleString()} available · {asset.apy}% APY
+                                        {(balances?.[asset.symbol] ?? asset.balance).toLocaleString()} available · {asset.apy}% APY
                                     </div>
                                 </div>
                                 {value === asset.symbol && (

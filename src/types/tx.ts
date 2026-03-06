@@ -3,10 +3,12 @@
 
 export type TxStatus =
     | "idle"
-    | "awaiting-signature"  // wallet popup open, waiting for user
-    | "pending"             // signed, in mempool
+    | "awaiting-approval"   // wallet popup open for ERC-20 approve()
+    | "approving"           // approve tx in mempool, waiting for confirmation
+    | "awaiting-signature"  // wallet popup open for main tx (deposit/withdraw)
+    | "pending"             // main tx signed, in mempool
     | "confirmed"           // included in block
-    | "success"             // finalized (if needed)
+    | "success"             // finalized
     | "error";
 
 export interface TxState {

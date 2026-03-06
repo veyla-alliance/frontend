@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useWriteContract, useWaitForTransactionReceipt, useAccount } from "wagmi";
+import { readContract, waitForTransactionReceipt } from "@wagmi/core";
+import { wagmiConfig } from "@/lib/wagmi";
 import { env } from "@/lib/env";
 import { vaultAbi } from "@/lib/abi/vault";
+import { erc20Abi } from "@/lib/abi/erc20";
 import type { TxState } from "@/types";
 
 function parseError(err: unknown): string {
@@ -12,22 +15,26 @@ function parseError(err: unknown): string {
     if (msg.includes("User rejected")) return "Transaction cancelled.";
     if (msg.includes("insufficient funds")) return "Insufficient balance for gas.";
     if (msg.includes("execution reverted")) return "Transaction failed — contract rejected.";
-    return msg.slice(0, 120); // cap length for display
+    return msg.slice(0, 120);
 }
 
 /**
- * Handles the full deposit lifecycle:
- * idle → awaiting-signature → pending → confirmed → success
+ * Handles the full deposit lifecycle with ERC-20 approval:
+ * idle → awaiting-approval → approving → awaiting-signature → pending → success
+ *
+ * If the vault already has sufficient allowance the approval step is skipped:
+ * idle → awaiting-signature → pending → success
  *
  * Usage:
  *   const { deposit, txState, reset } = useDeposit();
- *   await deposit(tokenAddress, amountInWei);
+ *   deposit(tokenAddress, amountInWei);
  */
 export function useDeposit() {
     const [txState, setTxState] = useState<TxState>({ status: "idle" });
     const { writeContractAsync } = useWriteContract();
+    const { address } = useAccount();
 
-    // Watch mempool → confirmed transition
+    // Watch mempool → confirmed for the main deposit tx only
     const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
         hash: txState.hash,
         query: { enabled: txState.status === "pending" },
@@ -42,8 +49,38 @@ export function useDeposit() {
             setTxState({ status: "error", error: "Contract not deployed yet." });
             return;
         }
+        if (!address) {
+            setTxState({ status: "error", error: "Wallet not connected." });
+            return;
+        }
 
         try {
+            // ── Step 1: Check current ERC-20 allowance ──────────────────────
+            const allowance = await readContract(wagmiConfig, {
+                address: tokenAddress,
+                abi: erc20Abi,
+                functionName: "allowance",
+                args: [address, env.vaultAddress],
+            });
+
+            // ── Step 2: Request approval if needed ──────────────────────────
+            if (allowance < amount) {
+                setTxState({ status: "awaiting-approval" });
+
+                const approvalHash = await writeContractAsync({
+                    address: tokenAddress,
+                    abi: erc20Abi,
+                    functionName: "approve",
+                    args: [env.vaultAddress, amount],
+                });
+
+                setTxState({ status: "approving", hash: approvalHash });
+
+                // Block until approval is mined before sending the deposit
+                await waitForTransactionReceipt(wagmiConfig, { hash: approvalHash });
+            }
+
+            // ── Step 3: Deposit ──────────────────────────────────────────────
             setTxState({ status: "awaiting-signature" });
 
             const hash = await writeContractAsync({

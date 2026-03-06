@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { parseUnits } from "viem";
+import { parseUnits, formatUnits } from "viem";
+import { useAccount } from "wagmi";
 import { toast } from "sonner";
 import { AssetSelector, ASSETS } from "@/components/app/vault/AssetSelector";
 import { AmountInput } from "@/components/app/vault/AmountInput";
 import { DepositPreview } from "@/components/app/vault/DepositPreview";
 import { VaultStats } from "@/components/app/vault/VaultStats";
 import { TxButton } from "@/components/app/vault/TxButton";
-import { useDeposit } from "@/hooks";
+import { useDeposit, useERC20Balance } from "@/hooks";
 import { env } from "@/lib/env";
 import { cn } from "@/lib/utils";
 
@@ -25,13 +26,24 @@ export default function VaultPage() {
     const [asset, setAsset] = useState("DOT");
     const [amount, setAmount] = useState("");
 
+    const { address } = useAccount();
     const { deposit, txState, reset } = useDeposit();
 
-    const selectedAsset = ASSETS[asset];
-    const parsedAmount = parseFloat(amount) || 0;
-    const usdValue = parsedAmount * selectedAsset.price;
-    const tokenAddress = TOKEN_ADDRESSES[asset];
-    const isValid = parsedAmount > 0 && parsedAmount <= selectedAsset.balance && !!tokenAddress;
+    // Real on-chain balances
+    const { data: dotBalanceRaw }  = useERC20Balance(address, TOKEN_ADDRESSES["DOT"]);
+    const { data: usdtBalanceRaw } = useERC20Balance(address, TOKEN_ADDRESSES["USDT"]);
+
+    const realBalances: Record<string, number> = {
+        DOT:  dotBalanceRaw  !== undefined ? Number(formatUnits(dotBalanceRaw,  ASSETS["DOT"].decimals))  : ASSETS["DOT"].balance,
+        USDT: usdtBalanceRaw !== undefined ? Number(formatUnits(usdtBalanceRaw, ASSETS["USDT"].decimals)) : ASSETS["USDT"].balance,
+    };
+
+    const selectedAsset  = ASSETS[asset];
+    const selectedBalance = realBalances[asset];
+    const parsedAmount   = parseFloat(amount) || 0;
+    const usdValue       = parsedAmount * selectedAsset.price;
+    const tokenAddress   = TOKEN_ADDRESSES[asset];
+    const isValid        = parsedAmount > 0 && parsedAmount <= selectedBalance && !!tokenAddress;
 
     // Show toast + reset after success
     useEffect(() => {
@@ -89,19 +101,23 @@ export default function VaultPage() {
 
                     {tab === "deposit" ? (
                         <>
-                            <AssetSelector value={asset} onChange={setAsset} />
+                            <AssetSelector
+                                value={asset}
+                                onChange={setAsset}
+                                balances={realBalances}
+                            />
                             <AmountInput
                                 value={amount}
                                 onChange={setAmount}
-                                maxAmount={selectedAsset.balance}
+                                maxAmount={selectedBalance}
                                 asset={asset}
                                 usdValue={usdValue}
                             />
 
                             {/* Warning if over balance */}
-                            {parsedAmount > selectedAsset.balance && (
+                            {parsedAmount > selectedBalance && (
                                 <p className="text-[14px] text-[#f87171]">
-                                    Amount exceeds your balance of {selectedAsset.balance.toLocaleString()} {asset}
+                                    Amount exceeds your balance of {selectedBalance.toLocaleString()} {asset}
                                 </p>
                             )}
 

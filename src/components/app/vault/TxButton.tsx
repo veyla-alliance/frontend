@@ -28,6 +28,16 @@ export function TxButton({
             icon: <ArrowRight size={15} />,
             className: "bg-gradient-to-r from-[var(--veyla-purple)] to-[#5b1fd6] hover:shadow-[0_0_30px_rgba(123,57,252,0.3)] hover:-translate-y-px active:translate-y-0",
         },
+        "awaiting-approval": {
+            label: "Approve token…",
+            icon: <Loader2 size={15} className="animate-spin" />,
+            className: "bg-gradient-to-r from-[var(--veyla-purple)] to-[#5b1fd6] opacity-70 cursor-not-allowed",
+        },
+        approving: {
+            label: "Approving…",
+            icon: <Loader2 size={15} className="animate-spin" />,
+            className: "bg-gradient-to-r from-[var(--veyla-purple)] to-[#5b1fd6] opacity-70 cursor-not-allowed",
+        },
         "awaiting-signature": {
             label: "Awaiting signature…",
             icon: <Loader2 size={15} className="animate-spin" />,
