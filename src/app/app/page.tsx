@@ -1,13 +1,13 @@
 ﻿"use client";
 
-import { useAccount } from "wagmi";
+import { useConnection } from "wagmi";
 import { StatCard } from "@/components/app/dashboard/StatCard";
 import { PositionsTable } from "@/components/app/dashboard/PositionsTable";
 import { MiniRouteViz } from "@/components/app/dashboard/MiniRouteViz";
 import { ActivityFeed } from "@/components/app/dashboard/ActivityFeed";
 
 export default function DashboardPage() {
-    const { address } = useAccount();
+    const { address } = useConnection();
 
     return (
         <div className="flex flex-col gap-5 p-6 md:p-8 pb-24 lg:pb-8">

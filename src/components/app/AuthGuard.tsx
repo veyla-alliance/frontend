@@ -1,10 +1,10 @@
 "use client";
 
-import { useAccount } from "wagmi";
+import { useConnection } from "wagmi";
 import { ConnectPrompt } from "./ConnectPrompt";
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
-    const { isConnected } = useAccount();
+    const { isConnected } = useConnection();
 
     if (!isConnected) {
         return <ConnectPrompt />;

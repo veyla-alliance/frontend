@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { ArrowDownLeft, ArrowLeftRight, TrendingUp, ArrowUpRight } from "lucide-react";
 
 type ActivityType = "Deposit" | "Route" | "Earn" | "Withdraw";
@@ -12,36 +13,29 @@ interface Activity {
     txHash: string;
 }
 
-const MOCK_ACTIVITY: Activity[] = [
-    {
-        type: "Earn",
-        description: "Yield compounded",
-        amount: "+12.4 DOT",
-        timestamp: new Date(Date.now() - 1000 * 60 * 1),
-        txHash: "0x9abc...ef12",
-    },
-    {
-        type: "Route",
-        description: "Routed to Hydration",
-        amount: "1,000 DOT",
-        timestamp: new Date(Date.now() - 1000 * 60 * 3),
-        txHash: "0x5678...cd90",
-    },
-    {
-        type: "Deposit",
-        description: "Deposited to vault",
-        amount: "500 USDT",
-        timestamp: new Date(Date.now() - 1000 * 60 * 12),
-        txHash: "0x3456...ab78",
-    },
-    {
-        type: "Deposit",
-        description: "Deposited to vault",
-        amount: "1,000 DOT",
-        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
-        txHash: "0x1234...5678",
-    },
+interface ActivityOffset {
+    type: ActivityType;
+    description: string;
+    amount: string;
+    offsetMs: number;
+    txHash: string;
+}
+
+// Offsets are fixed — timestamps are computed relative to now at render time
+const MOCK_OFFSETS: ActivityOffset[] = [
+    { type: "Earn",    description: "Yield compounded",    amount: "+12.4 DOT",  offsetMs: 1000 * 60 * 1,      txHash: "0x9abc...ef12" },
+    { type: "Route",   description: "Routed to Hydration", amount: "1,000 DOT",  offsetMs: 1000 * 60 * 3,      txHash: "0x5678...cd90" },
+    { type: "Deposit", description: "Deposited to vault",  amount: "500 USDT",   offsetMs: 1000 * 60 * 12,     txHash: "0x3456...ab78" },
+    { type: "Deposit", description: "Deposited to vault",  amount: "1,000 DOT",  offsetMs: 1000 * 60 * 60 * 2, txHash: "0x1234...5678" },
 ];
+
+function buildActivities(): Activity[] {
+    const now = Date.now();
+    return MOCK_OFFSETS.map(({ offsetMs, ...rest }) => ({
+        ...rest,
+        timestamp: new Date(now - offsetMs),
+    }));
+}
 
 const ACTIVITY_CONFIG: Record<ActivityType, {
     icon: React.ReactNode;
@@ -81,19 +75,27 @@ function formatRelativeTime(date: Date): string {
 }
 
 export function ActivityFeed() {
+    const [activities, setActivities] = useState<Activity[]>(buildActivities);
+
+    // Refresh relative timestamps every 60s
+    useEffect(() => {
+        const id = setInterval(() => setActivities(buildActivities()), 60_000);
+        return () => clearInterval(id);
+    }, []);
+
     return (
         <div className="flex flex-col rounded-2xl bg-white/[0.02] border border-white/[0.06] overflow-hidden">
             {/* Header */}
             <div className="px-5 py-4 border-b border-white/[0.05] flex items-center justify-between">
                 <h2 className="text-[16px] font-semibold text-[var(--veyla-text-main)]">Recent Activity</h2>
                 <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[1px] text-[var(--veyla-text-dim)]">
-                    {MOCK_ACTIVITY.length} EVENTS
+                    {activities.length} EVENTS
                 </span>
             </div>
 
             {/* List */}
             <div className="divide-y divide-white/[0.03]">
-                {MOCK_ACTIVITY.map((item, i) => {
+                {activities.map((item, i) => {
                     const config = ACTIVITY_CONFIG[item.type];
                     return (
                         <div

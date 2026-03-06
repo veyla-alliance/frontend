@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccount, useDisconnect } from "wagmi";
+import { useConnection, useDisconnect } from "wagmi";
 import { useState } from "react";
 import { LogOut, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -11,7 +11,7 @@ function truncateAddress(address: string) {
 }
 
 export function WalletButton({ className }: { className?: string }) {
-    const { address, isConnected } = useAccount();
+    const { address, isConnected } = useConnection();
     const { disconnect } = useDisconnect();
     const [showModal, setShowModal] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
