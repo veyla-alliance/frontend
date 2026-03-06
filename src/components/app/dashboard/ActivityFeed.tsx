@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ArrowDownLeft, ArrowLeftRight, TrendingUp, ArrowUpRight } from "lucide-react";
+import { env } from "@/lib/env";
 
 type ActivityType = "Deposit" | "Route" | "Earn" | "Withdraw";
 
@@ -123,7 +124,7 @@ export function ActivityFeed() {
                                     </span>
                                     <span className="text-[var(--veyla-text-dim)]">·</span>
                                     <a
-                                        href={`https://blockscout-passet-hub.parity-testnet.parity.io/tx/${item.txHash}`}
+                                        href={`${env.blockExplorerUrl}/tx/${item.txHash}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] text-[var(--veyla-text-dim)] hover:text-[var(--veyla-purple-soft)] transition-colors duration-150"

@@ -1,11 +1,12 @@
 import { createConfig, http } from "wagmi";
 import { defineChain } from "viem";
 import { injected, coinbaseWallet } from "wagmi/connectors";
+import { env } from "./env";
 
 // Polkadot Hub Testnet (Passet Hub — Paseo)
 // Verify latest RPC: https://docs.polkadot.com/develop/smart-contracts/
 export const passetHub = defineChain({
-    id: 420420422,
+    id: env.chainId,
     name: "Passet Hub",
     nativeCurrency: {
         name: "Paseo",
@@ -14,13 +15,13 @@ export const passetHub = defineChain({
     },
     rpcUrls: {
         default: {
-            http: ["https://testnet-passet-hub-eth-rpc.polkadot.io"],
+            http: [env.rpcUrl],
         },
     },
     blockExplorers: {
         default: {
             name: "Blockscout",
-            url: "https://blockscout-passet-hub.parity-testnet.parity.io",
+            url: env.blockExplorerUrl,
         },
     },
     testnet: true,
