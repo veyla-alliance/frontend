@@ -1,69 +1,75 @@
 "use client";
 
-import { useState } from "react";
-import { Loader2, Check, ArrowRight } from "lucide-react";
+import { ArrowRight, Check, Loader2, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-type TxState = "idle" | "loading" | "success" | "error";
+import type { TxState } from "@/types";
 
 interface TxButtonProps {
-    onSubmit: () => Promise<void>;
+    txState: TxState;
+    onSubmit: () => void;
     disabled: boolean;
     label: string;
+    successLabel?: string;
 }
 
-export function TxButton({ onSubmit, disabled, label }: TxButtonProps) {
-    const [state, setState] = useState<TxState>("idle");
+export function TxButton({
+    txState,
+    onSubmit,
+    disabled,
+    label,
+    successLabel = "Success!",
+}: TxButtonProps) {
+    const { status } = txState;
+    const isActive = status !== "idle" && status !== "error";
 
-    async function handleClick() {
-        if (state !== "idle" || disabled) return;
-        setState("loading");
-        try {
-            await onSubmit();
-            setState("success");
-            setTimeout(() => setState("idle"), 2500);
-        } catch {
-            setState("error");
-            setTimeout(() => setState("idle"), 2500);
-        }
-    }
-
-    const config = {
+    const config: Record<string, { label: string; icon: React.ReactNode; className: string }> = {
         idle: {
             label,
             icon: <ArrowRight size={15} />,
             className: "bg-gradient-to-r from-[var(--veyla-purple)] to-[#5b1fd6] hover:shadow-[0_0_30px_rgba(123,57,252,0.3)] hover:-translate-y-px active:translate-y-0",
         },
-        loading: {
-            label: "Confirming…",
+        "awaiting-signature": {
+            label: "Awaiting signature…",
+            icon: <Loader2 size={15} className="animate-spin" />,
+            className: "bg-gradient-to-r from-[var(--veyla-purple)] to-[#5b1fd6] opacity-70 cursor-not-allowed",
+        },
+        pending: {
+            label: "Confirming on-chain…",
+            icon: <Loader2 size={15} className="animate-spin" />,
+            className: "bg-gradient-to-r from-[var(--veyla-purple)] to-[#5b1fd6] opacity-70 cursor-not-allowed",
+        },
+        confirmed: {
+            label: "Finalizing…",
             icon: <Loader2 size={15} className="animate-spin" />,
             className: "bg-gradient-to-r from-[var(--veyla-purple)] to-[#5b1fd6] opacity-70 cursor-not-allowed",
         },
         success: {
-            label: "Deposited!",
+            label: successLabel,
             icon: <Check size={15} />,
             className: "bg-gradient-to-r from-[#16a34a] to-[#15803d]",
         },
         error: {
             label: "Failed — try again",
-            icon: null,
+            icon: <AlertCircle size={15} />,
             className: "bg-gradient-to-r from-[#dc2626] to-[#b91c1c]",
         },
-    }[state];
+    };
+
+    const current = config[status] ?? config.idle;
 
     return (
         <button
             type="button"
-            onClick={handleClick}
-            disabled={disabled || state === "loading"}
+            onClick={() => { if (!isActive && !disabled) onSubmit(); }}
+            disabled={disabled || isActive}
             className={cn(
                 "flex items-center justify-center gap-2 w-full py-4 rounded-xl text-[17px] font-semibold text-white transition-all duration-200",
                 "disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-y-0 disabled:shadow-none",
-                config.className
+                current.className
             )}
         >
-            {config.icon}
-            {config.label}
+            {current.icon}
+            {current.label}
         </button>
     );
 }

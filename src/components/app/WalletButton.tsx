@@ -1,10 +1,11 @@
 "use client";
 
-import { useConnection, useDisconnect } from "wagmi";
+import { useConnection, useDisconnect, useChainId, useSwitchChain } from "wagmi";
 import { useState } from "react";
-import { LogOut, Wallet } from "lucide-react";
+import { LogOut, Wallet, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { WalletModal } from "./WalletModal";
+import { env } from "@/lib/env";
 
 function truncateAddress(address: string) {
     return `${address.slice(0, 6)}…${address.slice(-4)}`;
@@ -13,8 +14,27 @@ function truncateAddress(address: string) {
 export function WalletButton({ className }: { className?: string }) {
     const { address, isConnected } = useConnection();
     const { disconnect } = useDisconnect();
+    const chainId = useChainId();
+    const { switchChain, isPending: isSwitching } = useSwitchChain();
     const [showModal, setShowModal] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
+
+    // Wrong network — must switch before doing anything
+    if (isConnected && chainId !== env.chainId) {
+        return (
+            <button
+                onClick={() => switchChain({ chainId: env.chainId })}
+                disabled={isSwitching}
+                className={cn(
+                    "flex items-center gap-2 px-4 py-2 rounded-xl bg-[rgba(239,68,68,0.1)] border border-[rgba(239,68,68,0.25)] text-[#f87171] text-[16px] font-semibold transition-all duration-200 hover:bg-[rgba(239,68,68,0.15)] disabled:opacity-60",
+                    className
+                )}
+            >
+                <AlertTriangle size={14} />
+                {isSwitching ? "Switching…" : "Switch Network"}
+            </button>
+        );
+    }
 
     // Connected state — show address + disconnect dropdown
     if (isConnected && address) {

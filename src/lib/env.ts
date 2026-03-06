@@ -15,4 +15,8 @@ export const env = {
 
     // undefined until contract is deployed — hooks must guard against this
     vaultAddress: process.env.NEXT_PUBLIC_VAULT_ADDRESS as `0x${string}` | undefined,
+
+    // ERC-20 token addresses on Passet Hub — undefined until deployed
+    dotTokenAddress:  process.env.NEXT_PUBLIC_DOT_TOKEN_ADDRESS  as `0x${string}` | undefined,
+    usdtTokenAddress: process.env.NEXT_PUBLIC_USDT_TOKEN_ADDRESS as `0x${string}` | undefined,
 } as const;

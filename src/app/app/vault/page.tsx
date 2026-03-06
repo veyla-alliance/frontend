@@ -1,31 +1,58 @@
-﻿"use client";
+"use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { parseUnits } from "viem";
 import { toast } from "sonner";
 import { AssetSelector, ASSETS } from "@/components/app/vault/AssetSelector";
 import { AmountInput } from "@/components/app/vault/AmountInput";
 import { DepositPreview } from "@/components/app/vault/DepositPreview";
 import { VaultStats } from "@/components/app/vault/VaultStats";
 import { TxButton } from "@/components/app/vault/TxButton";
+import { useDeposit } from "@/hooks";
+import { env } from "@/lib/env";
 import { cn } from "@/lib/utils";
 
 type Tab = "deposit" | "withdraw";
+
+// Token contract addresses by asset symbol — undefined until deployed
+const TOKEN_ADDRESSES: Record<string, `0x${string}` | undefined> = {
+    DOT:  env.dotTokenAddress,
+    USDT: env.usdtTokenAddress,
+};
 
 export default function VaultPage() {
     const [tab, setTab] = useState<Tab>("deposit");
     const [asset, setAsset] = useState("DOT");
     const [amount, setAmount] = useState("");
 
+    const { deposit, txState, reset } = useDeposit();
+
     const selectedAsset = ASSETS[asset];
     const parsedAmount = parseFloat(amount) || 0;
     const usdValue = parsedAmount * selectedAsset.price;
-    const isValid = parsedAmount > 0 && parsedAmount <= selectedAsset.balance;
+    const tokenAddress = TOKEN_ADDRESSES[asset];
+    const isValid = parsedAmount > 0 && parsedAmount <= selectedAsset.balance && !!tokenAddress;
 
-    async function handleSubmit() {
-        // Phase 3: replace with real contract call
-        await new Promise((resolve) => setTimeout(resolve, 1800));
+    // Show toast + reset after success
+    useEffect(() => {
+        if (txState.status !== "success") return;
         toast.success(`Deposited ${parsedAmount} ${asset} to vault`);
         setAmount("");
+        const t = setTimeout(reset, 2500);
+        return () => clearTimeout(t);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [txState.status]);
+
+    // Show toast on error
+    useEffect(() => {
+        if (txState.status !== "error") return;
+        toast.error(txState.error ?? "Transaction failed.");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [txState.status]);
+
+    function handleDeposit() {
+        if (!tokenAddress || !isValid) return;
+        deposit(tokenAddress, parseUnits(amount, selectedAsset.decimals));
     }
 
     return (
@@ -79,9 +106,11 @@ export default function VaultPage() {
                             )}
 
                             <TxButton
-                                onSubmit={handleSubmit}
+                                txState={txState}
+                                onSubmit={handleDeposit}
                                 disabled={!isValid}
-                                label={"Deposit Now"}
+                                label="Deposit Now"
+                                successLabel="Deposited!"
                             />
 
                             <p className="text-center text-[13px] text-[var(--veyla-text-dim)]">
