@@ -1,6 +1,5 @@
 "use client";
 
-import { useReadContract } from "wagmi";
 import { useConnection } from "wagmi";
 import { env } from "@/lib/env";
 import { vaultAbi } from "@/lib/abi/vault";
@@ -9,8 +8,8 @@ import type { VaultPosition, AssetSymbol } from "@/types";
 
 // Token addresses on Passet Hub — fill in once deployed
 const TOKEN_ADDRESSES: Record<AssetSymbol, `0x${string}` | undefined> = {
-    DOT:  process.env.NEXT_PUBLIC_DOT_TOKEN_ADDRESS  as `0x${string}` | undefined,
-    USDT: process.env.NEXT_PUBLIC_USDT_TOKEN_ADDRESS as `0x${string}` | undefined,
+    DOT:  env.dotTokenAddress,
+    USDT: env.usdtTokenAddress,
 };
 
 /**
@@ -39,7 +38,9 @@ export function useUserPositions(): {
         dotBalance.isLoading  ||
         usdtBalance.isLoading ||
         dotEarned.isLoading   ||
-        usdtEarned.isLoading;
+        usdtEarned.isLoading  ||
+        dotApy.isLoading      ||
+        usdtApy.isLoading;
 
     // Return empty if contract not deployed yet
     if (!env.vaultAddress || !address) {

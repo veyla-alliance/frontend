@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useWriteContract, useWaitForTransactionReceipt, useAccount } from "wagmi";
+import { useQueryClient } from "@tanstack/react-query";
 import { readContract, waitForTransactionReceipt } from "@wagmi/core";
 import { wagmiConfig } from "@/lib/wagmi";
 import { env } from "@/lib/env";
@@ -33,6 +34,7 @@ export function useDeposit() {
     const [txState, setTxState] = useState<TxState>({ status: "idle" });
     const { writeContractAsync } = useWriteContract();
     const { address } = useAccount();
+    const queryClient = useQueryClient();
 
     // Watch mempool → confirmed for the main deposit tx only
     const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
@@ -41,8 +43,11 @@ export function useDeposit() {
     });
 
     useEffect(() => {
-        if (isConfirmed) setTxState((s) => ({ ...s, status: "success" }));
-    }, [isConfirmed]);
+        if (!isConfirmed) return;
+        setTxState((s) => ({ ...s, status: "success" }));
+        // Invalidate all on-chain reads so balances + positions refresh immediately
+        queryClient.invalidateQueries({ refetchType: "active" });
+    }, [isConfirmed, queryClient]);
 
     async function deposit(tokenAddress: `0x${string}`, amount: bigint) {
         if (!env.vaultAddress) {

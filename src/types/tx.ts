@@ -1,5 +1,5 @@
 // Transaction lifecycle types.
-// Covers the full state machine from idle to confirmed.
+// Covers the full state machine from idle to success/error.
 
 export type TxStatus =
     | "idle"
@@ -7,8 +7,7 @@ export type TxStatus =
     | "approving"           // approve tx in mempool, waiting for confirmation
     | "awaiting-signature"  // wallet popup open for main tx (deposit/withdraw)
     | "pending"             // main tx signed, in mempool
-    | "confirmed"           // included in block
-    | "success"             // finalized
+    | "success"             // confirmed + finalized
     | "error";
 
 export interface TxState {

@@ -48,11 +48,6 @@ export function TxButton({
             icon: <Loader2 size={15} className="animate-spin" />,
             className: "bg-gradient-to-r from-[var(--veyla-purple)] to-[#5b1fd6] opacity-70 cursor-not-allowed",
         },
-        confirmed: {
-            label: "Finalizing…",
-            icon: <Loader2 size={15} className="animate-spin" />,
-            className: "bg-gradient-to-r from-[var(--veyla-purple)] to-[#5b1fd6] opacity-70 cursor-not-allowed",
-        },
         success: {
             label: successLabel,
             icon: <Check size={15} />,

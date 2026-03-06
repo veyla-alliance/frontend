@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useQueryClient } from "@tanstack/react-query";
 import { env } from "@/lib/env";
 import { vaultAbi } from "@/lib/abi/vault";
 import type { TxState } from "@/types";
@@ -26,6 +27,7 @@ function parseError(err: unknown): string {
 export function useWithdraw() {
     const [txState, setTxState] = useState<TxState>({ status: "idle" });
     const { writeContractAsync } = useWriteContract();
+    const queryClient = useQueryClient();
 
     // Watch mempool → confirmed transition
     const { isSuccess: isConfirmed } = useWaitForTransactionReceipt({
@@ -34,8 +36,11 @@ export function useWithdraw() {
     });
 
     useEffect(() => {
-        if (isConfirmed) setTxState((s) => ({ ...s, status: "success" }));
-    }, [isConfirmed]);
+        if (!isConfirmed) return;
+        setTxState((s) => ({ ...s, status: "success" }));
+        // Invalidate all on-chain reads so balances + positions refresh immediately
+        queryClient.invalidateQueries({ refetchType: "active" });
+    }, [isConfirmed, queryClient]);
 
     async function withdraw(tokenAddress: `0x${string}`, amount: bigint) {
         if (!env.vaultAddress) {
