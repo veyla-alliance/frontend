@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import { FadeIn } from "@/components/FadeIn";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Wallet, Repeat, TrendingUp } from "lucide-react";
@@ -16,9 +17,11 @@ const styles = {
     previewBox: "mt-7 pt-5 border-t border-white/[0.05] flex flex-col items-center gap-2.5",
     previewLabel: "text-[12px] font-semibold tracking-[2px] uppercase text-[var(--veyla-text-dim)]",
     previewAmount: "text-[22px] font-bold text-[#4ade80] tracking-[-0.5px]",
-    previewChains: "flex items-center gap-1.5",
-    previewChain: "[font-family:var(--font-geist-pixel-square),monospace] text-[8px] tracking-[0.5px] text-[var(--veyla-text-dim)] bg-white/[0.04] border border-white/[0.08] py-[5px] px-2 rounded-[6px]",
-    previewChainActive: "[font-family:var(--font-geist-pixel-square),monospace] text-[8px] tracking-[0.5px] text-[var(--veyla-cyan)] bg-[rgba(0,212,255,0.08)] border border-[rgba(0,212,255,0.25)] py-[5px] px-2 rounded-[6px]",
+    previewChains: "flex items-center justify-center gap-1.5",
+    previewChain: "flex items-center gap-1 bg-white/[0.04] border border-white/[0.08] py-[5px] px-2 rounded-[6px]",
+    previewChainActive: "flex items-center gap-1 bg-[rgba(0,212,255,0.08)] border border-[rgba(0,212,255,0.25)] py-[5px] px-2 rounded-[6px]",
+    previewChainText: "[font-family:var(--font-geist-pixel-square),monospace] text-[8px] tracking-[0.5px] text-[var(--veyla-text-dim)]",
+    previewChainTextActive: "[font-family:var(--font-geist-pixel-square),monospace] text-[8px] tracking-[0.5px] text-[var(--veyla-cyan)]",
     previewChainLine: "w-[14px] h-px bg-white/10",
     previewApy: "text-[26px] font-extrabold text-[var(--veyla-cyan)] tracking-[-1px]",
 };
@@ -77,11 +80,23 @@ export default function HowItWorks() {
                         <div className={styles.previewBox}>
                             <span className={styles.previewLabel}>Best yield found</span>
                             <div className={styles.previewChains}>
-                                <div className={styles.previewChain}>DOT</div>
+                                <div className={styles.previewChain}>
+                                    <span className={styles.previewChainText}>DOT</span>
+                                </div>
                                 <div className={styles.previewChainLine} />
-                                <div className={styles.previewChainActive}>ASTR</div>
+                                <div className={styles.previewChainActive}>
+                                    <div className="relative w-3.5 h-3.5 rounded-sm bg-white overflow-hidden shrink-0">
+                                        <Image src="/astar.jpg" alt="Astar" fill className="object-contain p-[1px]" />
+                                    </div>
+                                    <span className={styles.previewChainTextActive}>ASTR</span>
+                                </div>
                                 <div className={styles.previewChainLine} />
-                                <div className={styles.previewChain}>HDX</div>
+                                <div className={styles.previewChain}>
+                                    <div className="relative w-3.5 h-3.5 rounded-sm overflow-hidden shrink-0">
+                                        <Image src="/hydration.jpg" alt="Hydration" fill className="object-cover" />
+                                    </div>
+                                    <span className={styles.previewChainText}>HDX</span>
+                                </div>
                             </div>
                         </div>
                     </FadeIn>

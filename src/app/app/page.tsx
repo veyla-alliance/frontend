@@ -32,7 +32,7 @@ export default function DashboardPage() {
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-4 max-md:grid-cols-1">
                 <StatCard label="Total Deposited" value="$1,500.00" sub="1,000 DOT + 500 USDT" />
-                <StatCard label="Current APY" value="12.4%" sub="Best route: HydraDX" accent="cyan" />
+                <StatCard label="Current APY" value="12.4%" sub="Best route: Hydration" accent="cyan" />
                 <StatCard label="Total Earned" value="+$15.50" sub="Since deposit" accent="green" />
             </div>
 

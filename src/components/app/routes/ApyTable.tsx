@@ -1,7 +1,9 @@
 "use client";
 
 import { ArrowDown } from "lucide-react";
+import Image from "next/image";
 import { CHAINS } from "./ChainNode";
+import { cn } from "@/lib/utils";
 
 const sorted = [...CHAINS].sort((a, b) => b.apy - a.apy);
 
@@ -65,24 +67,41 @@ export function ApyTable() {
                 {sorted.map((chain) => (
                     <div
                         key={chain.id}
-                        className={`grid grid-cols-5 px-5 py-4 border-b border-white/[0.03] last:border-0 transition-colors duration-150 ${
-                            chain.active
+                        className={`grid grid-cols-5 px-5 py-4 border-b border-white/[0.03] last:border-0 transition-colors duration-150 ${chain.active
                                 ? "bg-[rgba(0,212,255,0.02)]"
                                 : "hover:bg-white/[0.02]"
-                        }`}
+                            }`}
                     >
                         {/* Chain */}
-                        <div className="flex items-center gap-2">
-                            <span
-                                className="[font-family:var(--font-geist-pixel-square),monospace] text-[8px] px-2 py-1 rounded-md border shrink-0"
-                                style={{
-                                    color: chain.color,
-                                    background: `${chain.color}15`,
-                                    borderColor: `${chain.color}40`,
-                                }}
-                            >
-                                {chain.label.slice(0, 3).toUpperCase()}
-                            </span>
+                        <div className="flex items-center gap-3">
+                            {chain.iconUrl ? (
+                                <div
+                                    className={cn(
+                                        "relative shrink-0 overflow-hidden w-6 h-6 rounded-md",
+                                        chain.id === "astar" && "bg-white"
+                                    )}
+                                >
+                                    <Image
+                                        src={chain.iconUrl}
+                                        alt={chain.label}
+                                        fill
+                                        className={cn(
+                                            chain.id === "astar" ? "object-contain p-[2px]" : "object-cover"
+                                        )}
+                                    />
+                                </div>
+                            ) : (
+                                <span
+                                    className="[font-family:var(--font-geist-pixel-square),monospace] text-[8px] px-2 py-1 flex items-center justify-center rounded-md border shrink-0 min-w-[32px]"
+                                    style={{
+                                        color: chain.color,
+                                        background: `${chain.color}15`,
+                                        borderColor: `${chain.color}40`,
+                                    }}
+                                >
+                                    {chain.label.slice(0, 3).toUpperCase()}
+                                </span>
+                            )}
                             <span className="text-[13px] font-semibold text-[var(--veyla-text-main)] truncate">
                                 {chain.label}
                             </span>
@@ -98,11 +117,10 @@ export function ApyTable() {
                         {/* APY */}
                         <div className="flex items-center">
                             <span
-                                className={`text-[15px] font-bold tabular-nums ${
-                                    chain.active
+                                className={`text-[15px] font-bold tabular-nums ${chain.active
                                         ? "text-[var(--veyla-cyan)]"
                                         : "text-[var(--veyla-text-main)]"
-                                }`}
+                                    }`}
                             >
                                 {chain.apy}%
                             </span>

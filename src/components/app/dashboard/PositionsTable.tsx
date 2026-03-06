@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
 interface Position {
@@ -12,7 +13,7 @@ interface Position {
 }
 
 const MOCK_POSITIONS: Position[] = [
-    { asset: "DOT", chain: "HydraDX", deposited: 1000, apy: 14.2, earned: 12.4 },
+    { asset: "DOT", chain: "Hydration", deposited: 1000, apy: 14.2, earned: 12.4 },
     { asset: "USDT", chain: "Moonbeam", deposited: 500, apy: 9.8, earned: 3.1 },
 ];
 
@@ -21,10 +22,10 @@ const ASSET_COLORS: Record<string, string> = {
     USDT: "bg-[rgba(38,161,123,0.12)] text-[#26a17b] border-[rgba(38,161,123,0.2)]",
 };
 
-const CHAIN_COLORS: Record<string, string> = {
-    HydraDX: "bg-[rgba(0,212,255,0.08)] text-[var(--veyla-cyan)] border-[rgba(0,212,255,0.2)]",
-    Moonbeam: "bg-[rgba(83,63,213,0.12)] text-[#a78bfa] border-[rgba(83,63,213,0.2)]",
-    Astar: "bg-[rgba(0,115,255,0.1)] text-[#60a5fa] border-[rgba(0,115,255,0.2)]",
+const CHAIN_ICONS: Record<string, { url: string; whiteBg?: boolean }> = {
+    Hydration: { url: "/hydration.jpg" },
+    Moonbeam: { url: "/moonbeam.jpg" },
+    Astar: { url: "/astar.jpg", whiteBg: true },
 };
 
 function Badge({ label, colorClass }: { label: string; colorClass: string }) {
@@ -90,10 +91,26 @@ export function PositionsTable() {
                                     />
                                 </td>
                                 <td className="px-5 py-4">
-                                    <Badge
-                                        label={pos.chain}
-                                        colorClass={CHAIN_COLORS[pos.chain] ?? "bg-white/[0.05] text-white border-white/[0.1]"}
-                                    />
+                                    {CHAIN_ICONS[pos.chain] ? (
+                                        <div className="flex items-center gap-2">
+                                            <div className={`relative w-5 h-5 rounded-md overflow-hidden shrink-0 ${CHAIN_ICONS[pos.chain].whiteBg ? 'bg-white' : ''}`}>
+                                                <Image
+                                                    src={CHAIN_ICONS[pos.chain].url}
+                                                    alt={pos.chain}
+                                                    fill
+                                                    className={CHAIN_ICONS[pos.chain].whiteBg ? 'object-contain p-0.5' : 'object-cover'}
+                                                />
+                                            </div>
+                                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[0.5px] text-[var(--veyla-text-main)]">
+                                                {pos.chain}
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <Badge
+                                            label={pos.chain}
+                                            colorClass="bg-white/[0.05] text-white border-white/[0.1]"
+                                        />
+                                    )}
                                 </td>
                                 <td className="px-5 py-4 text-[14px] font-medium text-[var(--veyla-text-main)] whitespace-nowrap">
                                     {pos.deposited.toLocaleString()} {pos.asset}

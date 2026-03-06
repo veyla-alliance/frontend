@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 export interface Chain {
     id: string;
@@ -10,18 +11,20 @@ export interface Chain {
     tvl: string;
     active: boolean;
     color: string;
+    iconUrl?: string;
     status: "active" | "standby" | "paused";
 }
 
 export const CHAINS: Chain[] = [
     {
-        id: "hydradx",
-        label: "HydraDX",
+        id: "hydration",
+        label: "Hydration",
         apy: 14.2,
         protocol: "Omnipool",
         tvl: "$45.2M",
         active: true,
         color: "#00d4ff",
+        iconUrl: "/hydration.jpg",
         status: "active",
     },
     {
@@ -32,6 +35,7 @@ export const CHAINS: Chain[] = [
         tvl: "$23.1M",
         active: false,
         color: "#a061ff",
+        iconUrl: "/moonbeam.jpg",
         status: "standby",
     },
     {
@@ -42,6 +46,7 @@ export const CHAINS: Chain[] = [
         tvl: "$11.8M",
         active: false,
         color: "#6080ff",
+        iconUrl: "/astar.jpg",
         status: "standby",
     },
     {
@@ -52,6 +57,7 @@ export const CHAINS: Chain[] = [
         tvl: "$7.9M",
         active: false,
         color: "#4ade80",
+        iconUrl: "/bifrost.png",
         status: "paused",
     },
 ];
@@ -72,17 +78,39 @@ export function ChainNode({ chain, compact }: ChainNodeProps) {
                     : "bg-white/[0.04] border-white/[0.1] hover:bg-white/[0.06] hover:border-white/[0.15]"
             )}
         >
-            {/* Chain badge */}
-            <span
-                className="[font-family:var(--font-geist-pixel-square),monospace] text-[8px] px-2 py-1 rounded-md border shrink-0"
-                style={{
-                    color: chain.color,
-                    background: `${chain.color}15`,
-                    borderColor: `${chain.color}40`,
-                }}
-            >
-                {chain.label.slice(0, 3).toUpperCase()}
-            </span>
+            {/* Chain badge / icon */}
+            {chain.iconUrl ? (
+                <div
+                    className={cn(
+                        "relative shrink-0 overflow-hidden",
+                        compact ? "w-6 h-6 rounded-md" : "w-8 h-8 rounded-lg",
+                        chain.id === "astar" && "bg-white"
+                    )}
+                >
+                    <Image
+                        src={chain.iconUrl}
+                        alt={chain.label}
+                        fill
+                        className={cn(
+                            chain.id === "astar" ? "object-contain p-1" : "object-cover"
+                        )}
+                    />
+                </div>
+            ) : (
+                <span
+                    className={cn(
+                        "[font-family:var(--font-geist-pixel-square),monospace] rounded-md border shrink-0 text-center flex items-center justify-center",
+                        compact ? "text-[8px] w-6 h-6" : "text-[10px] w-8 h-8"
+                    )}
+                    style={{
+                        color: chain.color,
+                        background: `${chain.color}15`,
+                        borderColor: `${chain.color}40`,
+                    }}
+                >
+                    {chain.label.slice(0, 3).toUpperCase()}
+                </span>
+            )}
 
             {/* Info */}
             <div className="flex-1 min-w-0">

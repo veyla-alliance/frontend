@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
+
 const CHAINS = [
-    { name: "HydraDX", apy: 14.2, active: true },
-    { name: "Moonbeam", apy: 9.8, active: false },
-    { name: "Astar", apy: 8.1, active: false },
+    { name: "Hydration", apy: 14.2, active: true, icon: "/hydration.jpg", isWhiteBg: false },
+    { name: "Moonbeam", apy: 9.8, active: false, icon: "/moonbeam.jpg", isWhiteBg: false },
+    { name: "Astar", apy: 8.1, active: false, icon: "/astar.jpg", isWhiteBg: true },
 ];
 
 export function MiniRouteViz() {
@@ -22,10 +24,10 @@ export function MiniRouteViz() {
             <div className="flex flex-col gap-3 p-5">
                 {/* HUB node */}
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-[rgba(123,57,252,0.1)] border border-[rgba(123,57,252,0.3)] flex items-center justify-center shrink-0">
-                        <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[8px] tracking-[0.5px] text-[var(--veyla-purple-soft)]">
-                            HUB
-                        </span>
+                    <div className="relative w-10 h-10 rounded-full bg-[rgba(123,57,252,0.1)] border border-[rgba(123,57,252,0.3)] flex items-center justify-center shrink-0">
+                        <div className="relative w-5 h-5 flex items-center justify-center">
+                            <Image src="/veyla-purple-icon.svg" alt="Veyla Logo" fill />
+                        </div>
                     </div>
                     <div className="flex flex-col gap-0.5">
                         <span className="text-[13px] font-semibold text-[var(--veyla-text-main)]">Polkadot Hub</span>
@@ -53,11 +55,16 @@ export function MiniRouteViz() {
                                     : "bg-white/[0.02] border-white/[0.05]"
                                 }`}
                             >
-                                <span className={`[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[0.5px] flex-1
-                                    ${chain.active ? "text-[var(--veyla-cyan)]" : "text-[var(--veyla-text-dim)]"}`}
-                                >
-                                    {chain.name}
-                                </span>
+                                <div className="flex items-center gap-2 flex-1">
+                                    <div className={`relative w-4 h-4 rounded-sm overflow-hidden shrink-0 ${chain.isWhiteBg ? 'bg-white' : ''}`}>
+                                        <Image src={chain.icon} alt={chain.name} fill className={chain.isWhiteBg ? 'object-contain p-0.5' : 'object-cover'} />
+                                    </div>
+                                    <span className={`[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[0.5px] flex-1
+                                        ${chain.active ? "text-[var(--veyla-cyan)]" : "text-[var(--veyla-text-dim)]"}`}
+                                    >
+                                        {chain.name}
+                                    </span>
+                                </div>
                                 <span className={`text-[12px] font-semibold
                                     ${chain.active ? "text-[var(--veyla-cyan)]" : "text-[var(--veyla-text-dim)]"}`}
                                 >

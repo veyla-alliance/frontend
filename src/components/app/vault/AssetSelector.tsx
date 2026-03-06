@@ -14,7 +14,7 @@ export interface Asset {
 }
 
 export const ASSETS: Record<string, Asset> = {
-    DOT: { symbol: "DOT", balance: 250.5, price: 7.85, apy: 14.2, route: "HydraDX", color: "#e841c4" },
+    DOT: { symbol: "DOT", balance: 250.5, price: 7.85, apy: 14.2, route: "Hydration", color: "#e841c4" },
     USDT: { symbol: "USDT", balance: 1000, price: 1.00, apy: 9.8, route: "Moonbeam", color: "#26a17b" },
 };
 

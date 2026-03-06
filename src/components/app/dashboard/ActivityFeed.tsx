@@ -22,7 +22,7 @@ const MOCK_ACTIVITY: Activity[] = [
     },
     {
         type: "Route",
-        description: "Routed to HydraDX",
+        description: "Routed to Hydration",
         amount: "1,000 DOT",
         timestamp: new Date(Date.now() - 1000 * 60 * 3),
         txHash: "0x5678...cd90",
