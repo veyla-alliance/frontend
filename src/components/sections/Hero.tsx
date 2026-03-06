@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FadeIn } from "@/components/FadeIn";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight } from "lucide-react";
@@ -10,15 +10,17 @@ const SCROLL_FADE = { range: [0, 100], opacity: [1, 0] } as const;
 
 function AutoplayVideo({ src, className, poster }: { src: string; className: string; poster: string }) {
     const ref = useRef<HTMLVideoElement>(null);
+    const [blocked, setBlocked] = useState(false);
 
     useEffect(() => {
         const video = ref.current;
         if (!video) return;
-        video.play().catch(() => {
-            // Low Power Mode or autoplay blocked — hide video, poster stays visible
-            video.style.display = "none";
-        });
+        video.play().catch(() => setBlocked(true));
     }, []);
+
+    if (blocked) {
+        return <img src={poster} alt="" className={className} />;
+    }
 
     return (
         <video ref={ref} loop muted playsInline preload="metadata" poster={poster} className={className}>
