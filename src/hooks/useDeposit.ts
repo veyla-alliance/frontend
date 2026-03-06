@@ -8,16 +8,8 @@ import { wagmiConfig } from "@/lib/wagmi";
 import { env } from "@/lib/env";
 import { vaultAbi } from "@/lib/abi/vault";
 import { erc20Abi } from "@/lib/abi/erc20";
+import { parseError } from "@/lib/txUtils";
 import type { TxState } from "@/types";
-
-function parseError(err: unknown): string {
-    if (!(err instanceof Error)) return "Unknown error.";
-    const msg = err.message;
-    if (msg.includes("User rejected")) return "Transaction cancelled.";
-    if (msg.includes("insufficient funds")) return "Insufficient balance for gas.";
-    if (msg.includes("execution reverted")) return "Transaction failed — contract rejected.";
-    return msg.slice(0, 120);
-}
 
 /**
  * Handles the full deposit lifecycle with ERC-20 approval:
