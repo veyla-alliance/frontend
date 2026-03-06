@@ -4,8 +4,6 @@ export const siteConfig = {
     links: {
         twitter: "https://twitter.com/veyla",
         github: "https://github.com/veyla",
-        discord: "https://discord.gg/veyla",
-        telegram: "https://t.me/veyla"
     },
     nav: [
         { title: "Docs", href: "#" },
