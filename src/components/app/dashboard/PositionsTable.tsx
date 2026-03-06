@@ -3,29 +3,25 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
+import { formatUnits } from "viem";
+import type { VaultPosition } from "@/types";
 
-interface Position {
-    asset: string;
-    chain: string;
-    deposited: number;
-    apy: number;
-    earned: number;
+const ASSET_DECIMALS: Record<string, number> = { DOT: 10, USDT: 6 };
+
+function formatAmount(amount: bigint, asset: string): string {
+    const units = formatUnits(amount, ASSET_DECIMALS[asset] ?? 18);
+    return parseFloat(units).toLocaleString("en-US", { maximumFractionDigits: 4 });
 }
 
-const MOCK_POSITIONS: Position[] = [
-    { asset: "DOT", chain: "Hydration", deposited: 1000, apy: 14.2, earned: 12.4 },
-    { asset: "USDT", chain: "Moonbeam", deposited: 500, apy: 9.8, earned: 3.1 },
-];
-
 const ASSET_ICONS: Record<string, { url: string; whiteBg?: boolean }> = {
-    DOT: { url: "/polkadot.jpg" },
+    DOT:  { url: "/polkadot.jpg" },
     USDT: { url: "/usdt.svg" },
 };
 
 const CHAIN_ICONS: Record<string, { url: string; whiteBg?: boolean }> = {
     Hydration: { url: "/hydration.jpg" },
-    Moonbeam: { url: "/moonbeam.jpg" },
-    Astar: { url: "/astar.jpg", whiteBg: true },
+    Moonbeam:  { url: "/moonbeam.jpg" },
+    Astar:     { url: "/astar.jpg", whiteBg: true },
 };
 
 function Badge({ label, colorClass }: { label: string; colorClass: string }) {
@@ -36,8 +32,28 @@ function Badge({ label, colorClass }: { label: string; colorClass: string }) {
     );
 }
 
-export function PositionsTable() {
-    if (MOCK_POSITIONS.length === 0) {
+interface PositionsTableProps {
+    positions: VaultPosition[];
+    isLoading: boolean;
+}
+
+export function PositionsTable({ positions, isLoading }: PositionsTableProps) {
+    if (isLoading) {
+        return (
+            <div className="flex flex-col rounded-2xl bg-white/[0.02] border border-white/[0.06] overflow-hidden">
+                <div className="px-5 py-4 border-b border-white/[0.05]">
+                    <div className="h-4 w-36 rounded bg-white/[0.06] animate-pulse" />
+                </div>
+                <div className="p-5 flex flex-col gap-3">
+                    {[0, 1].map((i) => (
+                        <div key={i} className="h-14 rounded-xl bg-white/[0.04] animate-pulse" />
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    if (positions.length === 0) {
         return (
             <div className="flex flex-col rounded-2xl bg-white/[0.02] border border-white/[0.06] overflow-hidden">
                 <div className="px-5 py-4 border-b border-white/[0.05]">
@@ -59,7 +75,7 @@ export function PositionsTable() {
             <div className="px-5 py-4 border-b border-white/[0.05] flex items-center justify-between">
                 <h2 className="text-[16px] font-semibold text-[var(--veyla-text-main)]">Active Positions</h2>
                 <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[1px] text-[var(--veyla-text-dim)]">
-                    {MOCK_POSITIONS.length} ACTIVE
+                    {positions.length} ACTIVE
                 </span>
             </div>
 
@@ -79,11 +95,12 @@ export function PositionsTable() {
                         </tr>
                     </thead>
                     <tbody>
-                        {MOCK_POSITIONS.map((pos, i) => (
+                        {positions.map((pos, i) => (
                             <tr
                                 key={i}
                                 className="border-b border-white/[0.03] last:border-0 hover:bg-white/[0.02] transition-colors duration-100 group"
                             >
+                                {/* Asset */}
                                 <td className="px-5 py-4">
                                     {ASSET_ICONS[pos.asset] ? (
                                         <div className="flex items-center gap-2">
@@ -100,47 +117,53 @@ export function PositionsTable() {
                                             </span>
                                         </div>
                                     ) : (
-                                        <Badge
-                                            label={pos.asset}
-                                            colorClass="bg-white/[0.05] text-white border-white/[0.1]"
-                                        />
+                                        <Badge label={pos.asset} colorClass="bg-white/[0.05] text-white border-white/[0.1]" />
                                     )}
                                 </td>
+
+                                {/* Chain */}
                                 <td className="px-5 py-4">
-                                    {CHAIN_ICONS[pos.chain] ? (
+                                    {CHAIN_ICONS[pos.deployedTo] ? (
                                         <div className="flex items-center gap-2">
-                                            <div className={`relative w-5 h-5 rounded-md overflow-hidden shrink-0 ${CHAIN_ICONS[pos.chain].whiteBg ? 'bg-white border border-white/20' : ''}`}>
+                                            <div className={`relative w-5 h-5 rounded-md overflow-hidden shrink-0 ${CHAIN_ICONS[pos.deployedTo].whiteBg ? 'bg-white border border-white/20' : ''}`}>
                                                 <Image
-                                                    src={CHAIN_ICONS[pos.chain].url}
-                                                    alt={pos.chain}
+                                                    src={CHAIN_ICONS[pos.deployedTo].url}
+                                                    alt={pos.deployedTo}
                                                     fill
-                                                    className={CHAIN_ICONS[pos.chain].whiteBg ? 'object-contain p-1' : 'object-cover'}
+                                                    className={CHAIN_ICONS[pos.deployedTo].whiteBg ? 'object-contain p-1' : 'object-cover'}
                                                 />
                                             </div>
                                             <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[0.5px] text-[var(--veyla-text-main)]">
-                                                {pos.chain}
+                                                {pos.deployedTo}
                                             </span>
                                         </div>
                                     ) : (
-                                        <Badge
-                                            label={pos.chain}
-                                            colorClass="bg-white/[0.05] text-white border-white/[0.1]"
-                                        />
+                                        <Badge label={pos.deployedTo} colorClass="bg-white/[0.05] text-white border-white/[0.1]" />
                                     )}
                                 </td>
+
+                                {/* Deposited */}
                                 <td className="px-5 py-4 text-[16px] font-medium text-[var(--veyla-text-main)] whitespace-nowrap">
-                                    {pos.deposited.toLocaleString()} <span className="text-[13px] text-[var(--veyla-text-dim)]">{pos.asset}</span>
+                                    {formatAmount(pos.depositedAmount, pos.asset)}{" "}
+                                    <span className="text-[13px] text-[var(--veyla-text-dim)]">{pos.asset}</span>
                                 </td>
+
+                                {/* APY */}
                                 <td className="px-5 py-4">
                                     <span className="text-[16px] font-semibold text-[var(--veyla-cyan)]">
-                                        {pos.apy}%
+                                        {pos.currentApy.toFixed(1)}%
                                     </span>
                                 </td>
+
+                                {/* Earned */}
                                 <td className="px-5 py-4">
                                     <span className="text-[16px] font-semibold text-[#4ade80]">
-                                        +{pos.earned} <span className="text-[13px] font-medium text-[var(--veyla-text-dim)]">{pos.asset}</span>
+                                        +{formatAmount(pos.earnedAmount, pos.asset)}{" "}
+                                        <span className="text-[13px] font-medium text-[var(--veyla-text-dim)]">{pos.asset}</span>
                                     </span>
                                 </td>
+
+                                {/* Withdraw link */}
                                 <td className="px-5 py-4">
                                     <Link
                                         href="/app/vault"
