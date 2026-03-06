@@ -18,15 +18,13 @@ export default function Hero() {
         >
             {/* Video background */}
             <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_50%_60%,#1a0840_0%,#0a0520_40%,var(--veyla-dark)_100%)]">
-                {/* Desktop: full-res webm → mp4 fallback */}
+                {/* Desktop: full-res mp4 fallback */}
                 <video autoPlay loop muted playsInline preload="metadata" poster="/hero-poster.jpg" className="w-full h-full object-cover object-center hidden md:block">
-                    <source src="/hero-video.webm" type="video/webm" />
                     <source src="/hero-video.mp4" type="video/mp4" />
                 </video>
-                {/* Mobile: lightweight 720p webm */}
+                {/* Mobile: lightweight 720p mp4 */}
                 <video autoPlay loop muted playsInline preload="metadata" poster="/hero-poster.jpg" className="w-full h-full object-cover object-center md:hidden">
-                    <source src="/hero-video-mobile.webm" type="video/webm" />
-                    <source src="/hero-video.mp4" type="video/mp4" />
+                    <source src="/hero-video-mobile.mp4" type="video/mp4" />
                 </video>
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(5,5,5,0.3)_0%,rgba(5,5,5,0.7)_70%,rgba(5,5,5,0.95)_100%),linear-gradient(to_bottom,transparent_0%,transparent_60%,var(--veyla-dark)_100%)]" />
             </div>
