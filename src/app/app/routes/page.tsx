@@ -1,5 +1,16 @@
-import { RouteMap } from "@/components/app/routes/RouteMap";
-import { ApyTable } from "@/components/app/routes/ApyTable";
+"use client";
+
+import dynamic from "next/dynamic";
+
+const RouteMap = dynamic(
+    () => import("@/components/app/routes/RouteMap").then(({ RouteMap }) => ({ default: RouteMap })),
+    { loading: () => <div className="h-[260px] rounded-2xl bg-white/[0.02] border border-white/[0.04] animate-pulse" /> }
+);
+
+const ApyTable = dynamic(
+    () => import("@/components/app/routes/ApyTable").then(({ ApyTable }) => ({ default: ApyTable })),
+    { loading: () => <div className="h-[200px] rounded-2xl bg-white/[0.02] border border-white/[0.04] animate-pulse" /> }
+);
 
 export default function RoutesPage() {
     return (

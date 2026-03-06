@@ -1,10 +1,20 @@
 ﻿"use client";
 
+import dynamic from "next/dynamic";
 import { useConnection } from "wagmi";
 import { StatCard } from "@/components/app/dashboard/StatCard";
 import { PositionsTable } from "@/components/app/dashboard/PositionsTable";
-import { MiniRouteViz } from "@/components/app/dashboard/MiniRouteViz";
-import { ActivityFeed } from "@/components/app/dashboard/ActivityFeed";
+
+// Below-fold components — lazy loaded to keep the initial page chunk small
+const MiniRouteViz = dynamic(
+    () => import("@/components/app/dashboard/MiniRouteViz").then(({ MiniRouteViz }) => ({ default: MiniRouteViz })),
+    { loading: () => <div className="rounded-2xl bg-white/[0.02] border border-white/[0.04] animate-pulse min-h-[180px]" /> }
+);
+
+const ActivityFeed = dynamic(
+    () => import("@/components/app/dashboard/ActivityFeed").then(({ ActivityFeed }) => ({ default: ActivityFeed })),
+    { loading: () => <div className="h-[180px] rounded-2xl bg-white/[0.02] border border-white/[0.04] animate-pulse" /> }
+);
 
 export default function DashboardPage() {
     const { address } = useConnection();

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { CHAINS, ChainNode } from "./ChainNode";
@@ -38,6 +39,14 @@ function Particle({ toY, active, delay }: ParticleProps) {
 }
 
 export function RouteMap() {
+    const [tabVisible, setTabVisible] = useState(true);
+
+    useEffect(() => {
+        const handler = () => setTabVisible(!document.hidden);
+        document.addEventListener("visibilitychange", handler);
+        return () => document.removeEventListener("visibilitychange", handler);
+    }, []);
+
     return (
         <div className="rounded-2xl bg-white/[0.02] border border-white/[0.06] overflow-hidden">
             {/* Header */}
@@ -111,12 +120,14 @@ export function RouteMap() {
                                             chain.active ? undefined : "2 2"
                                         }
                                     />
-                                    {/* Animated particle */}
-                                    <Particle
-                                        toY={CHAIN_YS[i]}
-                                        active={chain.active}
-                                        delay={i * 0.9}
-                                    />
+                                    {/* Animated particle — unmounted when tab is hidden to save CPU */}
+                                    {tabVisible && (
+                                        <Particle
+                                            toY={CHAIN_YS[i]}
+                                            active={chain.active}
+                                            delay={i * 0.9}
+                                        />
+                                    )}
                                 </g>
                             ))}
                         </svg>
