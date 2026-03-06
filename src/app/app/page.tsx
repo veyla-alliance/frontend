@@ -13,7 +13,7 @@ export default function DashboardPage() {
     if (!isConnected) return <ConnectPrompt />;
 
     return (
-        <div className="flex flex-col gap-5 p-6 md:p-8">
+        <div className="flex flex-col gap-5 p-6 md:p-8 pb-24 lg:pb-8">
             {/* Greeting */}
             <div className="flex items-center justify-between">
                 <div>

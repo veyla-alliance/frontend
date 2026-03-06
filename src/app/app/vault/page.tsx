@@ -34,7 +34,7 @@ export default function VaultPage() {
     }
 
     return (
-        <div className="flex flex-col gap-5 p-6 md:p-8">
+        <div className="flex flex-col gap-5 p-6 md:p-8 pb-24 lg:pb-8">
             <div>
                 <h1 className="text-[20px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.3px]">
                     Vault

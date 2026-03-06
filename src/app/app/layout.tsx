@@ -2,6 +2,7 @@ import { Providers } from "@/lib/providers";
 import { AppSidebar } from "@/components/app/AppSidebar";
 import { AppTopbar } from "@/components/app/AppTopbar";
 import { AuthGuard } from "@/components/app/AuthGuard";
+import { MobileNav } from "@/components/app/MobileNav";
 import { Toaster } from "sonner";
 import { Noise } from "@/components/Noise";
 
@@ -23,6 +24,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     </main>
                 </div>
             </div>
+            <MobileNav />
             <Toaster
                 position="bottom-right"
                 theme="dark"
