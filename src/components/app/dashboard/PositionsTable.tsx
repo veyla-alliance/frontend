@@ -4,12 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { formatUnits } from "viem";
+import { ASSETS } from "@/components/app/vault/AssetSelector";
 import type { VaultPosition } from "@/types";
 
-const ASSET_DECIMALS: Record<string, number> = { DOT: 10, USDT: 6 };
-
 function formatAmount(amount: bigint, asset: string): string {
-    const units = formatUnits(amount, ASSET_DECIMALS[asset] ?? 18);
+    const units = formatUnits(amount, ASSETS[asset]?.decimals ?? 18);
     return parseFloat(units).toLocaleString("en-US", { maximumFractionDigits: 4 });
 }
 

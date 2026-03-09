@@ -1,10 +1,12 @@
 "use client";
 
-import { useConnection, useDisconnect, useChainId, useSwitchChain } from "wagmi";
+import { useConnection, useChainId } from "wagmi";
+import { disconnect, switchChain } from "@wagmi/core";
 import { useState } from "react";
 import { LogOut, Wallet, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { WalletModal } from "./WalletModal";
+import { wagmiConfig } from "@/lib/wagmi";
 import { env } from "@/lib/env";
 
 function truncateAddress(address: string) {
@@ -13,17 +15,25 @@ function truncateAddress(address: string) {
 
 export function WalletButton({ className }: { className?: string }) {
     const { address, isConnected } = useConnection();
-    const { disconnect } = useDisconnect();
     const chainId = useChainId();
-    const { switchChain, isPending: isSwitching } = useSwitchChain();
     const [showModal, setShowModal] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
+    const [isSwitching, setIsSwitching] = useState(false);
+
+    async function handleSwitchChain() {
+        setIsSwitching(true);
+        try {
+            await switchChain(wagmiConfig, { chainId: env.chainId });
+        } finally {
+            setIsSwitching(false);
+        }
+    }
 
     // Wrong network — must switch before doing anything
     if (isConnected && chainId !== env.chainId) {
         return (
             <button
-                onClick={() => switchChain({ chainId: env.chainId })}
+                onClick={handleSwitchChain}
                 disabled={isSwitching}
                 className={cn(
                     "flex items-center gap-2 px-4 py-2 rounded-xl bg-[rgba(239,68,68,0.1)] border border-[rgba(239,68,68,0.25)] text-[#f87171] text-[16px] font-semibold transition-all duration-200 hover:bg-[rgba(239,68,68,0.15)] disabled:opacity-60",
@@ -56,7 +66,7 @@ export function WalletButton({ className }: { className?: string }) {
                         <div className="fixed inset-0 z-40" onClick={() => setShowMenu(false)} />
                         <div className="absolute right-0 top-full mt-2 z-50 bg-[#0d0d14] border border-white/[0.08] rounded-xl p-1 min-w-[160px] shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
                             <button
-                                onClick={() => { disconnect(); setShowMenu(false); }}
+                                onClick={() => { void disconnect(wagmiConfig); setShowMenu(false); }}
                                 className="flex items-center gap-2.5 w-full px-3 py-2.5 rounded-lg text-[15px] text-[var(--veyla-text-muted)] hover:text-white hover:bg-white/[0.05] transition-colors duration-150"
                             >
                                 <LogOut size={13} />

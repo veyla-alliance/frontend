@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useWriteContract, useWaitForTransactionReceipt, useConnection } from "wagmi";
+import { useWaitForTransactionReceipt, useConnection } from "wagmi";
 import { useQueryClient } from "@tanstack/react-query";
-import { readContract, waitForTransactionReceipt } from "@wagmi/core";
+import { readContract, writeContract, waitForTransactionReceipt } from "@wagmi/core";
 import { wagmiConfig } from "@/lib/wagmi";
 import { env } from "@/lib/env";
 import { vaultAbi } from "@/lib/abi/vault";
@@ -24,7 +24,6 @@ import type { TxState } from "@/types";
  */
 export function useDeposit() {
     const [txState, setTxState] = useState<TxState>({ status: "idle" });
-    const { writeContractAsync } = useWriteContract();
     const { address } = useConnection();
     const queryClient = useQueryClient();
 
@@ -64,7 +63,7 @@ export function useDeposit() {
             if (allowance < amount) {
                 setTxState({ status: "awaiting-approval" });
 
-                const approvalHash = await writeContractAsync({
+                const approvalHash = await writeContract(wagmiConfig, {
                     address: tokenAddress,
                     abi: erc20Abi,
                     functionName: "approve",
@@ -80,7 +79,7 @@ export function useDeposit() {
             // ── Step 3: Deposit ──────────────────────────────────────────────
             setTxState({ status: "awaiting-signature" });
 
-            const hash = await writeContractAsync({
+            const hash = await writeContract(wagmiConfig, {
                 address: env.vaultAddress,
                 abi: vaultAbi,
                 functionName: "deposit",

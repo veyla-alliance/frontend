@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useWaitForTransactionReceipt } from "wagmi";
 import { useQueryClient } from "@tanstack/react-query";
+import { writeContract } from "@wagmi/core";
+import { wagmiConfig } from "@/lib/wagmi";
 import { env } from "@/lib/env";
 import { vaultAbi } from "@/lib/abi/vault";
 import { parseError } from "@/lib/txUtils";
@@ -18,7 +20,6 @@ import type { TxState } from "@/types";
  */
 export function useWithdraw() {
     const [txState, setTxState] = useState<TxState>({ status: "idle" });
-    const { writeContractAsync } = useWriteContract();
     const queryClient = useQueryClient();
 
     // Watch mempool → confirmed transition
@@ -43,7 +44,7 @@ export function useWithdraw() {
         try {
             setTxState({ status: "awaiting-signature" });
 
-            const hash = await writeContractAsync({
+            const hash = await writeContract(wagmiConfig, {
                 address: env.vaultAddress,
                 abi: vaultAbi,
                 functionName: "withdraw",
