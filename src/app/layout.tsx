@@ -4,7 +4,10 @@ import { GeistPixelSquare } from "geist/font/pixel";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Veyla | The Intelligent Yield Router for Polkadot Hub",
+  title: {
+    default: "Veyla Protocol",
+    template: "%s | Veyla",
+  },
   description: "Veyla is an automated yield optimization protocol built natively on Polkadot Hub. Stop worrying about liquidity fragmentation—let Veyla route your assets for maximum yield with PVM and XCM.",
   openGraph: {
     title: "Veyla | The Intelligent Yield Router",

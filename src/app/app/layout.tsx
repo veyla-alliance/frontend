@@ -7,7 +7,10 @@ import { Toaster } from "sonner";
 import { Noise } from "@/components/Noise";
 
 export const metadata = {
-    title: "Veyla App",
+    title: {
+        default: "Dashboard",
+        template: "%s | Veyla",
+    },
 };
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
