@@ -12,6 +12,7 @@ import { VaultStats } from "@/components/app/vault/VaultStats";
 import { TxButton } from "@/components/app/vault/TxButton";
 import { useDeposit, useWithdraw, useERC20Balance, useUserPositions } from "@/hooks";
 import { TOKEN_ADDRESSES } from "@/lib/constants";
+import { env } from "@/lib/env";
 import { cn } from "@/lib/utils";
 
 type Tab = "deposit" | "withdraw";
@@ -128,7 +129,11 @@ export default function VaultPage() {
     // ── Deposit lifecycle toasts ──────────────────────────────────────────
     useEffect(() => {
         if (depositTxState.status !== "success") return;
-        toast.success(`Deposited ${parsedDeposit} ${asset} to vault`);
+        toast.success(`Deposited ${parsedDeposit} ${asset} to vault`, {
+            action: depositTxState.hash
+                ? { label: "View TX", onClick: () => window.open(`${env.blockExplorerUrl}/tx/${depositTxState.hash}`, "_blank") }
+                : undefined,
+        });
         setDepositAmount("");
         const t = setTimeout(resetDeposit, 2500);
         return () => clearTimeout(t);
@@ -144,7 +149,11 @@ export default function VaultPage() {
     // ── Withdraw lifecycle toasts ─────────────────────────────────────────
     useEffect(() => {
         if (withdrawTxState.status !== "success") return;
-        toast.success(`Withdrew ${parsedWithdraw} ${asset} to your wallet`);
+        toast.success(`Withdrew ${parsedWithdraw} ${asset} to your wallet`, {
+            action: withdrawTxState.hash
+                ? { label: "View TX", onClick: () => window.open(`${env.blockExplorerUrl}/tx/${withdrawTxState.hash}`, "_blank") }
+                : undefined,
+        });
         setWithdrawAmount("");
         const t = setTimeout(resetWithdraw, 2500);
         return () => clearTimeout(t);
