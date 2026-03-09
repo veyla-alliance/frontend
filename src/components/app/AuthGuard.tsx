@@ -1,10 +1,10 @@
 "use client";
 
-import { useConnection } from "wagmi";
+import { useAccount } from "wagmi";
 import { ConnectPrompt } from "./ConnectPrompt";
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
-    const { status } = useConnection();
+    const { status } = useAccount();
 
     // 'reconnecting' = returning user whose session is being restored.
     // Don't flash ConnectPrompt while wagmi resolves the saved connection.

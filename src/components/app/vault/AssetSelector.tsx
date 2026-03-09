@@ -17,8 +17,8 @@ export interface Asset {
 }
 
 export const ASSETS: Record<string, Asset> = {
-    DOT:  { symbol: "DOT",  balance: 250.5, price: 7.85, apy: 14.2, route: "Hydration", color: "#e841c4", icon: "/polkadot.jpg", decimals: 10 },
-    USDT: { symbol: "USDT", balance: 1000,  price: 1.00, apy: 9.8,  route: "Moonbeam",  color: "#26a17b", icon: "/usdt.svg",      decimals: 6  },
+    DOT:  { symbol: "DOT",  balance: 0, price: 7.85, apy: 14.2, route: "Hydration", color: "#e841c4", icon: "/polkadot.jpg", decimals: 10 },
+    USDT: { symbol: "USDT", balance: 0, price: 1.00, apy: 9.8,  route: "Moonbeam",  color: "#26a17b", icon: "/usdt.svg",      decimals: 6  },
 };
 
 interface AssetSelectorProps {

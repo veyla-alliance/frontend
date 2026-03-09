@@ -1,6 +1,6 @@
 "use client";
 
-import { useConnection } from "wagmi";
+import { useAccount } from "wagmi";
 import { env } from "@/lib/env";
 import { vaultAbi } from "@/lib/abi/vault";
 import { useVaultBalance, useVaultEarned, useCurrentApy } from "./useVaultBalance";
@@ -22,7 +22,7 @@ export function useUserPositions(): {
     positions: VaultPosition[];
     isLoading: boolean;
 } {
-    const { address } = useConnection();
+    const { address } = useAccount();
 
     const dotAddress  = TOKEN_ADDRESSES.DOT;
     const usdtAddress = TOKEN_ADDRESSES.USDT;

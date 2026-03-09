@@ -57,7 +57,7 @@ export function useWithdraw() {
     }
 
     function reset() {
-        setTxState({ status: "idle" });
+        setTxState({ status: "idle", hash: undefined });
     }
 
     return { withdraw, txState, reset };

@@ -94,7 +94,7 @@ export function useDeposit() {
     }
 
     function reset() {
-        setTxState({ status: "idle" });
+        setTxState({ status: "idle", hash: undefined });
     }
 
     return { deposit, txState, reset };
