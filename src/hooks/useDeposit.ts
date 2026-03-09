@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useWriteContract, useWaitForTransactionReceipt, useAccount } from "wagmi";
+import { useWriteContract, useWaitForTransactionReceipt, useConnection } from "wagmi";
 import { useQueryClient } from "@tanstack/react-query";
 import { readContract, waitForTransactionReceipt } from "@wagmi/core";
 import { wagmiConfig } from "@/lib/wagmi";
@@ -25,7 +25,7 @@ import type { TxState } from "@/types";
 export function useDeposit() {
     const [txState, setTxState] = useState<TxState>({ status: "idle" });
     const { writeContractAsync } = useWriteContract();
-    const { address } = useAccount();
+    const { address } = useConnection();
     const queryClient = useQueryClient();
 
     // Watch mempool → confirmed for the main deposit tx only

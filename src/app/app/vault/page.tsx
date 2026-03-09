@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { parseUnits, formatUnits } from "viem";
-import { useAccount } from "wagmi";
+import { useConnection } from "wagmi";
+import type { AssetSymbol } from "@/types";
 import { toast } from "sonner";
 import { AssetSelector, ASSETS } from "@/components/app/vault/AssetSelector";
 import { AmountInput } from "@/components/app/vault/AmountInput";
@@ -10,16 +11,10 @@ import { DepositPreview } from "@/components/app/vault/DepositPreview";
 import { VaultStats } from "@/components/app/vault/VaultStats";
 import { TxButton } from "@/components/app/vault/TxButton";
 import { useDeposit, useWithdraw, useERC20Balance, useUserPositions } from "@/hooks";
-import { env } from "@/lib/env";
+import { TOKEN_ADDRESSES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 type Tab = "deposit" | "withdraw";
-
-// Token contract addresses by asset symbol — undefined until deployed
-const TOKEN_ADDRESSES: Record<string, `0x${string}` | undefined> = {
-    DOT:  env.dotTokenAddress,
-    USDT: env.usdtTokenAddress,
-};
 
 // ── Withdraw Summary (right panel) ──────────────────────────────────────────
 function WithdrawSummary({
@@ -86,7 +81,7 @@ export default function VaultPage() {
     const [depositAmount, setDepositAmount]   = useState("");
     const [withdrawAmount, setWithdrawAmount] = useState("");
 
-    const { address } = useAccount();
+    const { address } = useConnection();
     const { deposit,  txState: depositTxState,  reset: resetDeposit  } = useDeposit();
     const { withdraw, txState: withdrawTxState, reset: resetWithdraw } = useWithdraw();
     const { positions } = useUserPositions();
@@ -109,7 +104,7 @@ export default function VaultPage() {
     );
 
     const selectedAsset   = ASSETS[asset];
-    const tokenAddress    = TOKEN_ADDRESSES[asset];
+    const tokenAddress    = TOKEN_ADDRESSES[asset as AssetSymbol];
 
     // Deposit
     const parsedDeposit   = parseFloat(depositAmount) || 0;

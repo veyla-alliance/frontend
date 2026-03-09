@@ -17,7 +17,7 @@ export function AmountInput({ value, onChange, maxAmount, asset, usdValue }: Amo
     }
 
     function handleMax() {
-        onChange(maxAmount.toString());
+        onChange(parseFloat(maxAmount.toFixed(6)).toString());
     }
 
     return (

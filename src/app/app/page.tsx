@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useAccount } from "wagmi";
+import { useConnection } from "wagmi";
 import { StatCard } from "@/components/app/dashboard/StatCard";
 import { PositionsTable } from "@/components/app/dashboard/PositionsTable";
 import { useUserPositions } from "@/hooks";
@@ -23,7 +23,7 @@ function formatUsd(n: number): string {
 }
 
 export default function DashboardPage() {
-    const { address } = useAccount();
+    const { address } = useConnection();
     const { positions, isLoading } = useUserPositions();
 
     // Derived stats — USD values are 0 until price feed is added (Phase 5)

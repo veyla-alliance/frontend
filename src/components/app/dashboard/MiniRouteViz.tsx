@@ -1,12 +1,7 @@
 "use client";
 
 import Image from "next/image";
-
-const CHAINS = [
-    { name: "Hydration", apy: 14.2, active: true, icon: "/hydration.jpg", isWhiteBg: false },
-    { name: "Moonbeam", apy: 9.8, active: false, icon: "/moonbeam.jpg", isWhiteBg: false },
-    { name: "Astar", apy: 8.1, active: false, icon: "/astar.jpg", isWhiteBg: true },
-];
+import { CHAINS } from "@/components/app/routes/ChainNode";
 
 export function MiniRouteViz() {
     return (
@@ -37,8 +32,8 @@ export function MiniRouteViz() {
 
                 {/* Connector */}
                 <div className="ml-5 flex flex-col gap-2.5">
-                    {CHAINS.map((chain) => (
-                        <div key={chain.name} className="flex items-center gap-3">
+                    {CHAINS.filter((c) => c.status !== "paused").map((chain) => (
+                        <div key={chain.id} className="flex items-center gap-3">
                             {/* Line + arrow */}
                             <div className="flex items-center gap-1 shrink-0 w-[28px]">
                                 <div className={`w-full h-px ${chain.active ? "bg-[var(--veyla-cyan)]" : "bg-white/[0.08]"}`} />
@@ -56,13 +51,15 @@ export function MiniRouteViz() {
                                 }`}
                             >
                                 <div className="flex items-center gap-2 flex-1">
-                                    <div className={`relative w-4 h-4 rounded-sm overflow-hidden shrink-0 ${chain.isWhiteBg ? 'bg-white border border-white/20' : ''}`}>
-                                        <Image src={chain.icon} alt={chain.name} fill className={chain.isWhiteBg ? 'object-contain p-1' : 'object-cover'} />
-                                    </div>
+                                    {chain.iconUrl && (
+                                        <div className={`relative w-4 h-4 rounded-sm overflow-hidden shrink-0 ${chain.id === "astar" ? "bg-white border border-white/20" : ""}`}>
+                                            <Image src={chain.iconUrl} alt={chain.label} fill className={chain.id === "astar" ? "object-contain p-1" : "object-cover"} />
+                                        </div>
+                                    )}
                                     <span className={`[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[0.5px] flex-1
                                         ${chain.active ? "text-[var(--veyla-cyan)]" : "text-[var(--veyla-text-dim)]"}`}
                                     >
-                                        {chain.name}
+                                        {chain.label}
                                     </span>
                                 </div>
                                 <span className={`text-[14px] font-semibold

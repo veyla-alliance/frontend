@@ -1,74 +1,77 @@
 "use client";
 
-import { useAccount } from "wagmi";
+import { useReadContracts, useConnection } from "wagmi";
 import { env } from "@/lib/env";
 import { vaultAbi } from "@/lib/abi/vault";
-import { useVaultBalance, useVaultEarned, useCurrentApy } from "./useVaultBalance";
-import type { VaultPosition, AssetSymbol } from "@/types";
-
-// Token addresses on Passet Hub — fill in once deployed
-const TOKEN_ADDRESSES: Record<AssetSymbol, `0x${string}` | undefined> = {
-    DOT:  env.dotTokenAddress,
-    USDT: env.usdtTokenAddress,
-};
+import { TOKEN_ADDRESSES } from "@/lib/constants";
+import type { VaultPosition } from "@/types";
 
 /**
- * Returns the connected user's active vault positions.
+ * Returns the connected user's active vault positions via a single multicall.
  * Returns an empty array when the contract is not yet deployed or wallet is disconnected.
- *
- * Phase 3: replace mock derivation with a single multicall or contract view function.
  */
 export function useUserPositions(): {
     positions: VaultPosition[];
     isLoading: boolean;
 } {
-    const { address } = useAccount();
+    const { address } = useConnection();
 
     const dotAddress  = TOKEN_ADDRESSES.DOT;
     const usdtAddress = TOKEN_ADDRESSES.USDT;
 
-    const dotBalance  = useVaultBalance(address, dotAddress);
-    const usdtBalance = useVaultBalance(address, usdtAddress);
-    const dotEarned   = useVaultEarned(address, dotAddress);
-    const usdtEarned  = useVaultEarned(address, usdtAddress);
-    const dotApy      = useCurrentApy(dotAddress);
-    const usdtApy     = useCurrentApy(usdtAddress);
+    const enabled = !!env.vaultAddress && !!address && !!dotAddress && !!usdtAddress;
 
-    const isLoading =
-        dotBalance.isLoading  ||
-        usdtBalance.isLoading ||
-        dotEarned.isLoading   ||
-        usdtEarned.isLoading  ||
-        dotApy.isLoading      ||
-        usdtApy.isLoading;
+    const { data, isLoading } = useReadContracts({
+        contracts: [
+            { address: env.vaultAddress!, abi: vaultAbi, functionName: "balanceOf", args: [address!, dotAddress!] },
+            { address: env.vaultAddress!, abi: vaultAbi, functionName: "balanceOf", args: [address!, usdtAddress!] },
+            { address: env.vaultAddress!, abi: vaultAbi, functionName: "earned",    args: [address!, dotAddress!] },
+            { address: env.vaultAddress!, abi: vaultAbi, functionName: "earned",    args: [address!, usdtAddress!] },
+            { address: env.vaultAddress!, abi: vaultAbi, functionName: "currentApy", args: [dotAddress!] },
+            { address: env.vaultAddress!, abi: vaultAbi, functionName: "currentApy", args: [usdtAddress!] },
+        ],
+        query: {
+            enabled,
+            staleTime: 30_000,
+            refetchInterval: 60_000,
+        },
+    });
 
-    // Return empty if contract not deployed yet
-    if (!env.vaultAddress || !address) {
+    if (!enabled || !data) {
         return { positions: [], isLoading: false };
     }
 
+    const [dotBalRes, usdtBalRes, dotEarnedRes, usdtEarnedRes, dotApyRes, usdtApyRes] = data;
+
+    const dotBal   = dotBalRes?.result   as bigint | undefined;
+    const usdtBal  = usdtBalRes?.result  as bigint | undefined;
+    const dotEarn  = dotEarnedRes?.result  as bigint | undefined;
+    const usdtEarn = usdtEarnedRes?.result as bigint | undefined;
+    const dotApy   = dotApyRes?.result   as bigint | undefined;
+    const usdtApy  = usdtApyRes?.result  as bigint | undefined;
+
     const positions: VaultPosition[] = [];
 
-    if (dotBalance.data && dotBalance.data > 0n) {
+    if (dotBal && dotBal > 0n) {
         positions.push({
             asset: "DOT",
-            depositedAmount: dotBalance.data,
-            depositedUsd: 0,      // Phase 3: multiply by price feed
-            currentApy: dotApy.data ? Number(dotApy.data) / 100 : 0,
-            earnedAmount: dotEarned.data ?? 0n,
-            earnedUsd: 0,         // Phase 3: multiply by price feed
+            depositedAmount: dotBal,
+            depositedUsd: 0,
+            currentApy: dotApy ? Number(dotApy) / 100 : 0,
+            earnedAmount: dotEarn ?? 0n,
+            earnedUsd: 0,
             deployedTo: "Hydration",
-            depositedAt: 0,       // Phase 3: read from Deposited event
+            depositedAt: 0,
         });
     }
 
-    if (usdtBalance.data && usdtBalance.data > 0n) {
+    if (usdtBal && usdtBal > 0n) {
         positions.push({
             asset: "USDT",
-            depositedAmount: usdtBalance.data,
+            depositedAmount: usdtBal,
             depositedUsd: 0,
-            currentApy: usdtApy.data ? Number(usdtApy.data) / 100 : 0,
-            earnedAmount: usdtEarned.data ?? 0n,
+            currentApy: usdtApy ? Number(usdtApy) / 100 : 0,
+            earnedAmount: usdtEarn ?? 0n,
             earnedUsd: 0,
             deployedTo: "Moonbeam",
             depositedAt: 0,

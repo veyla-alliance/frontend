@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import { ArrowDownLeft, ArrowLeftRight, TrendingUp, ArrowUpRight } from "lucide-react";
 import { env } from "@/lib/env";
-
-type ActivityType = "Deposit" | "Route" | "Earn" | "Withdraw";
+import type { ActivityType } from "@/types";
 
 interface Activity {
     type: ActivityType;
