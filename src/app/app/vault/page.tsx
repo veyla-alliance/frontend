@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { parseUnits, formatUnits } from "viem";
-import { useConnection, useBalance } from "wagmi";
+import { useConnection, useBalance, useChainId } from "wagmi";
 import type { AssetSymbol } from "@/types";
 import { toast } from "sonner";
 import { AssetSelector, ASSETS } from "@/components/app/vault/AssetSelector";
@@ -83,6 +83,8 @@ export default function VaultPage() {
     const [withdrawAmount, setWithdrawAmount] = useState("");
 
     const { address } = useConnection();
+    const chainId = useChainId();
+    const isCorrectChain = chainId === env.chainId;
     const { deposit,  txState: depositTxState,  reset: resetDeposit  } = useDeposit();
     const { withdraw, txState: withdrawTxState, reset: resetWithdraw } = useWithdraw();
     const { positions } = useUserPositions();
@@ -112,13 +114,13 @@ export default function VaultPage() {
     const parsedDeposit   = parseFloat(depositAmount) || 0;
     const depositUsdValue = parsedDeposit * selectedAsset.price;
     const depositBalance  = walletBalances[asset];
-    const depositIsValid  = parsedDeposit > 0 && parsedDeposit <= depositBalance && !!tokenAddress;
+    const depositIsValid  = isCorrectChain && parsedDeposit > 0 && parsedDeposit <= depositBalance && !!tokenAddress;
 
     // Withdraw
     const parsedWithdraw    = parseFloat(withdrawAmount) || 0;
     const withdrawUsdValue  = parsedWithdraw * selectedAsset.price;
     const withdrawBalance   = vaultBalances[asset];
-    const withdrawIsValid   = parsedWithdraw > 0 && parsedWithdraw <= withdrawBalance && !!tokenAddress;
+    const withdrawIsValid   = isCorrectChain && parsedWithdraw > 0 && parsedWithdraw <= withdrawBalance && !!tokenAddress;
     const hasPosition       = withdrawBalance > 0;
 
     // Reset amounts on tab switch so both forms start clean
@@ -187,6 +189,13 @@ export default function VaultPage() {
                     Deposit assets to start earning optimized yield
                 </p>
             </div>
+
+            {!isCorrectChain && (
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[rgba(239,68,68,0.08)] border border-[rgba(239,68,68,0.2)] text-[#f87171] text-[14px]">
+                    <span>⚠</span>
+                    Wrong network. Click <strong>Switch Network</strong> in the top-right to connect to Passet Hub.
+                </div>
+            )}
 
             <div className="grid grid-cols-[1fr_340px] gap-4 max-lg:grid-cols-1">
                 {/* Left: Form */}
