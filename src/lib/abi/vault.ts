@@ -59,6 +59,13 @@ export const vaultAbi = [
         inputs: [],
         outputs: [{ name: "", type: "uint256" }],
     },
+    {
+        name: "tvlOf",
+        type: "function",
+        stateMutability: "view",
+        inputs: [{ name: "token", type: "address" }],
+        outputs: [{ name: "", type: "uint256" }],
+    },
 
     // ── Events ───────────────────────────────────────────────────────────────
 
