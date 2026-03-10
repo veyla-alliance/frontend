@@ -1,6 +1,6 @@
 "use client";
 
-import { useReadContract } from "wagmi";
+import { useReadContract, useReadContracts } from "wagmi";
 import { env } from "@/lib/env";
 import { vaultAbi } from "@/lib/abi/vault";
 
@@ -60,6 +60,29 @@ export function useCurrentApy(tokenAddress?: `0x${string}`) {
             refetchInterval: 120_000,
         },
     });
+}
+
+/**
+ * Returns current APY for both DOT and USDT in percentage (e.g. 14.2).
+ * Contract stores basis points (1420 = 14.20%), so we divide by 100.
+ */
+export function useTokenApys() {
+    const { data, isLoading } = useReadContracts({
+        contracts: [
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "currentApy", args: [env.dotTokenAddress]  },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "currentApy", args: [env.usdtTokenAddress] },
+        ],
+        query: { staleTime: 120_000, refetchInterval: 120_000 },
+    });
+
+    const dotBps  = data?.[0]?.result as bigint | undefined;
+    const usdtBps = data?.[1]?.result as bigint | undefined;
+
+    return {
+        dotApy:  dotBps  !== undefined ? Number(dotBps)  / 100 : null,
+        usdtApy: usdtBps !== undefined ? Number(usdtBps) / 100 : null,
+        isLoading,
+    };
 }
 
 /**

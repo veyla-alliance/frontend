@@ -10,7 +10,7 @@ import { AmountInput } from "@/components/app/vault/AmountInput";
 import { DepositPreview } from "@/components/app/vault/DepositPreview";
 import { VaultStats } from "@/components/app/vault/VaultStats";
 import { TxButton } from "@/components/app/vault/TxButton";
-import { useDeposit, useWithdraw, useERC20Balance, useUserPositions } from "@/hooks";
+import { useDeposit, useWithdraw, useERC20Balance, useUserPositions, useTokenApys } from "@/hooks";
 import { TOKEN_ADDRESSES } from "@/lib/constants";
 import { env } from "@/lib/env";
 import { cn } from "@/lib/utils";
@@ -84,6 +84,13 @@ export default function VaultPage() {
 
     const { address } = useConnection();
     const chainId = useChainId();
+    const { dotApy, usdtApy } = useTokenApys();
+
+    // Real APYs from contract — fallback to static if not yet loaded
+    const liveApys: Record<string, number> = {
+        DOT:  dotApy  ?? ASSETS["DOT"].apy,
+        USDT: usdtApy ?? ASSETS["USDT"].apy,
+    };
     const isCorrectChain = chainId === env.chainId;
     const { deposit,  txState: depositTxState,  reset: resetDeposit  } = useDeposit();
     const { withdraw, txState: withdrawTxState, reset: resetWithdraw } = useWithdraw();
@@ -225,6 +232,7 @@ export default function VaultPage() {
                                 value={asset}
                                 onChange={setAsset}
                                 balances={walletBalances}
+                                apys={liveApys}
                             />
                             <AmountInput
                                 value={depositAmount}
@@ -259,6 +267,7 @@ export default function VaultPage() {
                                 value={asset}
                                 onChange={setAsset}
                                 balances={vaultBalances}
+                                apys={liveApys}
                             />
 
                             {hasPosition ? (
@@ -309,7 +318,7 @@ export default function VaultPage() {
                         asset={asset}
                         amount={parsedDeposit}
                         usdValue={depositUsdValue}
-                        apy={selectedAsset.apy}
+                        apy={liveApys[asset]}
                         route={selectedAsset.route}
                     />
                 ) : (

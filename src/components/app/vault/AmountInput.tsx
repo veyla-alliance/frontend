@@ -17,7 +17,9 @@ export function AmountInput({ value, onChange, maxAmount, asset, usdValue }: Amo
     }
 
     function handleMax() {
-        onChange(parseFloat(maxAmount.toFixed(6)).toString());
+        // Floor instead of round — toFixed() rounds up and can exceed actual balance
+        const floored = Math.floor(maxAmount * 1_000_000) / 1_000_000;
+        onChange(floored.toString());
     }
 
     return (

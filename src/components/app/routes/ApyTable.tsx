@@ -4,8 +4,7 @@ import { ArrowDown } from "lucide-react";
 import Image from "next/image";
 import { CHAINS } from "./ChainNode";
 import { cn } from "@/lib/utils";
-
-const sorted = [...CHAINS].sort((a, b) => b.apy - a.apy);
+import { useTokenApys } from "@/hooks";
 
 function StatusBadge({ status, active }: { status: string; active: boolean }) {
     if (active) {
@@ -31,6 +30,20 @@ function StatusBadge({ status, active }: { status: string; active: boolean }) {
 }
 
 export function ApyTable() {
+    const { dotApy, usdtApy } = useTokenApys();
+
+    // Override APYs for active chains with real contract values
+    const chainApyOverrides: Record<string, number | null> = {
+        hydration: dotApy,   // DOT → Hydration
+        moonbeam:  usdtApy,  // USDT → Moonbeam
+    };
+
+    const chains = CHAINS.map(c => ({
+        ...c,
+        apy: chainApyOverrides[c.id] ?? c.apy,
+    }));
+    const sorted = [...chains].sort((a, b) => b.apy - a.apy);
+
     return (
         <div className="rounded-2xl bg-white/[0.02] border border-white/[0.06] overflow-hidden">
             {/* Header */}

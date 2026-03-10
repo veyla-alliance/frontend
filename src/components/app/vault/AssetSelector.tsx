@@ -26,9 +26,11 @@ interface AssetSelectorProps {
     onChange: (asset: string) => void;
     /** Real on-chain balances keyed by symbol. Falls back to mock balance if undefined. */
     balances?: Record<string, number>;
+    /** Real on-chain APYs keyed by symbol. Falls back to static ASSETS.apy if undefined. */
+    apys?: Record<string, number>;
 }
 
-export function AssetSelector({ value, onChange, balances }: AssetSelectorProps) {
+export function AssetSelector({ value, onChange, balances, apys }: AssetSelectorProps) {
     const [open, setOpen] = useState(false);
     const selected = ASSETS[value];
     const selectedBalance = balances?.[value] ?? selected.balance;
@@ -91,7 +93,7 @@ export function AssetSelector({ value, onChange, balances }: AssetSelectorProps)
                                         {asset.symbol}
                                     </div>
                                     <div className="text-[13px] text-[var(--veyla-text-dim)]">
-                                        {(balances?.[asset.symbol] ?? asset.balance).toLocaleString()} available · {asset.apy}% APY
+                                        {(balances?.[asset.symbol] ?? asset.balance).toLocaleString()} available · {(apys?.[asset.symbol] ?? asset.apy).toFixed(1)}% APY
                                     </div>
                                 </div>
                                 {value === asset.symbol && (
