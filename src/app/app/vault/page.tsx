@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { parseUnits, formatUnits } from "viem";
-import { useConnection } from "wagmi";
+import { useConnection, useBalance } from "wagmi";
 import type { AssetSymbol } from "@/types";
 import { toast } from "sonner";
 import { AssetSelector, ASSETS } from "@/components/app/vault/AssetSelector";
@@ -88,11 +88,12 @@ export default function VaultPage() {
     const { positions } = useUserPositions();
 
     // ── Wallet balances (for deposit) ─────────────────────────────────────
-    const { data: dotWalletRaw  } = useERC20Balance(address, TOKEN_ADDRESSES["DOT"]);
-    const { data: usdtWalletRaw } = useERC20Balance(address, TOKEN_ADDRESSES["USDT"]);
+    // DOT is the native asset in PolkaVM — read via useBalance (like ETH), not ERC-20
+    const { data: dotNativeBalance } = useBalance({ address });
+    const { data: usdtWalletRaw    } = useERC20Balance(address, TOKEN_ADDRESSES["USDT"]);
 
     const walletBalances: Record<string, number> = {
-        DOT:  dotWalletRaw  !== undefined ? Number(formatUnits(dotWalletRaw,  ASSETS["DOT"].decimals))  : 0,
+        DOT:  dotNativeBalance  ? Number(formatUnits(dotNativeBalance.value, dotNativeBalance.decimals)) : 0,
         USDT: usdtWalletRaw !== undefined ? Number(formatUnits(usdtWalletRaw, ASSETS["USDT"].decimals)) : 0,
     };
 
