@@ -18,8 +18,8 @@ export function useVaultBalance(
         functionName: "balanceOf",
         args: userAddress && tokenAddress ? [userAddress, tokenAddress] : undefined,
         query: {
-            enabled: !!env.vaultAddress && !!userAddress && !!tokenAddress,
-            staleTime: 30_000,   // treat on-chain balance as fresh for 30s
+            enabled: !!userAddress && !!tokenAddress,
+            staleTime: 30_000,
             refetchInterval: 60_000,
         },
     });
@@ -38,7 +38,7 @@ export function useVaultEarned(
         functionName: "earned",
         args: userAddress && tokenAddress ? [userAddress, tokenAddress] : undefined,
         query: {
-            enabled: !!env.vaultAddress && !!userAddress && !!tokenAddress,
+            enabled: !!userAddress && !!tokenAddress,
             staleTime: 30_000,
             refetchInterval: 60_000,
         },
@@ -55,8 +55,8 @@ export function useCurrentApy(tokenAddress?: `0x${string}`) {
         functionName: "currentApy",
         args: tokenAddress ? [tokenAddress] : undefined,
         query: {
-            enabled: !!env.vaultAddress && !!tokenAddress,
-            staleTime: 120_000,  // APY changes slowly — 2min is fine
+            enabled: !!tokenAddress,
+            staleTime: 120_000,
             refetchInterval: 120_000,
         },
     });
@@ -71,7 +71,6 @@ export function useVaultTvl() {
         abi: vaultAbi,
         functionName: "tvl",
         query: {
-            enabled: !!env.vaultAddress,
             staleTime: 60_000,
             refetchInterval: 60_000,
         },

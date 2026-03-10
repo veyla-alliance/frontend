@@ -41,10 +41,6 @@ export function useDeposit() {
     }, [isConfirmed, queryClient]);
 
     async function deposit(tokenAddress: `0x${string}`, amount: bigint) {
-        if (!env.vaultAddress) {
-            setTxState({ status: "error", error: "Contract not deployed yet." });
-            return;
-        }
         if (!address) {
             setTxState({ status: "error", error: "Wallet not connected." });
             return;

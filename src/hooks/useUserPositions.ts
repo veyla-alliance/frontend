@@ -19,16 +19,16 @@ export function useUserPositions(): {
     const dotAddress  = TOKEN_ADDRESSES.DOT;
     const usdtAddress = TOKEN_ADDRESSES.USDT;
 
-    const enabled = !!env.vaultAddress && !!address && !!dotAddress && !!usdtAddress;
+    const enabled = !!address;
 
     const { data, isLoading } = useReadContracts({
         contracts: [
-            { address: env.vaultAddress!, abi: vaultAbi, functionName: "balanceOf", args: [address!, dotAddress!] },
-            { address: env.vaultAddress!, abi: vaultAbi, functionName: "balanceOf", args: [address!, usdtAddress!] },
-            { address: env.vaultAddress!, abi: vaultAbi, functionName: "earned",    args: [address!, dotAddress!] },
-            { address: env.vaultAddress!, abi: vaultAbi, functionName: "earned",    args: [address!, usdtAddress!] },
-            { address: env.vaultAddress!, abi: vaultAbi, functionName: "currentApy", args: [dotAddress!] },
-            { address: env.vaultAddress!, abi: vaultAbi, functionName: "currentApy", args: [usdtAddress!] },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "balanceOf", args: [address!, dotAddress] },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "balanceOf", args: [address!, usdtAddress] },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "earned",    args: [address!, dotAddress] },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "earned",    args: [address!, usdtAddress] },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "currentApy", args: [dotAddress] },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "currentApy", args: [usdtAddress] },
         ],
         query: {
             enabled,

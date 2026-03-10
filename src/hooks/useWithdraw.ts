@@ -36,11 +36,6 @@ export function useWithdraw() {
     }, [isConfirmed, queryClient]);
 
     async function withdraw(tokenAddress: `0x${string}`, amount: bigint) {
-        if (!env.vaultAddress) {
-            setTxState({ status: "error", error: "Contract not deployed yet." });
-            return;
-        }
-
         try {
             setTxState({ status: "awaiting-signature" });
 
