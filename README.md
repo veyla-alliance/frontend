@@ -1,143 +1,112 @@
-# Veyla — Intelligent Yield Router for Polkadot Hub
+# Veyla — Frontend
 
-Veyla automatically routes user assets across Polkadot parachains (Hydration, Moonbeam, etc.) to capture the highest available yield, without requiring users to manage bridges or protocol switches manually.
+Next.js frontend for the Veyla yield optimization protocol on Polkadot Hub.
 
----
+**Live:** [veyla.vercel.app](https://veyla.vercel.app)
 
 ## Stack
 
-| Layer | Technology |
+| Layer | Tech |
 |---|---|
-| Framework | Next.js 16 (App Router) + React 19 + TypeScript 5 |
-| Styling | Tailwind CSS v4 |
-| Animation | Framer Motion 12 |
-| Web3 | Wagmi v3 + Viem v2 + React Query v5 |
-| Toasts | Sonner |
-| Chain | Passet Hub (Polkadot Hub Testnet, chain ID 420420422) |
+| Framework | Next.js 16 (App Router), React 19, TypeScript |
+| Web3 | wagmi v3, viem v2 |
+| UI | TailwindCSS v4, Framer Motion, Lucide Icons |
+| Data | TanStack Query v5 |
+| Notifications | Sonner |
+| Target chain | Passet Hub Testnet (Chain ID: `420420417`) |
 
----
+## Setup
 
-## Project Structure
-
-```
-frontend/src/
-├── app/
-│   ├── page.tsx                  # Marketing landing page
-│   ├── layout.tsx
-│   ├── globals.css               # Design tokens + base styles
-│   ├── privacy/page.tsx
-│   ├── terms/page.tsx
-│   └── app/                      # Wallet-gated app shell
-│       ├── layout.tsx            # Sidebar + topbar layout
-│       ├── page.tsx              # Dashboard (positions + stats)
-│       ├── vault/page.tsx        # Deposit / withdraw
-│       ├── routes/page.tsx       # Available yield routes
-│       └── history/page.tsx      # Transaction history
-├── components/
-│   ├── sections/                 # Landing page sections
-│   ├── ui/                       # Button, SectionHeader
-│   ├── effects/                  # MagneticCursor
-│   └── app/                      # App UI (sidebar, vault form, dashboard, etc.)
-├── hooks/
-│   ├── useVaultBalance.ts        # Read: balance, earned, APY, TVL
-│   ├── useUserPositions.ts       # Derived positions from on-chain reads
-│   ├── useERC20Balance.ts        # Wallet token balance
-│   ├── useDeposit.ts             # Write: ERC-20 approve → vault deposit
-│   └── useWithdraw.ts            # Write: vault withdraw
-├── lib/
-│   ├── wagmi.ts                  # Wagmi config + Passet Hub chain definition
-│   ├── env.ts                    # Centralised env var access
-│   ├── txUtils.ts                # Shared parseError utility
-│   ├── providers.tsx             # Wagmi + React Query providers
-│   └── abi/
-│       ├── vault.ts              # Veyla vault contract ABI
-│       └── erc20.ts              # Minimal ERC-20 ABI (balanceOf, allowance, approve)
-├── types/
-│   ├── tx.ts                     # TxStatus + TxState types
-│   └── vault.ts                  # VaultPosition, AssetSymbol
-└── config/
-    └── site.ts                   # Nav links, footer links, social URLs
-```
-
----
-
-## Local Setup
-
-### 1. Install dependencies
+### 1. Install
 
 ```bash
 npm install
 ```
 
-### 2. Configure environment variables
-
-Copy `.env.example` to `.env.local` and fill in the values:
-
-```bash
-cp .env.example .env.local
-```
+### 2. Create `.env.local`
 
 ```env
-# Passet Hub RPC
-NEXT_PUBLIC_RPC_URL=https://testnet-passet-hub-eth-rpc.polkadot.io
-
-# Deployed contract addresses (fill in after deploying the smart contract)
-NEXT_PUBLIC_VAULT_ADDRESS=
-NEXT_PUBLIC_DOT_TOKEN_ADDRESS=
-NEXT_PUBLIC_USDT_TOKEN_ADDRESS=
-
-# Chain config
-NEXT_PUBLIC_CHAIN_ID=420420422
-NEXT_PUBLIC_BLOCK_EXPLORER_URL=https://blockscout-passet-hub.parity-chains-scw.parity.io
+NEXT_PUBLIC_CHAIN_ID=420420417
+NEXT_PUBLIC_RPC_URL=https://eth-rpc-testnet.polkadot.io
+NEXT_PUBLIC_BLOCK_EXPLORER_URL=https://blockscout-testnet.polkadot.io
+NEXT_PUBLIC_VAULT_ADDRESS=0x741Ec097b0D3dc7544c58C1B7401cb7540D2829b
+NEXT_PUBLIC_DOT_TOKEN_ADDRESS=0x0000000000000000000000000000000000000000
+NEXT_PUBLIC_USDT_TOKEN_ADDRESS=0x000007c000000000000000000000000001200000
 ```
 
-> The app runs in a degraded state (no wallet interactions) when contract addresses are not set. The landing page is fully functional without them.
-
-### 3. Run the development server
+### 3. Run
 
 ```bash
 npm run dev
+# Open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+### 4. Add Passet Hub to MetaMask
 
----
+| Field | Value |
+|---|---|
+| Network Name | Passet Hub Testnet |
+| RPC URL | `https://eth-rpc-testnet.polkadot.io` |
+| Chain ID | `420420417` |
+| Currency Symbol | `PAS` |
+| Block Explorer | `https://blockscout-testnet.polkadot.io` |
+
+Get testnet PAS: [faucet.polkadot.io](https://faucet.polkadot.io)
+
+## Pages
+
+| Route | Description |
+|---|---|
+| `/` | Landing page |
+| `/app` | Dashboard — positions, APY, stats |
+| `/app/vault` | Deposit / Withdraw |
+| `/app/routes` | Route visualization + APY table |
+| `/app/history` | Transaction history |
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── page.tsx              # Landing page
+│   └── app/
+│       ├── layout.tsx        # App shell (sidebar, topbar, auth guard)
+│       ├── page.tsx          # Dashboard
+│       ├── vault/page.tsx    # Deposit / Withdraw
+│       ├── routes/page.tsx   # Route visualization
+│       └── history/page.tsx
+├── components/
+│   ├── sections/             # Landing page sections
+│   └── app/                  # App shell + feature components
+├── hooks/
+│   ├── useDeposit.ts         # Deposit lifecycle (allowance → approve → deposit)
+│   ├── useWithdraw.ts        # Withdraw lifecycle
+│   ├── useERC20Balance.ts    # ERC-20 balance reader
+│   ├── useVaultBalance.ts    # Vault contract reads (balance, earned, APY, TVL)
+│   └── useUserPositions.ts   # Multicall position aggregator
+└── lib/
+    ├── wagmi.ts              # Passet Hub chain config + connectors
+    ├── env.ts                # Typed + required env vars
+    ├── constants.ts          # TOKEN_ADDRESSES
+    ├── txUtils.ts            # parseError, isUserRejection
+    └── abi/
+        ├── vault.ts          # VeylaVault ABI
+        └── erc20.ts          # Minimal ERC-20 ABI
+```
 
 ## Transaction Flow
 
-Deposits go through a two-step ERC-20 flow:
-
+**Deposit DOT** (native asset via `msg.value`):
 ```
-1. allowance() check
-   ├─ sufficient → skip to step 2
-   └─ insufficient → approve(vaultAddress, amount) → wait for confirmation
-
-2. vault.deposit(tokenAddress, amount)
-   └─ wait for confirmation → success
+idle → awaiting-signature → pending → success
 ```
 
-State machine: `idle → awaiting-approval → approving → awaiting-signature → pending → success`
-
-Withdrawals skip the approval step: `idle → awaiting-signature → pending → success`
-
----
-
-## Smart Contract Integration Checklist
-
-Before connecting to a deployed contract:
-
-- [x] ERC-20 approval flow implemented in `useDeposit`
-- [x] Real wallet balance via `useERC20Balance`
-- [x] React Query cache invalidation after tx success
-- [ ] Update `src/lib/abi/vault.ts` with the real deployed ABI
-- [ ] Populate `.env.local` with deployed contract addresses
-
----
-
-## Deploy
-
-```bash
-npm run build
+**Deposit USDT** (ERC-20 — approve first if needed):
+```
+idle → [awaiting-approval → approving] → awaiting-signature → pending → success
 ```
 
-The project is configured for deployment on [Vercel](https://vercel.com). Push to main — Vercel picks it up automatically. Make sure all `NEXT_PUBLIC_*` env vars are set in the Vercel project settings.
+**Withdraw:**
+```
+idle → awaiting-signature → pending → success
+```
