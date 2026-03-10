@@ -2,37 +2,21 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowDownLeft, ExternalLink } from "lucide-react";
+import { ArrowDownLeft, ExternalLink, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { env } from "@/lib/env";
+import { useVaultHistory } from "@/hooks/useVaultHistory";
 import type { ActivityType } from "@/types";
 
-type FilterTab = "all" | "deposits" | "withdrawals" | "routed";
+type FilterTab = "all" | "deposits" | "withdrawals";
 
 const FILTER_TABS: { label: string; value: FilterTab }[] = [
-    { label: "All",         value: "all" },
-    { label: "Deposits",    value: "deposits" },
-    { label: "Withdrawals", value: "withdrawals" },
-    { label: "Routed",      value: "routed" },
+    { label: "All",          value: "all" },
+    { label: "Deposits",     value: "deposits" },
+    { label: "Withdrawals",  value: "withdrawals" },
 ];
 
 const TABLE_COLS = ["Type", "Asset", "Amount", "Chain", "Date", "TX Hash"];
-
-interface HistoryRow {
-    type: ActivityType;
-    asset: string;
-    amount: string;
-    chain: string;
-    date: Date;
-    txHash: string;
-}
-
-const MOCK_ROWS: HistoryRow[] = [
-    { type: "Earn",     asset: "DOT",  amount: "+12.4",   chain: "Hydration", date: new Date(Date.now() - 1000 * 60 * 1),      txHash: "0x9abc...ef12" },
-    { type: "Route",    asset: "DOT",  amount: "1,000",   chain: "Hydration", date: new Date(Date.now() - 1000 * 60 * 3),      txHash: "0x5678...cd90" },
-    { type: "Deposit",  asset: "USDT", amount: "500",     chain: "Moonbeam",  date: new Date(Date.now() - 1000 * 60 * 12),     txHash: "0x3456...ab78" },
-    { type: "Deposit",  asset: "DOT",  amount: "1,000",   chain: "Hydration", date: new Date(Date.now() - 1000 * 60 * 60 * 2), txHash: "0x1234...5678" },
-];
 
 const TYPE_STYLE: Record<ActivityType, string> = {
     Deposit:  "bg-[rgba(123,57,252,0.1)] text-[var(--veyla-purple-soft)] border-[rgba(123,57,252,0.2)]",
@@ -50,18 +34,19 @@ function formatDate(date: Date): string {
     return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-function filterRows(rows: HistoryRow[], filter: FilterTab): HistoryRow[] {
-    if (filter === "all") return rows;
-    if (filter === "deposits") return rows.filter((r) => r.type === "Deposit");
-    if (filter === "withdrawals") return rows.filter((r) => r.type === "Withdraw");
-    if (filter === "routed") return rows.filter((r) => r.type === "Route");
-    return rows;
+function truncateHash(hash: string): string {
+    return `${hash.slice(0, 8)}...${hash.slice(-6)}`;
 }
 
 export default function HistoryPage() {
     const [filter, setFilter] = useState<FilterTab>("all");
+    const { rows, loading } = useVaultHistory();
 
-    const rows = filterRows(MOCK_ROWS, filter);
+    const filtered = rows.filter(row => {
+        if (filter === "deposits")    return row.type === "Deposit";
+        if (filter === "withdrawals") return row.type === "Withdraw";
+        return true;
+    });
 
     return (
         <div className="flex flex-col gap-5 p-6 md:p-8 pb-24 lg:pb-8">
@@ -71,7 +56,7 @@ export default function HistoryPage() {
                     History
                 </h1>
                 <p className="text-[15px] text-[var(--veyla-text-dim)] mt-0.5">
-                    All vault deposits, withdrawals, and routing events
+                    All vault deposits and withdrawals
                 </p>
             </div>
 
@@ -109,41 +94,52 @@ export default function HistoryPage() {
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-white/[0.03]">
-                        {rows.length > 0 ? rows.map((row, i) => (
-                            <tr key={i} className="hover:bg-white/[0.02] transition-colors duration-100">
-                                <td className="px-5 py-3.5">
-                                    <span className={cn(
-                                        "[font-family:var(--font-geist-pixel-square),monospace] text-[11px] px-2 py-1 rounded-md border",
-                                        TYPE_STYLE[row.type]
-                                    )}>
-                                        {row.type.toUpperCase()}
-                                    </span>
-                                </td>
-                                <td className="px-5 py-3.5 text-[15px] font-semibold text-[var(--veyla-text-main)]">
-                                    {row.asset}
-                                </td>
-                                <td className="px-5 py-3.5 text-[15px] text-[var(--veyla-text-main)]">
-                                    {row.amount}
-                                </td>
-                                <td className="px-5 py-3.5 text-[15px] text-[var(--veyla-text-dim)]">
-                                    {row.chain}
-                                </td>
-                                <td className="px-5 py-3.5 text-[14px] text-[var(--veyla-text-dim)]">
-                                    {formatDate(row.date)}
-                                </td>
-                                <td className="px-5 py-3.5">
-                                    <a
-                                        href={`${env.blockExplorerUrl}/tx/${row.txHash}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-1.5 [font-family:var(--font-geist-pixel-square),monospace] text-[11px] text-[var(--veyla-text-dim)] hover:text-[var(--veyla-purple-soft)] transition-colors duration-150"
-                                    >
-                                        {row.txHash}
-                                        <ExternalLink size={10} />
-                                    </a>
+                        {loading ? (
+                            <tr>
+                                <td colSpan={TABLE_COLS.length}>
+                                    <div className="flex items-center justify-center gap-2 py-16 text-[var(--veyla-text-dim)]">
+                                        <Loader2 size={16} className="animate-spin" />
+                                        <span className="text-[14px]">Loading transactions...</span>
+                                    </div>
                                 </td>
                             </tr>
-                        )) : (
+                        ) : filtered.length > 0 ? (
+                            filtered.map((row, i) => (
+                                <tr key={i} className="hover:bg-white/[0.02] transition-colors duration-100">
+                                    <td className="px-5 py-3.5">
+                                        <span className={cn(
+                                            "[font-family:var(--font-geist-pixel-square),monospace] text-[11px] px-2 py-1 rounded-md border",
+                                            TYPE_STYLE[row.type]
+                                        )}>
+                                            {row.type.toUpperCase()}
+                                        </span>
+                                    </td>
+                                    <td className="px-5 py-3.5 text-[15px] font-semibold text-[var(--veyla-text-main)]">
+                                        {row.asset}
+                                    </td>
+                                    <td className="px-5 py-3.5 text-[15px] text-[var(--veyla-text-main)]">
+                                        {row.amount}
+                                    </td>
+                                    <td className="px-5 py-3.5 text-[15px] text-[var(--veyla-text-dim)]">
+                                        {row.chain}
+                                    </td>
+                                    <td className="px-5 py-3.5 text-[14px] text-[var(--veyla-text-dim)]">
+                                        {formatDate(row.date)}
+                                    </td>
+                                    <td className="px-5 py-3.5">
+                                        <a
+                                            href={`${env.blockExplorerUrl}/tx/${row.txHash}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-1.5 [font-family:var(--font-geist-pixel-square),monospace] text-[11px] text-[var(--veyla-text-dim)] hover:text-[var(--veyla-purple-soft)] transition-colors duration-150"
+                                        >
+                                            {truncateHash(row.txHash)}
+                                            <ExternalLink size={10} />
+                                        </a>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
                             <tr>
                                 <td colSpan={TABLE_COLS.length}>
                                     <div className="flex flex-col items-center justify-center gap-4 py-20 px-6 text-center">

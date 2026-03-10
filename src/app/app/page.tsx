@@ -6,8 +6,9 @@ import { useConnection } from "wagmi";
 import { StatCard } from "@/components/app/dashboard/StatCard";
 import { PositionsTable } from "@/components/app/dashboard/PositionsTable";
 import { useUserPositions } from "@/hooks";
+import { useVaultHistory } from "@/hooks/useVaultHistory";
 import { ASSETS } from "@/components/app/vault/AssetSelector";
-import type { AssetSymbol } from "@/types";
+import type { AssetSymbol, ActivityType } from "@/types";
 
 // Below-fold components — lazy loaded to keep the initial page chunk small
 const MiniRouteViz = dynamic(
@@ -29,6 +30,15 @@ function formatTokenAmount(amount: bigint, asset: AssetSymbol): string {
 export default function DashboardPage() {
     const { address } = useConnection();
     const { positions, isLoading } = useUserPositions();
+    const { rows: historyRows, loading: historyLoading } = useVaultHistory();
+
+    const activityItems = historyRows.slice(0, 5).map(row => ({
+        type: row.type as ActivityType,
+        description: row.type === "Deposit" ? "Deposited to vault" : "Withdrawn from vault",
+        amount: `${row.type === "Withdraw" ? "-" : "+"}${row.amount} ${row.asset}`,
+        timestamp: row.date,
+        txHash: row.txHash,
+    }));
 
     const avgApy = positions.length > 0
         ? positions.reduce((s, p) => s + p.currentApy, 0) / positions.length
@@ -89,7 +99,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Activity */}
-            <ActivityFeed />
+            <ActivityFeed items={activityItems} loading={historyLoading} />
         </div>
     );
 }

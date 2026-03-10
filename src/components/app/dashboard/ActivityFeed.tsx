@@ -1,40 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ArrowDownLeft, ArrowLeftRight, TrendingUp, ArrowUpRight } from "lucide-react";
+import { ArrowDownLeft, ArrowLeftRight, TrendingUp, ArrowUpRight, Activity } from "lucide-react";
 import { env } from "@/lib/env";
 import type { ActivityType } from "@/types";
 
-interface Activity {
+interface ActivityItem {
     type: ActivityType;
     description: string;
     amount: string;
     timestamp: Date;
     txHash: string;
-}
-
-interface ActivityOffset {
-    type: ActivityType;
-    description: string;
-    amount: string;
-    offsetMs: number;
-    txHash: string;
-}
-
-// Offsets are fixed — timestamps are computed relative to now at render time
-const MOCK_OFFSETS: ActivityOffset[] = [
-    { type: "Earn",    description: "Yield compounded",    amount: "+12.4 DOT",  offsetMs: 1000 * 60 * 1,      txHash: "0x9abc...ef12" },
-    { type: "Route",   description: "Routed to Hydration", amount: "1,000 DOT",  offsetMs: 1000 * 60 * 3,      txHash: "0x5678...cd90" },
-    { type: "Deposit", description: "Deposited to vault",  amount: "500 USDT",   offsetMs: 1000 * 60 * 12,     txHash: "0x3456...ab78" },
-    { type: "Deposit", description: "Deposited to vault",  amount: "1,000 DOT",  offsetMs: 1000 * 60 * 60 * 2, txHash: "0x1234...5678" },
-];
-
-function buildActivities(): Activity[] {
-    const now = Date.now();
-    return MOCK_OFFSETS.map(({ offsetMs, ...rest }) => ({
-        ...rest,
-        timestamp: new Date(now - offsetMs),
-    }));
 }
 
 const ACTIVITY_CONFIG: Record<ActivityType, {
@@ -74,73 +49,96 @@ function formatRelativeTime(date: Date): string {
     return `${Math.floor(diffHours / 24)}d ago`;
 }
 
-export function ActivityFeed() {
-    const [activities, setActivities] = useState<Activity[]>(buildActivities);
+interface ActivityFeedProps {
+    items?: ActivityItem[];
+    loading?: boolean;
+}
 
-    // Refresh relative timestamps every 60s
-    useEffect(() => {
-        const id = setInterval(() => setActivities(buildActivities()), 60_000);
-        return () => clearInterval(id);
-    }, []);
-
+export function ActivityFeed({ items = [], loading = false }: ActivityFeedProps) {
     return (
         <div className="flex flex-col rounded-2xl bg-white/[0.02] border border-white/[0.06] overflow-hidden">
             {/* Header */}
             <div className="px-5 py-4 border-b border-white/[0.05] flex items-center justify-between">
                 <h2 className="text-[16px] font-semibold text-[var(--veyla-text-main)]">Recent Activity</h2>
                 <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[1px] text-[var(--veyla-text-dim)]">
-                    {activities.length} EVENTS
+                    {loading ? "—" : `${items.length} EVENTS`}
                 </span>
             </div>
 
-            {/* List */}
-            <div className="divide-y divide-white/[0.03]">
-                {activities.map((item, i) => {
-                    const config = ACTIVITY_CONFIG[item.type];
-                    return (
-                        <div
-                            key={i}
-                            className="flex items-center gap-4 px-5 py-3.5 hover:bg-white/[0.02] transition-colors duration-100"
-                        >
-                            {/* Icon */}
-                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border ${config.iconBg}`}>
-                                {config.icon}
+            {loading ? (
+                /* Skeleton */
+                <div className="divide-y divide-white/[0.03]">
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="flex items-center gap-4 px-5 py-3.5">
+                            <div className="w-8 h-8 rounded-xl bg-white/[0.04] animate-pulse shrink-0" />
+                            <div className="flex-1 flex flex-col gap-1.5">
+                                <div className="h-3.5 w-32 rounded-md bg-white/[0.04] animate-pulse" />
+                                <div className="h-2.5 w-20 rounded-md bg-white/[0.03] animate-pulse" />
                             </div>
-
-                            {/* Description */}
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-[15px] font-medium text-[var(--veyla-text-main)]">
-                                        {item.description}
-                                    </span>
-                                    <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] px-1.5 py-0.5 rounded-md bg-white/[0.04] text-[var(--veyla-text-dim)] border border-white/[0.06]">
-                                        {item.type.toUpperCase()}
-                                    </span>
-                                </div>
-                                <div className="flex items-center gap-2 mt-0.5">
-                                    <span className="text-[13px] text-[var(--veyla-text-dim)]">
-                                        {formatRelativeTime(item.timestamp)}
-                                    </span>
-                                    <span className="text-[var(--veyla-text-dim)]">·</span>
-                                    <a
-                                        href={`${env.blockExplorerUrl}/tx/${item.txHash}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] text-[var(--veyla-text-dim)] hover:text-[var(--veyla-purple-soft)] transition-colors duration-150"
-                                    >
-                                        {item.txHash}
-                                    </a>
-                                </div>
-                            </div>
-
-                            {/* Amount */}
-                            <span className={`text-[15px] font-semibold shrink-0 ${config.amountColor}`}>
-                                {item.amount}
-                            </span>
+                            <div className="h-3.5 w-16 rounded-md bg-white/[0.04] animate-pulse" />
                         </div>
-                    );
-                })}
-            </div>
+                    ))}
+                </div>
+            ) : items.length === 0 ? (
+                /* Empty state */
+                <div className="flex flex-col items-center justify-center gap-3 py-14 px-6 text-center">
+                    <div className="w-10 h-10 rounded-2xl flex items-center justify-center bg-white/[0.03] border border-white/[0.06] text-[var(--veyla-text-dim)]">
+                        <Activity size={18} />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <p className="text-[15px] font-semibold text-[var(--veyla-text-muted)]">No activity yet</p>
+                        <p className="text-[13px] text-[var(--veyla-text-dim)] max-w-[220px] leading-[1.6]">
+                            Deposits, withdrawals, and yield events will appear here.
+                        </p>
+                    </div>
+                </div>
+            ) : (
+                /* Activity list */
+                <div className="divide-y divide-white/[0.03]">
+                    {items.map((item, i) => {
+                        const config = ACTIVITY_CONFIG[item.type];
+                        return (
+                            <div
+                                key={i}
+                                className="flex items-center gap-4 px-5 py-3.5 hover:bg-white/[0.02] transition-colors duration-100"
+                            >
+                                <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border ${config.iconBg}`}>
+                                    {config.icon}
+                                </div>
+
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-[15px] font-medium text-[var(--veyla-text-main)]">
+                                            {item.description}
+                                        </span>
+                                        <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] px-1.5 py-0.5 rounded-md bg-white/[0.04] text-[var(--veyla-text-dim)] border border-white/[0.06]">
+                                            {item.type.toUpperCase()}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-2 mt-0.5">
+                                        <span className="text-[13px] text-[var(--veyla-text-dim)]">
+                                            {formatRelativeTime(item.timestamp)}
+                                        </span>
+                                        <span className="text-[var(--veyla-text-dim)]">·</span>
+                                        <a
+                                            href={`${env.blockExplorerUrl}/tx/${item.txHash}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] text-[var(--veyla-text-dim)] hover:text-[var(--veyla-purple-soft)] transition-colors duration-150"
+                                        >
+                                            {item.txHash}
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <span className={`text-[15px] font-semibold shrink-0 ${config.amountColor}`}>
+                                    {item.amount}
+                                </span>
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     );
 }
