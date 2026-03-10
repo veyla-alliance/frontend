@@ -1,14 +1,10 @@
-// Veyla Vault — expected ABI surface.
-// Update once the real contract is deployed and verified on Blockscout.
-// Function signatures are designed based on product requirements, not yet finalized.
-
 export const vaultAbi = [
     // ── Write ────────────────────────────────────────────────────────────────
 
     {
         name: "deposit",
         type: "function",
-        stateMutability: "nonpayable",
+        stateMutability: "payable",
         inputs: [
             { name: "token",  type: "address" },
             { name: "amount", type: "uint256" },
