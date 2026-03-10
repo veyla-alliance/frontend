@@ -1,10 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { formatUnits } from "viem";
 import { useConnection } from "wagmi";
 import { StatCard } from "@/components/app/dashboard/StatCard";
 import { PositionsTable } from "@/components/app/dashboard/PositionsTable";
 import { useUserPositions } from "@/hooks";
+import { ASSETS } from "@/components/app/vault/AssetSelector";
+import type { AssetSymbol } from "@/types";
 
 // Below-fold components — lazy loaded to keep the initial page chunk small
 const MiniRouteViz = dynamic(
@@ -17,22 +20,29 @@ const ActivityFeed = dynamic(
     { loading: () => <div className="h-[180px] rounded-2xl bg-white/[0.02] border border-white/[0.04] animate-pulse" /> }
 );
 
-function formatUsd(n: number): string {
-    if (n <= 0) return "—";
-    return `$${n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+function formatTokenAmount(amount: bigint, asset: AssetSymbol): string {
+    const decimals = ASSETS[asset]?.decimals ?? 18;
+    const n = Number(formatUnits(amount, decimals));
+    return `${n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 })} ${asset}`;
 }
 
 export default function DashboardPage() {
     const { address } = useConnection();
     const { positions, isLoading } = useUserPositions();
 
-    // Derived stats — USD values are 0 until price feed is added (Phase 5)
-    const totalDepositedUsd = positions.reduce((s, p) => s + p.depositedUsd, 0);
-    const totalEarnedUsd    = positions.reduce((s, p) => s + p.earnedUsd, 0);
     const avgApy = positions.length > 0
         ? positions.reduce((s, p) => s + p.currentApy, 0) / positions.length
         : null;
     const bestRoute = positions[0]?.deployedTo ?? null;
+
+    // Show deposited/earned as token amounts (no price feed yet)
+    const depositedLabel = positions.length === 0
+        ? "—"
+        : positions.map(p => formatTokenAmount(p.depositedAmount, p.asset as AssetSymbol)).join(" + ");
+
+    const earnedLabel = positions.length === 0
+        ? "—"
+        : positions.map(p => formatTokenAmount(p.earnedAmount, p.asset as AssetSymbol)).join(" + ");
 
     return (
         <div className="flex flex-col gap-5 p-6 md:p-8 pb-24 lg:pb-8">
@@ -55,7 +65,7 @@ export default function DashboardPage() {
             <div className="grid grid-cols-3 gap-4 max-md:grid-cols-1">
                 <StatCard
                     label="Total Deposited"
-                    value={isLoading ? "…" : formatUsd(totalDepositedUsd)}
+                    value={isLoading ? "…" : depositedLabel}
                     sub={positions.length > 0 ? `${positions.length} active position${positions.length !== 1 ? "s" : ""}` : "No active positions"}
                 />
                 <StatCard
@@ -66,8 +76,8 @@ export default function DashboardPage() {
                 />
                 <StatCard
                     label="Total Earned"
-                    value={isLoading ? "…" : formatUsd(totalEarnedUsd)}
-                    sub="Since first deposit"
+                    value={isLoading ? "…" : earnedLabel}
+                    sub="Yield accruing on-chain"
                     accent="green"
                 />
             </div>
