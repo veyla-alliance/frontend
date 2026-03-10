@@ -11,6 +11,7 @@ import { DepositPreview } from "@/components/app/vault/DepositPreview";
 import { VaultStats } from "@/components/app/vault/VaultStats";
 import { TxButton } from "@/components/app/vault/TxButton";
 import { useDeposit, useWithdraw, useERC20Balance, useUserPositions, useTokenApys, useTokenPrices } from "@/hooks";
+import { pushToHistoryCache } from "@/hooks/useVaultHistory";
 import { TOKEN_ADDRESSES } from "@/lib/constants";
 import { env } from "@/lib/env";
 import { cn } from "@/lib/utils";
@@ -145,6 +146,16 @@ export default function VaultPage() {
                 ? { label: "View TX", onClick: () => window.open(`${env.blockExplorerUrl}/tx/${depositTxState.hash}`, "_blank") }
                 : undefined,
         });
+        if (address && depositTxState.hash) {
+            pushToHistoryCache(address, {
+                type: "Deposit",
+                asset,
+                amount: parsedDeposit.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 }),
+                chain: selectedAsset.route,
+                date: new Date(),
+                txHash: depositTxState.hash,
+            });
+        }
         setDepositAmount("");
         const t = setTimeout(resetDeposit, 2500);
         return () => clearTimeout(t);
@@ -165,6 +176,16 @@ export default function VaultPage() {
                 ? { label: "View TX", onClick: () => window.open(`${env.blockExplorerUrl}/tx/${withdrawTxState.hash}`, "_blank") }
                 : undefined,
         });
+        if (address && withdrawTxState.hash) {
+            pushToHistoryCache(address, {
+                type: "Withdraw",
+                asset,
+                amount: parsedWithdraw.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 }),
+                chain: selectedAsset.route,
+                date: new Date(),
+                txHash: withdrawTxState.hash,
+            });
+        }
         setWithdrawAmount("");
         const t = setTimeout(resetWithdraw, 2500);
         return () => clearTimeout(t);
