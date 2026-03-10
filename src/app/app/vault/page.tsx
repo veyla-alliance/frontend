@@ -10,7 +10,7 @@ import { AmountInput } from "@/components/app/vault/AmountInput";
 import { DepositPreview } from "@/components/app/vault/DepositPreview";
 import { VaultStats } from "@/components/app/vault/VaultStats";
 import { TxButton } from "@/components/app/vault/TxButton";
-import { useDeposit, useWithdraw, useERC20Balance, useUserPositions, useTokenApys } from "@/hooks";
+import { useDeposit, useWithdraw, useERC20Balance, useUserPositions, useTokenApys, useTokenPrices } from "@/hooks";
 import { TOKEN_ADDRESSES } from "@/lib/constants";
 import { env } from "@/lib/env";
 import { cn } from "@/lib/utils";
@@ -85,6 +85,7 @@ export default function VaultPage() {
     const { address } = useConnection();
     const chainId = useChainId();
     const { dotApy, usdtApy } = useTokenApys();
+    const { prices } = useTokenPrices();
 
     // Real APYs from contract — fallback to static if not yet loaded
     const liveApys: Record<string, number> = {
@@ -119,13 +120,13 @@ export default function VaultPage() {
 
     // Deposit
     const parsedDeposit   = parseFloat(depositAmount) || 0;
-    const depositUsdValue = parsedDeposit * selectedAsset.price;
+    const depositUsdValue = parsedDeposit * prices[asset as AssetSymbol];
     const depositBalance  = walletBalances[asset];
     const depositIsValid  = isCorrectChain && parsedDeposit > 0 && parsedDeposit <= depositBalance && !!tokenAddress;
 
     // Withdraw
     const parsedWithdraw    = parseFloat(withdrawAmount) || 0;
-    const withdrawUsdValue  = parsedWithdraw * selectedAsset.price;
+    const withdrawUsdValue  = parsedWithdraw * prices[asset as AssetSymbol];
     const withdrawBalance   = vaultBalances[asset];
     const withdrawIsValid   = isCorrectChain && parsedWithdraw > 0 && parsedWithdraw <= withdrawBalance && !!tokenAddress;
     const hasPosition       = withdrawBalance > 0;

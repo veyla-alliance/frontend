@@ -5,7 +5,7 @@ import { formatUnits } from "viem";
 import { useConnection } from "wagmi";
 import { StatCard } from "@/components/app/dashboard/StatCard";
 import { PositionsTable } from "@/components/app/dashboard/PositionsTable";
-import { useUserPositions } from "@/hooks";
+import { useUserPositions, useTokenPrices } from "@/hooks";
 import { useVaultHistory } from "@/hooks/useVaultHistory";
 import { ASSETS } from "@/components/app/vault/AssetSelector";
 import type { AssetSymbol, ActivityType } from "@/types";
@@ -29,7 +29,8 @@ function formatTokenAmount(amount: bigint, asset: AssetSymbol): string {
 
 export default function DashboardPage() {
     const { address } = useConnection();
-    const { positions, isLoading } = useUserPositions();
+    const { prices } = useTokenPrices();
+    const { positions, isLoading } = useUserPositions(prices as Record<string, number>);
     const { rows: historyRows, loading: historyLoading } = useVaultHistory();
 
     const activityItems = historyRows.slice(0, 5).map(row => ({
@@ -45,14 +46,26 @@ export default function DashboardPage() {
         : null;
     const bestRoute = positions[0]?.deployedTo ?? null;
 
-    // Show deposited/earned as token amounts (no price feed yet)
+    const depositedUsdTotal = positions.reduce((s, p) => s + p.depositedUsd, 0);
+    const earnedUsdTotal    = positions.reduce((s, p) => s + p.earnedUsd,    0);
+
     const depositedLabel = positions.length === 0
         ? "—"
-        : positions.map(p => formatTokenAmount(p.depositedAmount, p.asset as AssetSymbol)).join(" + ");
+        : depositedUsdTotal > 0
+            ? `$${depositedUsdTotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            : positions.map(p => formatTokenAmount(p.depositedAmount, p.asset as AssetSymbol)).join(" + ");
+
+    const depositedSub = positions.length === 0
+        ? "No active positions"
+        : depositedUsdTotal > 0
+            ? positions.map(p => formatTokenAmount(p.depositedAmount, p.asset as AssetSymbol)).join(" + ")
+            : `${positions.length} active position${positions.length !== 1 ? "s" : ""}`;
 
     const earnedLabel = positions.length === 0
         ? "—"
-        : positions.map(p => formatTokenAmount(p.earnedAmount, p.asset as AssetSymbol)).join(" + ");
+        : earnedUsdTotal > 0
+            ? `$${earnedUsdTotal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 6 })}`
+            : positions.map(p => formatTokenAmount(p.earnedAmount, p.asset as AssetSymbol)).join(" + ");
 
     return (
         <div className="flex flex-col gap-5 p-6 md:p-8 pb-24 lg:pb-8">
@@ -76,7 +89,7 @@ export default function DashboardPage() {
                 <StatCard
                     label="Total Deposited"
                     value={isLoading ? "…" : depositedLabel}
-                    sub={positions.length > 0 ? `${positions.length} active position${positions.length !== 1 ? "s" : ""}` : "No active positions"}
+                    sub={isLoading ? "" : depositedSub}
                 />
                 <StatCard
                     label="Current APY"
