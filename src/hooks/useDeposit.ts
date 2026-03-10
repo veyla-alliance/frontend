@@ -8,7 +8,7 @@ import { wagmiConfig } from "@/lib/wagmi";
 import { env } from "@/lib/env";
 import { vaultAbi } from "@/lib/abi/vault";
 import { erc20Abi } from "@/lib/abi/erc20";
-import { parseError } from "@/lib/txUtils";
+import { parseError, isUserRejection } from "@/lib/txUtils";
 import type { TxState } from "@/types";
 
 /**
@@ -92,7 +92,11 @@ export function useDeposit() {
 
             setTxState({ status: "pending", hash });
         } catch (err) {
-            setTxState({ status: "error", error: parseError(err) });
+            if (isUserRejection(err)) {
+                setTxState({ status: "idle", hash: undefined });
+            } else {
+                setTxState({ status: "error", error: parseError(err) });
+            }
         }
     }
 
