@@ -74,7 +74,7 @@ export default function Hero() {
                             Start Earning
                             <ArrowRight size={16} />
                         </Button>
-                        <Button variant="secondary" href="#">Read Docs</Button>
+                        <Button variant="secondary" href="/docs">Read Docs</Button>
                     </div>
                 </FadeIn>
             </div>
