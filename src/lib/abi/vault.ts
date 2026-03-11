@@ -21,6 +21,13 @@ export const vaultAbi = [
         ],
         outputs: [],
     },
+    {
+        name: "claimYield",
+        type: "function",
+        stateMutability: "nonpayable",
+        inputs: [{ name: "token", type: "address" }],
+        outputs: [],
+    },
 
     // ── Read ─────────────────────────────────────────────────────────────────
 
@@ -104,6 +111,14 @@ export const vaultAbi = [
             { name: "token",       type: "address", indexed: true  },
             { name: "destination", type: "bytes",   indexed: false },
             { name: "amount",      type: "uint256", indexed: false },
+        ],
+    },
+    {
+        name: "YieldPoolFunded",
+        type: "event",
+        inputs: [
+            { name: "from",   type: "address", indexed: true  },
+            { name: "amount", type: "uint256", indexed: false },
         ],
     },
 ] as const;

@@ -1,6 +1,16 @@
 "use client";
 
 import { useConnection, useChainId } from "wagmi";
+
+// EIP-1193 provider type — replaces (window as any).ethereum casts.
+interface EthereumProvider {
+    request: (args: { method: string; params?: unknown[] }) => Promise<unknown>;
+}
+declare global {
+    interface Window {
+        ethereum?: EthereumProvider;
+    }
+}
 import { disconnect, switchChain } from "@wagmi/core";
 import { useState } from "react";
 import { LogOut, Wallet, AlertTriangle, HelpCircle, X } from "lucide-react";
@@ -45,9 +55,9 @@ export function WalletButton({ className }: { className?: string }) {
             //   updatable fields (RPC URL, block explorer). Note: nativeCurrency cannot
             //   be changed by MetaMask's security policy once a chain is saved — those
             //   users need to remove & re-add the network manually.
-            if (typeof window !== "undefined" && (window as any).ethereum) {
+            if (typeof window !== "undefined" && window.ethereum) {
                 try {
-                    await (window as any).ethereum.request({
+                    await window.ethereum.request({
                         method: "wallet_addEthereumChain",
                         params: [PASSET_HUB_CHAIN_PARAMS],
                     });

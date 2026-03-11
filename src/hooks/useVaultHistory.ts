@@ -23,19 +23,52 @@ type CachedRow = Omit<HistoryRow, "date"> & { date: string };
 interface HistoryCache {
     rows: CachedRow[];
     lastBlock: string; // bigint serialized as decimal string
+    savedAt:   string; // ISO timestamp for TTL check
 }
+
+// Cache expires after 7 days — forces a full re-sync on stale clients.
+const CACHE_TTL_MS  = 7 * 24 * 60 * 60 * 1000;
+// Cap at 200 rows to bound localStorage usage (~50–100 KB typical).
+const CACHE_MAX_ROWS = 200;
 
 function cacheKey(address: string) {
     return `veyla_history_${address.toLowerCase()}`;
+}
+
+/** Runtime schema guard — rejects rows with missing or wrong-typed fields. */
+function isValidCachedRow(r: unknown): r is CachedRow {
+    if (typeof r !== "object" || r === null) return false;
+    const row = r as Record<string, unknown>;
+    return (
+        typeof row.type   === "string" &&
+        typeof row.asset  === "string" &&
+        typeof row.amount === "string" &&
+        typeof row.chain  === "string" &&
+        typeof row.date   === "string" &&
+        typeof row.txHash === "string" &&
+        (row.txHash as string).startsWith("0x")
+    );
 }
 
 function loadCache(address: string): { rows: HistoryRow[]; lastBlock: bigint } {
     try {
         const raw = localStorage.getItem(cacheKey(address));
         if (!raw) return { rows: [], lastBlock: 0n };
-        const parsed: HistoryCache = JSON.parse(raw);
+        const parsed = JSON.parse(raw) as Partial<HistoryCache>;
+
+        // TTL check — discard stale cache to force a fresh chain scan
+        if (parsed.savedAt) {
+            const age = Date.now() - new Date(parsed.savedAt).getTime();
+            if (age > CACHE_TTL_MS) return { rows: [], lastBlock: 0n };
+        }
+
+        // Schema validation — silently drop malformed rows
+        const validRows: HistoryRow[] = (Array.isArray(parsed.rows) ? parsed.rows : [])
+            .filter(isValidCachedRow)
+            .map(r => ({ ...r, date: new Date(r.date) }));
+
         return {
-            rows:      parsed.rows.map(r => ({ ...r, date: new Date(r.date) })),
+            rows:      validRows,
             lastBlock: BigInt(parsed.lastBlock ?? "0"),
         };
     } catch {
@@ -46,8 +79,9 @@ function loadCache(address: string): { rows: HistoryRow[]; lastBlock: bigint } {
 function saveCache(address: string, rows: HistoryRow[], lastBlock: bigint) {
     try {
         const cache: HistoryCache = {
-            rows:      rows.map(r => ({ ...r, date: r.date.toISOString() })),
+            rows:      rows.slice(0, CACHE_MAX_ROWS).map(r => ({ ...r, date: r.date.toISOString() })),
             lastBlock: lastBlock.toString(),
+            savedAt:   new Date().toISOString(),
         };
         localStorage.setItem(cacheKey(address), JSON.stringify(cache));
     } catch {
