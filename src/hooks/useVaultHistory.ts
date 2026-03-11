@@ -114,13 +114,23 @@ export function useVaultHistory() {
             for (const log of rawLogs) {
                 try {
                     const decoded = decodeEventLog({ abi: vaultAbi, data: log.data, topics: log.topics });
-                    if (decoded.eventName !== "Deposited" && decoded.eventName !== "Withdrawn") continue;
+                    if (
+                        decoded.eventName !== "Deposited" &&
+                        decoded.eventName !== "Withdrawn" &&
+                        decoded.eventName !== "YieldClaimed"
+                    ) continue;
                     const args = decoded.args as { user: string; token: string; amount: bigint };
                     if (args.user.toLowerCase() !== address.toLowerCase()) continue;
                     if (!log.blockNumber || !log.transactionHash) continue;
 
+                    const typeMap = {
+                        Deposited:    "Deposit",
+                        Withdrawn:    "Withdraw",
+                        YieldClaimed: "Earn",
+                    } as const;
+
                     entries.push({
-                        type: decoded.eventName === "Deposited" ? "Deposit" : "Withdraw",
+                        type: typeMap[decoded.eventName],
                         token: args.token,
                         amount: args.amount,
                         blockNumber: log.blockNumber,

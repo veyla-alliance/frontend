@@ -88,6 +88,15 @@ export const vaultAbi = [
         ],
     },
     {
+        name: "YieldClaimed",
+        type: "event",
+        inputs: [
+            { name: "user",   type: "address", indexed: true  },
+            { name: "token",  type: "address", indexed: true  },
+            { name: "amount", type: "uint256", indexed: false },
+        ],
+    },
+    {
         name: "Routed",
         type: "event",
         inputs: [
