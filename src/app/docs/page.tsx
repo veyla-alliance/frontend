@@ -26,14 +26,14 @@ function SectionAnchor({ id }: { id: string }) {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
     return (
-        <h2 className="text-[28px] md:text-[34px] font-bold text-[var(--veyla-text-main)] tracking-[-0.5px] mb-4">
+        <h2 className="text-[24px] md:text-[34px] font-bold text-[var(--veyla-text-main)] tracking-[-0.5px] mb-4">
             {children}
         </h2>
     );
 }
 
 function SectionLead({ children }: { children: React.ReactNode }) {
-    return <p className="text-[17px] text-[var(--veyla-text-muted)] leading-[1.75] mb-8">{children}</p>;
+    return <p className="text-[15px] md:text-[17px] text-[var(--veyla-text-muted)] leading-[1.75] mb-8">{children}</p>;
 }
 
 function Divider() {
@@ -141,6 +141,148 @@ function Step({ number, title, children }: { number: number; title: string; chil
     );
 }
 
+function ArchitectureDiagram() {
+    function ArrowDown({ label }: { label?: string }) {
+        return (
+            <div className="flex flex-col items-center py-1">
+                <div className="w-px h-5 bg-[rgba(123,57,252,0.35)]" />
+                {label && (
+                    <div className="my-1 px-3 py-1 rounded-md [font-family:var(--font-geist-pixel-square),monospace] text-[10px] tracking-[0.5px] bg-[rgba(123,57,252,0.08)] border border-[rgba(123,57,252,0.15)] text-[rgba(160,109,250,0.8)] whitespace-nowrap">
+                        {label}
+                    </div>
+                )}
+                <div className="w-px h-5 bg-[rgba(123,57,252,0.35)]" />
+                <svg width="10" height="6" viewBox="0 0 10 6" className="shrink-0">
+                    <path d="M1 1 L5 5 L9 1" fill="none" stroke="rgba(123,57,252,0.55)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+            </div>
+        );
+    }
+
+    return (
+        <div className="mt-4 mb-8 rounded-2xl border border-white/[0.06] bg-[#06060d] p-6 md:p-8 overflow-x-auto">
+            <div className="min-w-[520px]">
+
+                {/* ── Wallet ── */}
+                <div className="flex justify-center">
+                    <div className="px-6 py-3 rounded-xl border border-white/[0.12] bg-white/[0.03] text-center">
+                        <div className="text-[15px] font-semibold text-[var(--veyla-text-main)]">User Wallet</div>
+                        <div className="text-[12px] text-[var(--veyla-text-dim)] mt-0.5">MetaMask · Rabby · Coinbase Wallet</div>
+                    </div>
+                </div>
+
+                <ArrowDown label="EVM JSON-RPC · Chain 420420417" />
+
+                {/* ── Polkadot Hub ── */}
+                <div className="relative rounded-2xl border border-dashed border-[rgba(123,57,252,0.22)] bg-[rgba(123,57,252,0.02)] p-5">
+                    <div className="absolute -top-3.5 left-4 bg-[#06060d] px-2">
+                        <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[10px] tracking-[2px] text-[rgba(160,109,250,0.6)] font-bold">POLKADOT HUB</span>
+                    </div>
+
+                    <div className="flex gap-3 items-stretch">
+                        {/* VeylaVault */}
+                        <div className="flex-1 rounded-xl border border-[rgba(123,57,252,0.28)] bg-[rgba(123,57,252,0.07)] p-4">
+                            <div className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] text-[var(--veyla-purple-soft)] font-bold mb-3 pb-2.5 border-b border-[rgba(123,57,252,0.2)] text-center tracking-[0.5px]">
+                                VeylaVault.sol
+                            </div>
+                            <div className="space-y-2">
+                                {[
+                                    { fn: "deposit(token, amount)",          tag: "payable",     xcm: false },
+                                    { fn: "withdraw(token, amount)",         tag: "nonpayable",  xcm: false },
+                                    { fn: "balanceOf / earned / currentApy", tag: "view",        xcm: false },
+                                ].map(({ fn, tag }) => (
+                                    <div key={fn} className="flex items-center justify-between gap-4">
+                                        <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[10px] text-[var(--veyla-text-dim)] whitespace-nowrap">{fn}</span>
+                                        <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] text-[rgba(107,107,133,0.6)] italic shrink-0">{tag}</span>
+                                    </div>
+                                ))}
+                                <div className="border-t border-dashed border-[rgba(123,57,252,0.15)] pt-2 mt-1 space-y-2">
+                                    {[
+                                        { fn: "routeAssets(token, xcmMsg)",  tag: "→ XCM" },
+                                        { fn: "sendCrossChain(dest, msg)",   tag: "→ XCM" },
+                                    ].map(({ fn, tag }) => (
+                                        <div key={fn} className="flex items-center justify-between gap-4">
+                                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[10px] text-[var(--veyla-purple-soft)] whitespace-nowrap">{fn}</span>
+                                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] text-[rgba(0,212,255,0.7)] italic shrink-0">{tag}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Arrow: Vault → XCM */}
+                        <div className="flex items-center shrink-0">
+                            <div className="w-4 h-px bg-[rgba(0,212,255,0.3)]" />
+                            <svg width="6" height="10" viewBox="0 0 6 10">
+                                <path d="M1 1 L5 5 L1 9" fill="none" stroke="rgba(0,212,255,0.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </div>
+
+                        {/* XCM Precompile */}
+                        <div className="w-44 shrink-0 rounded-xl border border-[rgba(0,212,255,0.2)] bg-[rgba(0,212,255,0.04)] p-4">
+                            <div className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] text-[var(--veyla-cyan)] font-bold mb-3 pb-2.5 border-b border-[rgba(0,212,255,0.12)] text-center tracking-[0.5px]">
+                                XCM Precompile
+                            </div>
+                            <div className="space-y-1.5">
+                                <div className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] text-[rgba(68,68,90,0.9)] text-center whitespace-nowrap">0x...000a0000</div>
+                                <div className="border-t border-[rgba(0,212,255,0.08)] my-2" />
+                                <div className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] text-[rgba(0,212,255,0.5)] whitespace-nowrap">execute(msg, weight)</div>
+                                <div className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] text-[rgba(0,212,255,0.5)] whitespace-nowrap">send(dest, msg)</div>
+                                <div className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] text-[rgba(0,212,255,0.3)] whitespace-nowrap">weighMessage(msg)</div>
+                                <div className="border-t border-[rgba(0,212,255,0.08)] mt-2 pt-2 text-[9px] text-[var(--veyla-text-dim)] text-center">
+                                    Polkadot Hub native
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ArrowDown label="XCM Message" />
+
+                {/* ── Chain destinations ── */}
+                <div className="grid grid-cols-3 gap-3">
+                    {/* Hydration — ACTIVE */}
+                    <div className="rounded-xl border border-[rgba(74,222,128,0.28)] bg-[rgba(74,222,128,0.05)] p-4 text-center">
+                        <div className="flex items-center justify-center gap-1.5 mb-1.5">
+                            <span className="w-2 h-2 rounded-full bg-[#4ade80] shrink-0" />
+                            <span className="text-[13px] font-semibold text-[#4ade80]">Hydration</span>
+                        </div>
+                        <div className="text-[11px] text-[var(--veyla-text-dim)] mb-2">Omnipool · DOT</div>
+                        <div className="text-[30px] font-bold text-[#4ade80] leading-none">14.2%</div>
+                        <div className="text-[10px] text-[rgba(74,222,128,0.5)] mt-0.5 mb-2">APY</div>
+                        <div className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[1px] text-[rgba(74,222,128,0.6)]">ACTIVE</div>
+                    </div>
+
+                    {/* Moonbeam — STANDBY */}
+                    <div className="rounded-xl border border-white/[0.07] bg-white/[0.02] p-4 text-center">
+                        <div className="flex items-center justify-center gap-1.5 mb-1.5">
+                            <span className="w-2 h-2 rounded-full bg-white/[0.2] shrink-0" />
+                            <span className="text-[13px] font-semibold text-[var(--veyla-text-dim)]">Moonbeam</span>
+                        </div>
+                        <div className="text-[11px] text-[var(--veyla-text-dim)] mb-2">Stellaswap · USDT</div>
+                        <div className="text-[30px] font-bold text-[var(--veyla-text-muted)] leading-none">9.8%</div>
+                        <div className="text-[10px] text-[var(--veyla-text-dim)] mt-0.5 mb-2">APY</div>
+                        <div className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[1px] text-[var(--veyla-text-dim)]">STANDBY</div>
+                    </div>
+
+                    {/* Astar — STANDBY */}
+                    <div className="rounded-xl border border-white/[0.07] bg-white/[0.02] p-4 text-center">
+                        <div className="flex items-center justify-center gap-1.5 mb-1.5">
+                            <span className="w-2 h-2 rounded-full bg-white/[0.2] shrink-0" />
+                            <span className="text-[13px] font-semibold text-[var(--veyla-text-dim)]">Astar</span>
+                        </div>
+                        <div className="text-[11px] text-[var(--veyla-text-dim)] mb-2">ArthSwap · DOT</div>
+                        <div className="text-[30px] font-bold text-[var(--veyla-text-muted)] leading-none">8.1%</div>
+                        <div className="text-[10px] text-[var(--veyla-text-dim)] mt-0.5 mb-2">APY</div>
+                        <div className="[font-family:var(--font-geist-pixel-square),monospace] text-[9px] tracking-[1px] text-[var(--veyla-text-dim)]">STANDBY</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    );
+}
+
 // ── Main page ─────────────────────────────────────────────────────────────────
 export default function DocsPage() {
     const [activeSection, setActiveSection] = useState("overview");
@@ -173,21 +315,31 @@ export default function DocsPage() {
         <div className="min-h-screen bg-[var(--veyla-dark)] text-[var(--veyla-text-main)]">
 
             {/* ── Top navbar ── */}
-            <header className="sticky top-0 z-50 h-14 flex items-center justify-between px-5 md:px-8 border-b border-white/[0.06] bg-[var(--veyla-dark)]/80 backdrop-blur-md">
-                <div className="flex items-center gap-5">
-                    <Link href="/" className="flex items-center gap-2 text-[var(--veyla-text-dim)] hover:text-white transition-colors duration-150 text-[14px]">
-                        <ArrowLeft size={14} />
-                        Back
+            <header className="sticky top-0 z-[100] h-16 shrink-0 flex items-center justify-between px-4 sm:px-6 md:px-8 border-b border-white/[0.06] bg-[#07070d]/50 backdrop-blur-md">
+                <div className="flex items-center gap-3 sm:gap-5">
+                    {/* Mobile nav toggle (left side like AppTopbar) */}
+                    <button
+                        onClick={() => setMobileNavOpen((v) => !v)}
+                        className="md:hidden w-9 h-9 rounded-lg flex items-center justify-center text-[var(--veyla-text-muted)] hover:text-white hover:bg-white/[0.06] transition-all duration-150"
+                        aria-label="Toggle Menu"
+                    >
+                        {mobileNavOpen ? <X size={18} /> : <Menu size={18} />}
+                    </button>
+
+                    <Link href="/" className="hidden min-[400px]:flex items-center gap-1 sm:gap-2 text-[var(--veyla-text-dim)] hover:text-white transition-colors duration-150 text-[13px] sm:text-[14px]">
+                        <ArrowLeft size={14} className="shrink-0" />
+                        <span className="hidden sm:block">Back</span>
                     </Link>
-                    <div className="w-px h-4 bg-white/[0.08]" />
+                    <div className="hidden min-[400px]:block w-px h-4 bg-white/[0.08]" />
                     <Link href="/" className="flex items-center gap-2">
                         <div className="relative w-5 h-5">
                             <Image src="/veyla-icon.svg" alt="Veyla" fill />
                         </div>
-                        <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[14px] tracking-[3px] text-white/60">VEYLA</span>
+                        <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[13px] sm:text-[14px] tracking-[2px] sm:tracking-[3px] text-white/60">VEYLA</span>
                     </Link>
                     <div className="w-px h-4 bg-white/[0.08] hidden md:block" />
-                    <span className="hidden md:block text-[14px] text-[var(--veyla-text-dim)]">Documentation</span>
+                    <span className="hidden md:block text-[14px] text-[var(--veyla-text-dim)] font-semibold tracking-[-0.2px]">Documentation</span>
+                    <span className="md:hidden text-[16px] font-semibold text-[var(--veyla-text-main)] tracking-[-0.2px] ml-1">Docs</span>
                 </div>
                 <div className="flex items-center gap-3">
                     <a
@@ -200,26 +352,26 @@ export default function DocsPage() {
                     </a>
                     <Link
                         href="/app"
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[rgba(123,57,252,0.15)] border border-[rgba(123,57,252,0.25)] text-[13px] font-semibold text-[var(--veyla-purple-soft)] hover:bg-[rgba(123,57,252,0.22)] transition-colors duration-150"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[rgba(123,57,252,0.15)] border border-[rgba(123,57,252,0.25)] text-[12px] sm:text-[13px] font-semibold text-[var(--veyla-purple-soft)] hover:bg-[rgba(123,57,252,0.22)] transition-colors duration-150"
                     >
-                        Launch App <ChevronRight size={11} />
+                        Launch <span className="hidden sm:inline">App</span> <ChevronRight size={11} className="shrink-0" />
                     </Link>
-                    {/* Mobile nav toggle */}
-                    <button
-                        onClick={() => setMobileNavOpen((v) => !v)}
-                        className="md:hidden w-8 h-8 flex items-center justify-center text-[var(--veyla-text-dim)] hover:text-white"
-                    >
-                        {mobileNavOpen ? <X size={16} /> : <Menu size={16} />}
-                    </button>
                 </div>
             </header>
 
-            {/* Mobile sidebar overlay */}
+            {/* Mobile sidebar overlay matching AppMobileNav */}
             {mobileNavOpen && (
-                <div className="fixed inset-0 top-14 z-40 md:hidden">
-                    <div className="absolute inset-0 bg-black/60" onClick={() => setMobileNavOpen(false)} />
-                    <nav className="absolute left-0 top-0 bottom-0 w-64 bg-[#07070d] border-r border-white/[0.06] p-4">
-                        <SidebarContent activeSection={activeSection} scrollTo={scrollTo} />
+                <div className="md:hidden">
+                    <div
+                        className="fixed inset-0 top-16 z-[9998] bg-black/80 backdrop-blur-md"
+                        onClick={() => setMobileNavOpen(false)}
+                        style={{ height: 'calc(100vh - 64px)' }}
+                    />
+                    <nav
+                        className="fixed top-16 left-0 right-0 z-[9999] bg-[var(--veyla-dark)] border-t border-white/[0.06] p-4 flex flex-col gap-1 shadow-2xl overflow-y-auto"
+                        style={{ height: 'calc(100vh - 64px)' }}
+                    >
+                        <SidebarContent activeSection={activeSection} scrollTo={scrollTo} isMobile />
                     </nav>
                 </div>
             )}
@@ -228,24 +380,24 @@ export default function DocsPage() {
 
                 {/* ── Desktop sidebar ── */}
                 <aside className="hidden md:block w-[220px] shrink-0">
-                    <div className="sticky top-14 pt-8 pb-8 pr-6 h-[calc(100vh-56px)] overflow-y-auto">
+                    <div className="sticky top-16 pt-8 pb-8 pr-6 h-[calc(100vh-64px)] overflow-y-auto">
                         <SidebarContent activeSection={activeSection} scrollTo={scrollTo} />
                     </div>
                 </aside>
 
                 {/* ── Main content ── */}
-                <main className="flex-1 min-w-0 px-5 md:px-10 py-10 pb-32">
+                <main className="flex-1 min-w-0 px-4 md:px-10 py-6 md:py-10 pb-32 overflow-hidden">
 
                     {/* ══ OVERVIEW ═══════════════════════════════════════════════════ */}
                     <SectionAnchor id="overview" />
                     <div className="mb-3 flex items-center gap-2">
                         <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[2px] text-[var(--veyla-purple)] uppercase">Protocol</span>
                     </div>
-                    <h1 className="text-[40px] md:text-[52px] font-bold tracking-[-1.5px] leading-[1.1] text-[var(--veyla-text-main)] mb-5">
-                        Veyla Docs
+                    <h1 className="text-[32px] md:text-[52px] font-bold tracking-[-1.5px] leading-[1.1] text-[var(--veyla-text-main)] mb-5 break-words">
+                        Veyla Protocol Docs
                     </h1>
-                    <p className="text-[18px] text-[var(--veyla-text-muted)] leading-[1.75] mb-8 max-w-[640px]">
-                        Complete technical documentation for Veyla — the automated yield optimization protocol built natively on Polkadot Hub using PVM smart contracts and XCM cross-chain routing.
+                    <p className="text-[16px] md:text-[18px] text-[var(--veyla-text-muted)] leading-[1.75] mb-8 max-w-[640px]">
+                        Complete technical documentation for Veyla Protocol — the automated yield optimization protocol built natively on Polkadot Hub using PVM smart contracts and XCM cross-chain routing.
                     </p>
 
                     <div className="flex flex-wrap gap-3 mb-10">
@@ -269,15 +421,15 @@ export default function DocsPage() {
                         ))}
                     </div>
 
-                    <InfoBox title="What is Veyla?" color="purple">
-                        Veyla is an automated yield optimization protocol on Polkadot Hub. Users deposit DOT or USDT into a single vault.
+                    <InfoBox title="What is Veyla Protocol?" color="purple">
+                        Veyla Protocol is an automated yield optimization protocol on Polkadot Hub. Users deposit DOT or USDT into a single vault.
                         The protocol detects the highest yields across connected parachains, routes liquidity via native XCM, and auto-compounds
                         assets — all on-chain, no bridges, no manual management.
                     </InfoBox>
 
                     <div className="grid sm:grid-cols-3 gap-4 mb-8">
                         {[
-                            { title: "Deposit Once", desc: "Deposit DOT or USDT into the Veyla vault on Polkadot Hub. That's it." },
+                            { title: "Deposit Once", desc: "Deposit DOT or USDT into the Veyla Protocol vault on Polkadot Hub. That's it." },
                             { title: "Auto-Route", desc: "Smart contract scans APYs and routes via XCM precompile to the best parachain." },
                             { title: "Earn & Compound", desc: "Yield accrues automatically. Withdraw anytime, principal + earned." },
                         ].map((c) => (
@@ -294,37 +446,11 @@ export default function DocsPage() {
                     <SectionAnchor id="architecture" />
                     <SectionTitle>Architecture</SectionTitle>
                     <SectionLead>
-                        Veyla is built entirely on Polkadot Hub (Passet Hub Testnet). The frontend talks to a single deployed Solidity contract
+                        Veyla Protocol is built entirely on Polkadot Hub (Passet Hub Testnet). The frontend talks to a single deployed Solidity contract
                         via standard EVM JSON-RPC, while the contract uses Polkadot-native precompiles for cross-chain operations.
                     </SectionLead>
 
-                    <CodeBlock lang="text" code={`
-User Wallet (MetaMask / Rabby)
-        │
-        │  EVM JSON-RPC  (Chain ID: 420420417)
-        ▼
-┌─────────────────────────────────────────┐
-│         Polkadot Hub (Passet Hub)       │
-│                                         │
-│   ┌──────────────────────────────────┐  │
-│   │         VeylaVault.sol           │  │
-│   │  ─────────────────────────────   │  │
-│   │  deposit(token, amount)          │  │
-│   │  withdraw(token, amount)         │  │
-│   │  balanceOf / earned / currentApy │  │
-│   │  routeAssets() ─► XCM Precompile │  │
-│   │  sendCrossChain() ─► XCM Precomp │  │
-│   └────────────────┬─────────────────┘  │
-│                    │  XCM Precompile    │
-│                    │  0x...000a0000     │
-└────────────────────┼────────────────────┘
-                     │  XCM Message
-          ┌──────────┼──────────┐
-          ▼          ▼          ▼
-     Hydration   Moonbeam    Astar
-    (Omnipool)  (Stellaswap) (ArthSwap)
-      14.2% APY   9.8% APY   8.1% APY
-    `} />
+                    <ArchitectureDiagram />
 
                     <Table
                         headers={["Layer", "Technology", "Purpose"]}
@@ -349,9 +475,9 @@ User Wallet (MetaMask / Rabby)
                         Veyla uses two XCM precompile functions to route assets between parachains — without any bridge, relayer, or wrapped token.
                     </SectionLead>
 
-                    <InfoBox title="Why XCM matters for Track 2" color="cyan">
-                        Polkadot Solidity Hackathon Track 2 specifically rewards projects that use Polkadot-native functionality via precompiles.
-                        Veyla calls both <strong>execute()</strong> (local XCM) and <strong>send()</strong> (cross-chain XCM) from within the smart contract,
+                    <InfoBox title="Why XCM matters" color="cyan">
+                        Veyla Protocol utilizes Polkadot-native functionality via precompiles to securely route assets and instruction payloads natively.
+                        Veyla Protocol calls both <strong>execute()</strong> (local XCM) and <strong>send()</strong> (cross-chain XCM) from within the smart contract,
                         demonstrating deep integration with Polkadot's core messaging primitives.
                     </InfoBox>
 
@@ -645,7 +771,7 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                     <SectionAnchor id="roadmap" />
                     <SectionTitle>Roadmap</SectionTitle>
                     <SectionLead>
-                        Veyla was built in 10 days for the Polkadot Solidity Hackathon 2026. Below is what's live today and what comes next.
+                        Below is what is currently live today for Veyla Protocol and our plans for the future.
                     </SectionLead>
 
                     <div className="space-y-4 mb-10">
@@ -697,10 +823,10 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                         ].map(({ phase, status, items }) => (
                             <div key={phase} className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
                                 <div className={cn(
-                                    "px-5 py-3.5 flex items-center justify-between border-b border-white/[0.05]",
+                                    "px-4 py-3 sm:px-5 sm:py-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0 border-b border-white/[0.05]",
                                     status === "live" && "bg-[rgba(74,222,128,0.04)]"
                                 )}>
-                                    <span className="text-[16px] font-semibold text-[var(--veyla-text-main)]">{phase}</span>
+                                    <span className="text-[15px] sm:text-[16px] font-semibold text-[var(--veyla-text-main)] leading-snug">{phase}</span>
                                     {status === "live" ? (
                                         <span className="flex items-center gap-1.5 [font-family:var(--font-geist-pixel-square),monospace] text-[10px] tracking-[1px] text-[#4ade80]">
                                             <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80] animate-pulse" />
@@ -710,7 +836,7 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                                         <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[10px] tracking-[1px] text-[var(--veyla-text-dim)]">PLANNED</span>
                                     )}
                                 </div>
-                                <ul className="px-5 py-4 space-y-2">
+                                <ul className="px-4 sm:px-5 py-4 space-y-2">
                                     {items.map((item) => (
                                         <li key={item} className="flex items-start gap-2.5 text-[15px] text-[var(--veyla-text-muted)]">
                                             <span className={cn(
@@ -736,11 +862,11 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                         {[
                             {
                                 q: "Why does MetaMask show PAS instead of DOT?",
-                                a: "Passet Hub Testnet uses PAS (Paseo) as its native token — the testnet equivalent of DOT. They are functionally identical in this context. When you deposit 'DOT' on Veyla, MetaMask shows PAS because that's the actual testnet currency. On mainnet, this will be DOT."
+                                a: "Passet Hub Testnet uses PAS (Paseo) as its native token — the testnet equivalent of DOT. They are functionally identical in this context. When you deposit 'DOT' on Veyla Protocol, MetaMask shows PAS because that's the actual testnet currency. On mainnet, this will be DOT."
                             },
                             {
                                 q: "Is there a withdrawal fee?",
-                                a: "No. Veyla charges zero withdrawal fees. The protocol earns a 0.5% performance fee on yield generated (not on principal). You always get back what you put in, plus earned yield."
+                                a: "No. Veyla Protocol charges zero withdrawal fees. The protocol earns a 0.5% performance fee on yield generated (not on principal). You always get back what you put in, plus earned yield."
                             },
                             {
                                 q: "How does yield get generated?",
@@ -752,7 +878,7 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                             },
                             {
                                 q: "Do you use bridges?",
-                                a: "No. Veyla uses Polkadot's native XCM (Cross-Consensus Messaging) protocol, which is built into the relay chain. There are no external bridges, wrapped tokens, or third-party relayers. Assets move natively between parachains."
+                                a: "No. Veyla Protocol uses Polkadot's native XCM (Cross-Consensus Messaging) protocol, which is built into the relay chain. There are no external bridges, wrapped tokens, or third-party relayers. Assets move natively between parachains."
                             },
                             {
                                 q: "Is the contract audited?",
@@ -764,15 +890,15 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                             },
                             {
                                 q: "Can I see the source code?",
-                                a: "Yes. Veyla is fully open source. Frontend, smart contract, tests, and deploy scripts are all available on GitHub."
+                                a: "Yes. Veyla Protocol is fully open source. Frontend, smart contract, tests, and deploy scripts are all available on GitHub."
                             },
                         ].map(({ q, a }) => (
                             <details key={q} className="group rounded-xl border border-white/[0.07] bg-white/[0.02] overflow-hidden cursor-pointer">
-                                <summary className="flex items-center justify-between px-5 py-4 text-[16px] font-semibold text-[var(--veyla-text-main)] list-none select-none">
-                                    {q}
+                                <summary className="flex items-center justify-between px-4 py-3.5 sm:px-5 sm:py-4 text-[15px] sm:text-[16px] font-semibold text-[var(--veyla-text-main)] list-none select-none gap-4">
+                                    <span className="leading-snug">{q}</span>
                                     <ChevronRight size={16} className="shrink-0 text-[var(--veyla-text-dim)] group-open:rotate-90 transition-transform duration-200" />
                                 </summary>
-                                <div className="px-5 pb-4 pt-0 text-[15px] text-[var(--veyla-text-muted)] leading-[1.75] border-t border-white/[0.04]">
+                                <div className="px-4 pb-4 sm:px-5 sm:pb-4 pt-0 text-[14px] sm:text-[15px] text-[var(--veyla-text-muted)] leading-[1.75] border-t border-white/[0.04]">
                                     <div className="pt-4">{a}</div>
                                 </div>
                             </details>
@@ -782,9 +908,9 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                     {/* ── Footer ── */}
                     <div className="mt-16 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div>
-                            <div className="[font-family:var(--font-geist-pixel-square),monospace] text-[13px] tracking-[3px] text-white/40 mb-1">VEYLA</div>
+                            <div className="[font-family:var(--font-geist-pixel-square),monospace] text-[13px] tracking-[3px] text-[var(--veyla-purple)] mb-1">VEYLA PROTOCOL</div>
                             <div className="text-[13px] text-[var(--veyla-text-dim)]">
-                                Built for Polkadot Solidity Hackathon 2026 · Track 2: PVM Smart Contracts
+                                Built by Veyla Alliance for Polkadot Solidity Hackathon 2026
                             </div>
                         </div>
                         <div className="flex items-center gap-4">
@@ -810,7 +936,48 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
 }
 
 // ── Sidebar content (shared between desktop + mobile drawer) ──────────────────
-function SidebarContent({ activeSection, scrollTo }: { activeSection: string; scrollTo: (id: string) => void }) {
+function SidebarContent({ activeSection, scrollTo, isMobile = false }: { activeSection: string; scrollTo: (id: string) => void, isMobile?: boolean }) {
+    if (isMobile) {
+        return (
+            <>
+                {SECTIONS.map(({ id, label }) => {
+                    const isActive = activeSection === id;
+                    return (
+                        <button
+                            key={id}
+                            onClick={() => scrollTo(id)}
+                            className={cn(
+                                "flex items-center gap-3 px-4 py-3 rounded-xl text-[16px] font-medium transition-all duration-150 text-left",
+                                isActive
+                                    ? "bg-[rgba(123,57,252,0.1)] text-white border border-[rgba(123,57,252,0.15)]"
+                                    : "text-[var(--veyla-text-muted)] hover:text-white hover:bg-white/[0.04] border border-transparent"
+                            )}
+                        >
+                            <span className={cn(
+                                "w-2 h-2 rounded-full shrink-0",
+                                isActive ? "bg-[var(--veyla-purple-soft)]" : "bg-white/[0.15]"
+                            )} />
+                            {label}
+                        </button>
+                    );
+                })}
+
+                <div className="mt-2 pt-4 border-t border-white/[0.05] flex flex-col gap-2">
+                    <a
+                        href="https://blockscout-testnet.polkadot.io/address/0x741ec097b0d3dc7544c58c1b7401cb7540d2829b"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl text-[16px] font-medium transition-all duration-150 no-underline text-[var(--veyla-text-muted)] hover:text-white hover:bg-white/[0.04] border border-transparent"
+                    >
+                        <span className="w-2 h-2 rounded-full bg-[#4ade80] shrink-0" />
+                        Contract live
+                        <ExternalLink size={14} className="ml-auto opacity-50" />
+                    </a>
+                </div>
+            </>
+        );
+    }
+
     return (
         <div>
             <div className="text-[11px] font-semibold tracking-[1.5px] uppercase text-[var(--veyla-text-dim)] mb-3 px-3">
