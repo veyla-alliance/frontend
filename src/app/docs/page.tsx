@@ -534,10 +534,10 @@ interface IXcm {
                         rows={[
                             ["Contract", <InlineCode key="c">VeylaVault.sol</InlineCode>],
                             ["Network", "Passet Hub Testnet (Chain ID: 420420417)"],
-                            ["Address", <InlineCode key="a">0x741Ec097b0D3dc7544c58C1B7401cb7540D2829b</InlineCode>],
+                            ["Address", <InlineCode key="a">0x5196F62a03cCDBed4b5372dC59E982b9A1e2B088</InlineCode>],
                             ["Compiler", "Solidity 0.8.28 (PolkaVM)"],
                             ["Optimizer", "200 runs"],
-                            ["Blockscout", <a key="b" href="https://blockscout-testnet.polkadot.io/address/0x741ec097b0d3dc7544c58c1b7401cb7540d2829b" target="_blank" rel="noopener noreferrer" className="text-[var(--veyla-purple-soft)] flex items-center gap-1 hover:text-white transition-colors">View on Blockscout <ExternalLink size={11} /></a>],
+                            ["Blockscout", <a key="b" href="https://blockscout-testnet.polkadot.io/address/0x5196f62a03ccDbed4b5372dc59e982b9a1e2b088" target="_blank" rel="noopener noreferrer" className="text-[var(--veyla-purple-soft)] flex items-center gap-1 hover:text-white transition-colors">View on Blockscout <ExternalLink size={11} /></a>],
                         ]}
                     />
 
@@ -572,9 +572,10 @@ function _accrueYield(address user, address token) internal {
     `} />
 
                     <h3 className="text-[20px] font-semibold text-[var(--veyla-text-main)] mb-4 mt-8">Test Coverage</h3>
-                    <InfoBox title="35/35 Tests Passing" color="green">
-                        Full unit test suite including 2 fuzz tests. Coverage includes: deposit (DOT + USDT), withdraw, yield accrual,
-                        multi-deposit accuracy, XCM routing calls, access control (onlyOwner), pause mechanism, and custom error handling.
+                    <InfoBox title="50/50 Tests Passing" color="green">
+                        Full unit + fuzz test suite (4 fuzz tests, 256 runs each). Coverage includes: deposit (DOT + USDT), withdraw,
+                        yield accrual, multi-deposit accuracy, XCM routing calls, access control (onlyOwner), pause mechanism,
+                        2-step ownership transfer, principal protection when yield pool is empty, and all custom error paths.
                     </InfoBox>
 
                     <Divider />
@@ -650,7 +651,7 @@ Withdrawal (DOT or USDT):
                         <CodeBlock lang="bash" code={`NEXT_PUBLIC_CHAIN_ID=420420417
 NEXT_PUBLIC_RPC_URL=https://eth-rpc-testnet.polkadot.io
 NEXT_PUBLIC_BLOCK_EXPLORER_URL=https://blockscout-testnet.polkadot.io
-NEXT_PUBLIC_VAULT_ADDRESS=0x741Ec097b0D3dc7544c58C1B7401cb7540D2829b
+NEXT_PUBLIC_VAULT_ADDRESS=0x5196F62a03cCDBed4b5372dC59E982b9A1e2B088
 NEXT_PUBLIC_DOT_TOKEN_ADDRESS=0x0000000000000000000000000000000000000000
 NEXT_PUBLIC_USDT_TOKEN_ADDRESS=0x000007c000000000000000000000000001200000`} />
                     </Step>
@@ -699,9 +700,12 @@ NEXT_PUBLIC_USDT_TOKEN_ADDRESS=0x000007c000000000000000000000000001200000`} />
 // For USDT: approve vault first, set token = USDT precompile address, amount = wei.
 function deposit(address token, uint256 amount) external payable;
 
-// Withdraw deposited principal from the vault.
-// Accrued yield is snapshotted before the withdrawal.
+// Withdraw deposited principal + available yield back to caller.
+// Principal is always returnable even if yield pool is empty.
 function withdraw(address token, uint256 amount) external;
+
+// Harvest accrued yield without closing the position.
+function claimYield(address token) external;
 
 // [Owner only] Execute an XCM message locally via precompile.
 function routeAssets(address token, bytes calldata xcmMessage) external;
@@ -709,14 +713,20 @@ function routeAssets(address token, bytes calldata xcmMessage) external;
 // [Owner only] Send XCM cross-chain to target parachain.
 function sendCrossChain(address token, bytes calldata destination, bytes calldata xcmMessage) external;
 
-// [Owner only] Update APY for an asset (in basis points, e.g. 1420 = 14.20%).
+// [Owner only] Update APY for an asset (basis points, capped at 10_000 = 100%).
 function setApy(address token, uint256 apyBps) external;
 
 // [Owner only] Pause or unpause deposits and withdrawals.
 function setPaused(bool _paused) external;
 
-// [Owner only] Transfer contract ownership.
+// [Owner only] Seed the yield pool (called by owner or via XCM receive()).
+function fundYieldPool() external payable;
+
+// [Owner only] Step 1 of 2-step ownership transfer — nominate new owner.
 function transferOwnership(address newOwner) external;
+
+// [Pending owner only] Step 2 — accept and finalise ownership transfer.
+function acceptOwnership() external;
     `} />
 
                     <h3 className="text-[18px] font-semibold text-[var(--veyla-cyan)] mb-3 mt-8">Read Functions</h3>
@@ -738,6 +748,7 @@ function tvlOf(address token) external view returns (uint256);
 
 // Public state
 address public owner;
+address public pendingOwner;
 bool public paused;
     `} />
 
@@ -745,9 +756,13 @@ bool public paused;
                     <CodeBlock lang="solidity" code={`
 event Deposited(address indexed user, address indexed token, uint256 amount);
 event Withdrawn(address indexed user, address indexed token, uint256 amount);
-event Routed(address indexed token, address destination, uint256 amount);
+event YieldClaimed(address indexed user, address indexed token, uint256 amount);
+event RoutedLocally(address indexed token, uint256 amount);
+event RoutedCrossChain(address indexed token, bytes destination, uint256 amount);
+event YieldPoolFunded(address indexed from, uint256 amount);
 event ApyUpdated(address indexed token, uint256 newApyBps);
 event Paused(bool isPaused);
+event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner);
 event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
     `} />
 
@@ -762,6 +777,9 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                             [<InlineCode key="u">UnsupportedToken()</InlineCode>, "Token address is neither DOT sentinel nor USDT precompile"],
                             [<InlineCode key="c">ContractPaused()</InlineCode>, "Deposit or withdraw while paused = true"],
                             [<InlineCode key="m">MsgValueMismatch()</InlineCode>, "USDT deposit sent with msg.value > 0"],
+                            [<InlineCode key="a">ApyExceedsCap()</InlineCode>, "setApy() called with value above MAX_APY_BPS (10,000 = 100%)"],
+                            [<InlineCode key="za">ZeroAddress()</InlineCode>, "transferOwnership() called with address(0)"],
+                            [<InlineCode key="np">NoPendingOwner()</InlineCode>, "acceptOwnership() called when no transfer is pending"],
                         ]}
                     />
 
@@ -785,7 +803,8 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                                     "DOT (native) + USDT (pallet-assets precompile) deposits & withdrawals",
                                     "XCM precompile integration (execute + send)",
                                     "Automated yield accounting (snapshot pattern)",
-                                    "35/35 unit tests passing + 2 fuzz tests",
+                                    "50/50 tests passing (4 fuzz tests, 256 runs each)",
+                                    "Security audit completed — Critical, High, Medium, Low all fixed",
                                     "Live deployment on Vercel",
                                 ]
                             },
@@ -882,7 +901,7 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                             },
                             {
                                 q: "Is the contract audited?",
-                                a: "Not yet — this is a hackathon MVP. The contract is verified on Blockscout and has 35 passing tests including fuzz tests. A professional audit is planned before any mainnet deployment."
+                                a: "Yes — a full internal security audit was completed (Critical through Low severity), covering APY drain prevention, 2-step ownership transfer, principal protection, and event traceability. The contract has 50 passing tests including 4 fuzz tests (256 runs each) and is verified on Blockscout. A professional third-party audit is planned before mainnet deployment."
                             },
                             {
                                 q: "Which wallets are supported?",
@@ -922,7 +941,7 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                                 className="flex items-center gap-1.5 text-[14px] text-[var(--veyla-text-dim)] hover:text-white transition-colors">
                                 Twitter <ExternalLink size={11} />
                             </a>
-                            <a href="https://blockscout-testnet.polkadot.io/address/0x741ec097b0d3dc7544c58c1b7401cb7540d2829b" target="_blank" rel="noopener noreferrer"
+                            <a href="https://blockscout-testnet.polkadot.io/address/0x5196f62a03ccDbed4b5372dc59e982b9a1e2b088" target="_blank" rel="noopener noreferrer"
                                 className="flex items-center gap-1.5 text-[14px] text-[var(--veyla-text-dim)] hover:text-white transition-colors">
                                 Contract <ExternalLink size={11} />
                             </a>
@@ -964,7 +983,7 @@ function SidebarContent({ activeSection, scrollTo, isMobile = false }: { activeS
 
                 <div className="mt-2 pt-4 border-t border-white/[0.05] flex flex-col gap-2">
                     <a
-                        href="https://blockscout-testnet.polkadot.io/address/0x741ec097b0d3dc7544c58c1b7401cb7540d2829b"
+                        href="https://blockscout-testnet.polkadot.io/address/0x5196f62a03ccDbed4b5372dc59e982b9a1e2b088"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-3 px-4 py-3 rounded-xl text-[16px] font-medium transition-all duration-150 no-underline text-[var(--veyla-text-muted)] hover:text-white hover:bg-white/[0.04] border border-transparent"
@@ -1005,7 +1024,7 @@ function SidebarContent({ activeSection, scrollTo, isMobile = false }: { activeS
 
             <div className="mt-8 px-3 flex flex-col gap-2">
                 <a
-                    href="https://blockscout-testnet.polkadot.io/address/0x741ec097b0d3dc7544c58c1b7401cb7540d2829b"
+                    href="https://blockscout-testnet.polkadot.io/address/0x5196f62a03ccDbed4b5372dc59e982b9a1e2b088"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 text-[13px] text-[var(--veyla-text-dim)] hover:text-white transition-colors"
