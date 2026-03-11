@@ -60,6 +60,12 @@ export function AssetSelector({ value, onChange, balances, apys }: AssetSelector
                     <div className="text-[13px] text-[var(--veyla-text-dim)]">
                         Balance: {selectedBalance.toLocaleString()} {selected.symbol}
                     </div>
+                    {value === "DOT" && (
+                        <div className="text-[11px] text-[var(--veyla-text-dim)] mt-0.5">
+                            Testnet · MetaMask shows as{" "}
+                            <span className="text-[var(--veyla-purple-soft)] font-medium">PAS</span>
+                        </div>
+                    )}
                 </div>
 
                 <ChevronDown
@@ -95,6 +101,13 @@ export function AssetSelector({ value, onChange, balances, apys }: AssetSelector
                                     <div className="text-[13px] text-[var(--veyla-text-dim)]">
                                         {(balances?.[asset.symbol] ?? asset.balance).toLocaleString()} available · {(apys?.[asset.symbol] ?? asset.apy).toFixed(1)}% APY
                                     </div>
+                                    {asset.symbol === "DOT" && (
+                                        <div className="text-[11px] text-[var(--veyla-text-dim)] mt-0.5">
+                                            Testnet · shows as{" "}
+                                            <span className="text-[var(--veyla-purple-soft)] font-medium">PAS</span>{" "}
+                                            in MetaMask
+                                        </div>
+                                    )}
                                 </div>
                                 {value === asset.symbol && (
                                     <Check size={13} className="text-[var(--veyla-purple-soft)]" />

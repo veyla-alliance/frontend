@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 interface AmountInputProps {
     value: string;
     onChange: (v: string) => void;
@@ -9,8 +11,11 @@ interface AmountInputProps {
 }
 
 export function AmountInput({ value, onChange, maxAmount, asset, usdValue }: AmountInputProps) {
+    const [isFocused, setIsFocused] = useState(false);
+
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const raw = e.target.value;
+        // Strip commas first (user might paste a formatted number)
+        const raw = e.target.value.replace(/,/g, "");
         if (raw === "" || /^\d*\.?\d*$/.test(raw)) {
             onChange(raw);
         }
@@ -22,6 +27,17 @@ export function AmountInput({ value, onChange, maxAmount, asset, usdValue }: Amo
         onChange(floored.toString());
     }
 
+    // While focused → show raw string so cursor & typing work normally
+    // While blurred  → show formatted number with thousand separators
+    const numValue = Number(value);
+    const displayValue =
+        isFocused || !value || isNaN(numValue)
+            ? value
+            : numValue.toLocaleString("en-US", {
+                  useGrouping: true,
+                  maximumFractionDigits: 9,
+              });
+
     return (
         <div>
             <div className="flex items-center justify-between mb-2">
@@ -31,7 +47,7 @@ export function AmountInput({ value, onChange, maxAmount, asset, usdValue }: Amo
                 <span className="text-[13px] text-[var(--veyla-text-dim)]">
                     Balance:{" "}
                     <span className="text-[var(--veyla-text-muted)]">
-                        {maxAmount.toLocaleString()} {asset}
+                        {maxAmount.toLocaleString("en-US", { maximumFractionDigits: 6 })} {asset}
                     </span>
                 </span>
             </div>
@@ -42,8 +58,10 @@ export function AmountInput({ value, onChange, maxAmount, asset, usdValue }: Amo
                     type="text"
                     inputMode="decimal"
                     placeholder="0.00"
-                    value={value}
+                    value={displayValue}
                     onChange={handleChange}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => setIsFocused(false)}
                     className="flex-1 bg-transparent text-[22px] font-semibold text-[var(--veyla-text-main)] placeholder:text-[var(--veyla-text-dim)] outline-none min-w-0"
                 />
                 <div className="flex items-center gap-2 shrink-0">
