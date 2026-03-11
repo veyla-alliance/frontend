@@ -9,7 +9,7 @@ import { Wrench } from "lucide-react";
 // Set to `true` to block all /app routes and show the maintenance screen.
 // Set back to `false` when the fix is deployed.
 // ─────────────────────────────────────────────────────────────────────────────
-export const MAINTENANCE_MODE = true;
+export const MAINTENANCE_MODE = false;
 
 // ─────────────────────────────────────────────────────────────────────────────
 
