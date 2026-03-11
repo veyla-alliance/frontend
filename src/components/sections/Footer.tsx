@@ -31,7 +31,7 @@ export default function Footer() {
                 <div className="flex items-center justify-between gap-8 mb-8 max-sm:flex-col max-sm:items-start max-sm:gap-5">
                     <div>
                         <div className="flex items-center gap-3 mb-2.5">
-                            <div className="relative w-6 h-6 flex items-center justify-center">
+                            <div className="relative w-8 h-8 flex items-center justify-center">
                                 <Image src="/veyla-icon.svg" alt="Veyla Logo" fill />
                             </div>
                             <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[16px] font-medium tracking-[3px] text-white">

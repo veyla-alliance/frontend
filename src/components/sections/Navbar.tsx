@@ -48,7 +48,7 @@ export default function Navbar() {
                     className="flex items-center gap-3 group [font-family:var(--font-geist-pixel-square),monospace] text-[15px] font-medium text-white/70 tracking-[4px] no-underline transition-all duration-300 hover:text-white max-[480px]:text-[12px] max-[320px]:text-[10px]"
                     aria-label="Veyla Home"
                 >
-                    <div className="relative w-6 h-6 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="relative w-8 h-8 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity duration-300">
                         <Image src="/veyla-icon.svg" alt="Veyla Logo" fill />
                     </div>
                     VEYLA

@@ -16,7 +16,7 @@ export default function TermsPage() {
                     href="/"
                     className="flex items-center gap-3 [font-family:var(--font-geist-pixel-square),monospace] text-[14px] tracking-[4px] text-white/60 hover:text-white transition-colors duration-200"
                 >
-                    <div className="relative w-5 h-5">
+                    <div className="relative w-8 h-8">
                         <Image src="/veyla-icon.svg" alt="Veyla" fill />
                     </div>
                     VEYLA
