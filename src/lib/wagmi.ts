@@ -1,4 +1,4 @@
-import { createConfig, http } from "wagmi";
+import { createConfig, http, fallback } from "wagmi";
 import { defineChain } from "viem";
 import { injected, coinbaseWallet } from "wagmi/connectors";
 import { env } from "./env";
@@ -34,7 +34,11 @@ export const wagmiConfig = createConfig({
         coinbaseWallet({ appName: "Veyla" }),
     ],
     transports: {
-        [passetHub.id]: http(),
+        // fallback retries the same endpoint up to 3 times before giving up.
+        // Passet Hub only has one public testnet RPC — retry is the best resilience available.
+        [passetHub.id]: fallback([
+            http(env.rpcUrl, { retryCount: 3, retryDelay: 1_000 }),
+        ]),
     },
     ssr: true,
 });

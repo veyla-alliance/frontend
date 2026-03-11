@@ -53,13 +53,6 @@ export const vaultAbi = [
         outputs: [{ name: "", type: "uint256" }],
     },
     {
-        name: "tvl",
-        type: "function",
-        stateMutability: "view",
-        inputs: [],
-        outputs: [{ name: "", type: "uint256" }],
-    },
-    {
         name: "tvlOf",
         type: "function",
         stateMutability: "view",
@@ -97,11 +90,19 @@ export const vaultAbi = [
         ],
     },
     {
-        name: "Routed",
+        name: "RoutedLocally",
+        type: "event",
+        inputs: [
+            { name: "token",  type: "address", indexed: true  },
+            { name: "amount", type: "uint256", indexed: false },
+        ],
+    },
+    {
+        name: "RoutedCrossChain",
         type: "event",
         inputs: [
             { name: "token",       type: "address", indexed: true  },
-            { name: "destination", type: "address", indexed: false },
+            { name: "destination", type: "bytes",   indexed: false },
             { name: "amount",      type: "uint256", indexed: false },
         ],
     },

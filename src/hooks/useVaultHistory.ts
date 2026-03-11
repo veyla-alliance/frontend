@@ -18,27 +18,38 @@ export interface HistoryRow {
 
 // ── localStorage helpers ───────────────────────────────────────────────────
 
-type CachedRow = Omit<HistoryRow, "date"> & { date: string }; // Date → ISO string
+type CachedRow = Omit<HistoryRow, "date"> & { date: string };
+
+interface HistoryCache {
+    rows: CachedRow[];
+    lastBlock: string; // bigint serialized as decimal string
+}
 
 function cacheKey(address: string) {
     return `veyla_history_${address.toLowerCase()}`;
 }
 
-function loadCache(address: string): HistoryRow[] {
+function loadCache(address: string): { rows: HistoryRow[]; lastBlock: bigint } {
     try {
         const raw = localStorage.getItem(cacheKey(address));
-        if (!raw) return [];
-        const parsed: CachedRow[] = JSON.parse(raw);
-        return parsed.map(r => ({ ...r, date: new Date(r.date) }));
+        if (!raw) return { rows: [], lastBlock: 0n };
+        const parsed: HistoryCache = JSON.parse(raw);
+        return {
+            rows:      parsed.rows.map(r => ({ ...r, date: new Date(r.date) })),
+            lastBlock: BigInt(parsed.lastBlock ?? "0"),
+        };
     } catch {
-        return [];
+        return { rows: [], lastBlock: 0n };
     }
 }
 
-function saveCache(address: string, rows: HistoryRow[]) {
+function saveCache(address: string, rows: HistoryRow[], lastBlock: bigint) {
     try {
-        const serialized: CachedRow[] = rows.map(r => ({ ...r, date: r.date.toISOString() }));
-        localStorage.setItem(cacheKey(address), JSON.stringify(serialized));
+        const cache: HistoryCache = {
+            rows:      rows.map(r => ({ ...r, date: r.date.toISOString() })),
+            lastBlock: lastBlock.toString(),
+        };
+        localStorage.setItem(cacheKey(address), JSON.stringify(cache));
     } catch {
         // Storage quota exceeded — silently skip
     }
@@ -47,10 +58,14 @@ function saveCache(address: string, rows: HistoryRow[]) {
 /**
  * Optimistically prepend a new row to the localStorage cache immediately
  * after a tx succeeds — so the next page that reads history sees it instantly.
+ * Does not update lastBlock (that stays accurate from the last fetchHistory run).
  */
 export function pushToHistoryCache(address: string, row: HistoryRow) {
-    const existing = loadCache(address);
-    saveCache(address, [row, ...existing]);
+    const { rows, lastBlock } = loadCache(address);
+    const deduped = [row, ...rows].filter(
+        (r, idx, arr) => arr.findIndex(x => x.txHash === r.txHash) === idx
+    );
+    saveCache(address, deduped, lastBlock);
 }
 
 // ── Asset lookup ───────────────────────────────────────────────────────────
@@ -77,11 +92,11 @@ export function useVaultHistory() {
 
     // Load from cache immediately — no flash, no spinner on repeat visits
     const [rows, setRows] = useState<HistoryRow[]>(() =>
-        address ? loadCache(address) : []
+        address ? loadCache(address).rows : []
     );
     // loading = true only when cache is empty (true first-time visit)
     const [loading, setLoading] = useState(() =>
-        address ? loadCache(address).length === 0 : false
+        address ? loadCache(address).rows.length === 0 : false
     );
 
     const fetchHistory = useCallback(async () => {
@@ -90,15 +105,29 @@ export function useVaultHistory() {
             return;
         }
 
-        // Only show spinner if we have nothing to display yet
-        if (rows.length === 0) setLoading(true);
+        const { rows: cachedRows, lastBlock } = loadCache(address);
+
+        // Only show spinner on first visit (empty cache)
+        if (cachedRows.length === 0) setLoading(true);
 
         try {
+            // ── Incremental fetch: only query blocks we haven't seen yet ──
+            // Prevents re-scanning the entire chain on every call.
+            const fromBlock = lastBlock > 0n ? lastBlock + 1n : 0n;
+            const latestBlock = await publicClient.getBlockNumber();
+
+            // Nothing new to fetch — serve from cache immediately
+            if (fromBlock > latestBlock && cachedRows.length > 0) {
+                setRows(cachedRows);
+                setLoading(false);
+                return;
+            }
+
             // Raw getLogs — getLogs+ABI returns args=undefined on Passet Hub (viem bug).
             // Decode each log manually with decodeEventLog instead.
             const rawLogs = await publicClient.getLogs({
                 address: env.vaultAddress,
-                fromBlock: 0n,
+                fromBlock,
                 toBlock: "latest",
             });
 
@@ -110,7 +139,7 @@ export function useVaultHistory() {
                 txHash: `0x${string}`;
             };
 
-            const entries: Entry[] = [];
+            const newEntries: Entry[] = [];
             for (const log of rawLogs) {
                 try {
                     const decoded = decodeEventLog({ abi: vaultAbi, data: log.data, topics: log.topics });
@@ -129,8 +158,8 @@ export function useVaultHistory() {
                         YieldClaimed: "Earn",
                     } as const;
 
-                    entries.push({
-                        type: typeMap[decoded.eventName],
+                    newEntries.push({
+                        type:  typeMap[decoded.eventName],
                         token: args.token,
                         amount: args.amount,
                         blockNumber: log.blockNumber,
@@ -141,35 +170,41 @@ export function useVaultHistory() {
                 }
             }
 
-            // Fetch block timestamps for unique blocks
-            const uniqueBlocks = [...new Set(entries.map(e => e.blockNumber))];
+            // ── Fetch timestamps only for NEW blocks (not already in cache) ──
+            const uniqueNewBlocks = [...new Set(newEntries.map(e => e.blockNumber))];
             const blockData = await Promise.all(
-                uniqueBlocks.map(bn => publicClient.getBlock({ blockNumber: bn }))
+                uniqueNewBlocks.map(bn => publicClient.getBlock({ blockNumber: bn }))
             );
             const timestamps = new Map(blockData.map(b => [b.number, Number(b.timestamp) * 1000]));
 
-            const result: HistoryRow[] = entries
-                .map(entry => {
-                    const { symbol, decimals, chain } = getAssetInfo(entry.token);
-                    return {
-                        type: entry.type,
-                        asset: symbol,
-                        amount: formatAmount(entry.amount, decimals),
-                        chain,
-                        date: new Date(timestamps.get(entry.blockNumber) ?? Date.now()),
-                        txHash: entry.txHash,
-                    };
-                })
+            const newRows: HistoryRow[] = newEntries.map(entry => {
+                const { symbol, decimals, chain } = getAssetInfo(entry.token);
+                return {
+                    type:   entry.type,
+                    asset:  symbol,
+                    amount: formatAmount(entry.amount, decimals),
+                    chain,
+                    date:   new Date(timestamps.get(entry.blockNumber) ?? Date.now()),
+                    txHash: entry.txHash,
+                };
+            });
+
+            // Merge new rows with cached rows, dedup by txHash, sort newest-first
+            const merged = [...newRows, ...cachedRows]
+                .filter((row, idx, arr) =>
+                    arr.findIndex(r => r.txHash === row.txHash) === idx
+                )
                 .sort((a, b) => b.date.getTime() - a.date.getTime());
 
-            setRows(result);
-            saveCache(address, result);
+            setRows(merged);
+            saveCache(address, merged, latestBlock);
         } catch (e) {
             console.error("Failed to fetch vault history:", e);
+            // On error, still show cached data rather than blank screen
+            if (cachedRows.length > 0) setRows(cachedRows);
         } finally {
             setLoading(false);
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [address, publicClient]);
 
     useEffect(() => {

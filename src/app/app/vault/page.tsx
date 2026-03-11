@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { parseUnits, formatUnits } from "viem";
 import { useConnection, useBalance, useChainId } from "wagmi";
 import type { AssetSymbol } from "@/types";
@@ -98,6 +98,11 @@ export default function VaultPage() {
     const { withdraw, txState: withdrawTxState, reset: resetWithdraw } = useWithdraw();
     const { positions } = useUserPositions();
 
+    // Capture in-flight tx context at submit time so success toasts are accurate
+    // even if the user changes the form before the tx confirms (stale closure fix).
+    const depositCtx  = useRef({ amount: 0, asset: "DOT", route: "Hydration" });
+    const withdrawCtx = useRef({ amount: 0, asset: "DOT", route: "Hydration" });
+
     // ── Wallet balances (for deposit) ─────────────────────────────────────
     // DOT is the native asset in PolkaVM — read via useBalance (like ETH), not ERC-20
     const { data: dotNativeBalance } = useBalance({ address });
@@ -141,7 +146,8 @@ export default function VaultPage() {
     // ── Deposit lifecycle toasts ──────────────────────────────────────────
     useEffect(() => {
         if (depositTxState.status !== "success") return;
-        toast.success(`Deposited ${parsedDeposit} ${asset} to vault`, {
+        const { amount, asset: a, route } = depositCtx.current;
+        toast.success(`Deposited ${amount} ${a} to vault`, {
             action: depositTxState.hash
                 ? { label: "View TX", onClick: () => window.open(`${env.blockExplorerUrl}/tx/${depositTxState.hash}`, "_blank") }
                 : undefined,
@@ -149,9 +155,9 @@ export default function VaultPage() {
         if (address && depositTxState.hash) {
             pushToHistoryCache(address, {
                 type: "Deposit",
-                asset,
-                amount: parsedDeposit.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 }),
-                chain: selectedAsset.route,
+                asset: a,
+                amount: amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 }),
+                chain: route,
                 date: new Date(),
                 txHash: depositTxState.hash,
             });
@@ -159,19 +165,18 @@ export default function VaultPage() {
         setDepositAmount("");
         const t = setTimeout(resetDeposit, 2500);
         return () => clearTimeout(t);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [depositTxState.status]);
+    }, [depositTxState.status, depositTxState.hash, address, resetDeposit]);
 
     useEffect(() => {
         if (depositTxState.status !== "error") return;
         toast.error(depositTxState.error ?? "Transaction failed.");
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [depositTxState.status]);
+    }, [depositTxState.status, depositTxState.error]);
 
     // ── Withdraw lifecycle toasts ─────────────────────────────────────────
     useEffect(() => {
         if (withdrawTxState.status !== "success") return;
-        toast.success(`Withdrew ${parsedWithdraw} ${asset} to your wallet`, {
+        const { amount, asset: a, route } = withdrawCtx.current;
+        toast.success(`Withdrew ${amount} ${a} to your wallet`, {
             action: withdrawTxState.hash
                 ? { label: "View TX", onClick: () => window.open(`${env.blockExplorerUrl}/tx/${withdrawTxState.hash}`, "_blank") }
                 : undefined,
@@ -179,9 +184,9 @@ export default function VaultPage() {
         if (address && withdrawTxState.hash) {
             pushToHistoryCache(address, {
                 type: "Withdraw",
-                asset,
-                amount: parsedWithdraw.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 }),
-                chain: selectedAsset.route,
+                asset: a,
+                amount: amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 }),
+                chain: route,
                 date: new Date(),
                 txHash: withdrawTxState.hash,
             });
@@ -189,22 +194,22 @@ export default function VaultPage() {
         setWithdrawAmount("");
         const t = setTimeout(resetWithdraw, 2500);
         return () => clearTimeout(t);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [withdrawTxState.status]);
+    }, [withdrawTxState.status, withdrawTxState.hash, address, resetWithdraw]);
 
     useEffect(() => {
         if (withdrawTxState.status !== "error") return;
         toast.error(withdrawTxState.error ?? "Transaction failed.");
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [withdrawTxState.status]);
+    }, [withdrawTxState.status, withdrawTxState.error]);
 
     function handleDeposit() {
         if (!tokenAddress || !depositIsValid) return;
+        depositCtx.current = { amount: parsedDeposit, asset, route: selectedAsset.route };
         deposit(tokenAddress, parseUnits(depositAmount, selectedAsset.decimals));
     }
 
     function handleWithdraw() {
         if (!tokenAddress || !withdrawIsValid) return;
+        withdrawCtx.current = { amount: parsedWithdraw, asset, route: selectedAsset.route };
         withdraw(tokenAddress, parseUnits(withdrawAmount, selectedAsset.decimals));
     }
 

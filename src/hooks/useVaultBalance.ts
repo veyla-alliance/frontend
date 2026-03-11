@@ -86,16 +86,22 @@ export function useTokenApys() {
 }
 
 /**
- * Returns total value locked in the vault (bigint, wei-scale).
+ * Returns TVL per-asset via tvlOf().
+ * The combined tvl() function mixes DOT (18 dec) + USDT (6 dec) — meaningless as a sum.
+ * Always use tvlOf(token) for each asset separately.
  */
 export function useVaultTvl() {
-    return useReadContract({
-        address: env.vaultAddress,
-        abi: vaultAbi,
-        functionName: "tvl",
-        query: {
-            staleTime: 60_000,
-            refetchInterval: 60_000,
-        },
+    const { data, isLoading } = useReadContracts({
+        contracts: [
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "tvlOf", args: [env.dotTokenAddress]  },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "tvlOf", args: [env.usdtTokenAddress] },
+        ],
+        query: { staleTime: 60_000, refetchInterval: 60_000 },
     });
+
+    return {
+        dotTvl:  data?.[0]?.result as bigint | undefined,
+        usdtTvl: data?.[1]?.result as bigint | undefined,
+        isLoading,
+    };
 }
