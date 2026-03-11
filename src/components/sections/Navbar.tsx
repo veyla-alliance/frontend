@@ -54,12 +54,12 @@ export default function Navbar() {
                     VEYLA
                 </Link>
                 <div className="flex gap-7 items-center max-[480px]:gap-4">
-                    <a
-                        href="#"
+                    <Link
+                        href="/docs"
                         className="text-[15px] text-white/50 no-underline transition-colors duration-300 hover:text-white"
                     >
                         Docs
-                    </a>
+                    </Link>
                     <Button variant="navbar" href="/app" shimmer>Launch App</Button>
                 </div>
             </header>
