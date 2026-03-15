@@ -12,10 +12,10 @@ interface Stat {
 }
 
 const STATS: Stat[] = [
-    { value: 2.4, suffix: "M", prefix: "$", label: "TVL", decimals: 1 },
-    { value: 14.2, suffix: "%", prefix: "", label: "AVG APY", decimals: 1 },
-    { value: 6, suffix: "", prefix: "", label: "CHAINS", decimals: 0 },
-    { value: 99.9, suffix: "%", prefix: "", label: "UPTIME", decimals: 1 },
+    { value: 14.2, suffix: "%", prefix: "", label: "TOP APY", decimals: 1 },
+    { value: 4, suffix: "", prefix: "", label: "CHAINS", decimals: 0 },
+    { value: 82, suffix: "", prefix: "", label: "TESTS PASSING", decimals: 0 },
+    { value: 0.5, suffix: "%", prefix: "", label: "PROTOCOL FEE", decimals: 1 },
 ];
 
 const COUNTER_DURATION_MS = 2_000;

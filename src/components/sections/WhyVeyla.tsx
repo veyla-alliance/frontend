@@ -15,18 +15,18 @@ interface Benefit {
 const BENEFITS: Benefit[] = [
     {
         icon: Shield,
-        title: "No Bridges",
-        description: "Zero third-party bridge risk. Everything runs on Polkadot\u2019s native XCM protocol \u2014 the most secure cross-chain messaging in crypto.",
+        title: "XCM Native",
+        description: "Zero bridge risk. Veyla routes liquidity via Polkadot\u2019s native XCM protocol \u2014 the same cross-chain messaging layer the relay chain itself uses. Assets move natively between parachains.",
     },
     {
         icon: Zap,
-        title: "XCM-Native Routing",
-        description: "No bridges, no relayers. Veyla routes directly via Polkadot's native XCM precompile — the same messaging layer the protocol itself is built on.",
+        title: "Solidity on PolkaVM",
+        description: "Write in Solidity, call Rust runtime natively. PolkaVM precompiles give smart contracts direct access to XCM and pallet-assets \u2014 no wrappers, no middleware.",
     },
     {
         icon: Code,
-        title: "Open Source",
-        description: "Every line of code is public. Built on PolkaVM for maximum transparency. Don\u2019t trust \u2014 verify.",
+        title: "Verified & Open Source",
+        description: "Every line of code is public. 82 tests passing. Contract verified on Blockscout. Don\u2019t trust \u2014 verify.",
     },
 ];
 

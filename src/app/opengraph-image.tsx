@@ -76,8 +76,8 @@ export default function Image() {
                 >
                     {[
                         { value: "14.2%", label: "TOP APY" },
-                        { value: "XCM", label: "ROUTING" },
-                        { value: "4", label: "CHAINS" },
+                        { value: "XCM", label: "NATIVE ROUTING" },
+                        { value: "PolkaVM", label: "SMART CONTRACTS" },
                     ].map(({ value, label }) => (
                         <div
                             key={label}

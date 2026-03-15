@@ -12,6 +12,7 @@ const SECTIONS = [
     { id: "architecture", label: "Architecture" },
     { id: "xcm", label: "XCM Integration" },
     { id: "contract", label: "Smart Contract" },
+    { id: "deep-dive", label: "Technical Deep Dive" },
     { id: "frontend", label: "Frontend" },
     { id: "quickstart", label: "Quick Start" },
     { id: "api", label: "Contract API" },
@@ -584,6 +585,141 @@ function _accrueYield(address user, address token) internal {
                         yield accrual, multi-deposit accuracy, XCM routing calls, XCM destination whitelist, 2-step treasury transfer,
                         access control (onlyOwner), pause mechanism, 2-step ownership transfer, principal protection when yield pool is empty,
                         and all custom error paths.
+                    </InfoBox>
+
+                    <Divider />
+
+                    {/* ══ TECHNICAL DEEP DIVE ═════════════════════════════════════════ */}
+                    <SectionAnchor id="deep-dive" />
+                    <SectionTitle>Technical Deep Dive</SectionTitle>
+                    <SectionLead>
+                        Architecture decisions, security patterns, and what makes this project uniquely possible on Polkadot.
+                    </SectionLead>
+
+                    <h3 className="text-[20px] font-semibold text-[var(--veyla-text-main)] mb-4">Precompile Architecture</h3>
+                    <p className="text-[15px] text-[var(--veyla-text-muted)] leading-[1.75] mb-6">
+                        PolkaVM is Polkadot&apos;s smart contract VM that compiles Solidity to PolkaVM bytecode (not EVM bytecode).
+                        This gives Solidity contracts native access to Substrate runtime functions via <strong className="text-[var(--veyla-text-main)]">precompiles</strong> —
+                        special addresses that map directly to Rust runtime logic. No bridges, no oracles, no middleware.
+                    </p>
+
+                    <CodeBlock lang="solidity" code={`
+// XCM Precompile — Polkadot Hub native (0x...000a0000)
+interface IXcm {
+    struct Weight { uint64 refTime; uint64 proofSize; }
+
+    // Execute XCM locally with caller's origin
+    function execute(bytes calldata message, Weight calldata weight) external;
+
+    // Send XCM to another parachain
+    function send(bytes calldata destination, bytes calldata message) external;
+
+    // Estimate weight for execution
+    function weighMessage(bytes calldata message) external view returns (Weight memory);
+}
+
+// pallet-assets ERC-20 Precompile — native USDT (Asset ID 1984)
+interface IERC20Precompile {
+    function transfer(address to, uint256 value) external returns (bool);
+    function transferFrom(address from, address to, uint256 value) external returns (bool);
+    function approve(address spender, uint256 value) external returns (bool);
+    function balanceOf(address account) external view returns (uint256);
+    function allowance(address owner, address spender) external view returns (uint256);
+}
+                    `} />
+
+                    <InfoBox title="Solidity → Rust — Zero Overhead" color="purple">
+                        When VeylaVault calls <InlineCode>IXcm(0x...000a0000).execute()</InlineCode>, PolkaVM routes the call
+                        directly to Polkadot&apos;s Rust XCM pallet. There is no EVM compatibility layer, no translation overhead.
+                        The precompile IS the runtime function. This is fundamentally different from bridges or cross-chain messaging on other ecosystems.
+                    </InfoBox>
+
+                    <h3 className="text-[20px] font-semibold text-[var(--veyla-text-main)] mb-4 mt-8">Security Architecture</h3>
+                    <p className="text-[15px] text-[var(--veyla-text-muted)] leading-[1.75] mb-4">
+                        VeylaVault implements multiple layers of safety by design:
+                    </p>
+
+                    <Table
+                        headers={["Pattern", "Implementation", "Purpose"]}
+                        rows={[
+                            ["2-Step Ownership", <InlineCode key="o">transferOwnership() → acceptOwnership()</InlineCode>, "Prevents accidental lockout from address typos"],
+                            ["2-Step Treasury", <InlineCode key="t">proposeTreasury() → acceptTreasury()</InlineCode>, "Prevents fees routing to wrong address"],
+                            ["APY Cap", <InlineCode key="a">MAX_APY_BPS = 10,000 (100%)</InlineCode>, "Prevents catastrophic drain attack"],
+                            ["Fee Cap", <InlineCode key="f">MAX_PROTOCOL_FEE_BPS = 500 (5%)</InlineCode>, "Limits owner fee extraction"],
+                            ["XCM Size Cap", <InlineCode key="x">MAX_XCM_MESSAGE_SIZE = 1024</InlineCode>, "Prevents calldata griefing"],
+                            ["Destination Whitelist", <InlineCode key="d">trustedDestinations[keccak256(dest)]</InlineCode>, "XCM only routes to approved parachains"],
+                            ["CEI Pattern", "State updates before external calls", "Prevents reentrancy on withdrawals"],
+                            ["Principal Protection", "Yield capped at available pool", "Users always withdraw at least their principal"],
+                            ["Pause Mechanism", <InlineCode key="p">notPaused modifier</InlineCode>, "Emergency stop for all deposits/withdrawals"],
+                        ]}
+                    />
+
+                    <h3 className="text-[20px] font-semibold text-[var(--veyla-text-main)] mb-4 mt-8">Yield Accounting Deep Dive</h3>
+                    <p className="text-[15px] text-[var(--veyla-text-muted)] leading-[1.75] mb-4">
+                        The yield formula uses a <strong className="text-[var(--veyla-text-main)]">snapshot-based accumulation pattern</strong>.
+                        Before every balance-changing operation (deposit, withdraw), <InlineCode>_accrueYield()</InlineCode> snapshots all pending yield into storage.
+                        This ensures multi-deposit accuracy — depositing twice doesn&apos;t dilute the yield from the first deposit.
+                    </p>
+
+                    <CodeBlock lang="text" code={`
+Yield Formula:
+  pending = principal × APY_bps × elapsed_seconds / (365 days × 10,000)
+
+Example (DOT @ 14.20% APY):
+  1 DOT deposited → after 30 days:
+  pending = 1e18 × 1420 × 2,592,000 / (31,536,000 × 10,000)
+  pending = 0.01167 DOT ≈ 0.0117 DOT
+
+Withdrawal Payout:
+  totalPayout = principal + earnedYield - protocolFee
+  protocolFee = earnedYield × protocolFeeBps / 10,000  (default 0.5%)
+
+Safety Cap:
+  actualYield = min(earnedYield, yieldPoolBalance)
+  → Principal is NEVER locked, even if yield pool is empty
+  → Unclaimed yield persists in _accruedYield for future claimYield() calls
+                    `} />
+
+                    <h3 className="text-[20px] font-semibold text-[var(--veyla-text-main)] mb-4 mt-8">Why Only on Polkadot</h3>
+                    <p className="text-[15px] text-[var(--veyla-text-muted)] leading-[1.75] mb-4">
+                        Veyla&apos;s architecture is fundamentally dependent on four Polkadot-specific primitives that do not exist in any other ecosystem:
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div className="p-4 rounded-xl bg-[rgba(123,57,252,0.04)] border border-[rgba(123,57,252,0.12)]">
+                            <div className="text-[13px] font-bold text-[var(--veyla-purple-soft)] mb-2">1. XCM Native Messaging</div>
+                            <p className="text-[13px] text-[var(--veyla-text-muted)] leading-[1.6]">
+                                Cross-chain messages are processed by the relay chain validators — no external bridges, relayers, or trust assumptions.
+                                Assets move natively between parachains with finality guaranteed by Polkadot&apos;s shared security.
+                            </p>
+                        </div>
+                        <div className="p-4 rounded-xl bg-[rgba(123,57,252,0.04)] border border-[rgba(123,57,252,0.12)]">
+                            <div className="text-[13px] font-bold text-[var(--veyla-purple-soft)] mb-2">2. PolkaVM Precompiles</div>
+                            <p className="text-[13px] text-[var(--veyla-text-muted)] leading-[1.6]">
+                                Solidity contracts on PolkaVM can call Substrate runtime functions directly. <InlineCode>IXcm.execute()</InlineCode> is not a wrapper —
+                                it&apos;s the actual XCM executor. No other VM gives Solidity this level of runtime access.
+                            </p>
+                        </div>
+                        <div className="p-4 rounded-xl bg-[rgba(123,57,252,0.04)] border border-[rgba(123,57,252,0.12)]">
+                            <div className="text-[13px] font-bold text-[var(--veyla-purple-soft)] mb-2">3. Shared Security</div>
+                            <p className="text-[13px] text-[var(--veyla-text-muted)] leading-[1.6]">
+                                Every parachain (Hydration, Moonbeam, Astar) is secured by the same Polkadot relay chain validators.
+                                When Veyla routes assets cross-chain, the security guarantee is identical to a local transaction.
+                            </p>
+                        </div>
+                        <div className="p-4 rounded-xl bg-[rgba(123,57,252,0.04)] border border-[rgba(123,57,252,0.12)]">
+                            <div className="text-[13px] font-bold text-[var(--veyla-purple-soft)] mb-2">4. Native Asset Precompiles</div>
+                            <p className="text-[13px] text-[var(--veyla-text-muted)] leading-[1.6]">
+                                USDT on Polkadot Hub is a pallet-assets native asset (ID 1984), exposed to Solidity via an auto-generated ERC-20 precompile.
+                                No wrapped tokens, no canonical bridge — it&apos;s the real asset from Polkadot&apos;s runtime.
+                            </p>
+                        </div>
+                    </div>
+
+                    <InfoBox title="Not a Fork — A New Category" color="cyan">
+                        Veyla is not a port of an Ethereum yield aggregator. It&apos;s a new category of protocol that can only exist where:
+                        (a) smart contracts can call cross-chain messaging natively, (b) assets exist as runtime primitives accessible from Solidity,
+                        and (c) all destination chains share the same security model. Today, that&apos;s only Polkadot.
                     </InfoBox>
 
                     <Divider />

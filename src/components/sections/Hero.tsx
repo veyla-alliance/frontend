@@ -63,8 +63,8 @@ export default function Hero() {
 
                 <FadeIn delay={0.3}>
                     <p className="text-[18px] leading-[1.7] text-[var(--veyla-text-muted)] mt-4 max-w-[520px] max-[768px]:text-[16px]">
-                        Deposit into one vault on Polkadot Hub. Veyla finds and captures
-                        the best yields across every chain — automatically.
+                        Deposit into one vault on Polkadot Hub. Veyla routes your liquidity
+                        across parachains via native XCM — no bridges, no wrapped tokens.
                     </p>
                 </FadeIn>
 

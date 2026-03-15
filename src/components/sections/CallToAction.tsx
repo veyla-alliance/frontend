@@ -4,7 +4,7 @@ import { FadeIn } from "@/components/FadeIn";
 import { Button } from "@/components/ui/Button";
 import { ArrowRight } from "lucide-react";
 
-const TRUST_BADGES = ["Built on Polkadot", "Audited", "Open Source"] as const;
+const TRUST_BADGES = ["Built on Polkadot", "XCM Native", "Open Source"] as const;
 
 const badgeClass = "text-[11px] font-semibold tracking-[1.5px] uppercase text-[var(--veyla-text-dim)] bg-white/[0.03] border border-white/[0.07] px-[14px] py-[6px] rounded-full";
 

@@ -22,6 +22,23 @@ export default function ProblemTeaser() {
                     Managing them manually means bridge risk, idle capital, and constant overhead.
                 </p>
             </FadeIn>
+            <FadeIn delay={0.3}>
+                <div className="mt-8 flex flex-wrap justify-center gap-3">
+                    {[
+                        { label: "XCM Native", desc: "No bridges" },
+                        { label: "PolkaVM", desc: "Solidity \u2192 Rust" },
+                        { label: "Shared Security", desc: "Relay chain" },
+                    ].map(({ label, desc }) => (
+                        <div
+                            key={label}
+                            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.07]"
+                        >
+                            <span className="text-[13px] font-semibold text-[var(--veyla-text-main)]">{label}</span>
+                            <span className="text-[11px] text-[var(--veyla-text-dim)]">{desc}</span>
+                        </div>
+                    ))}
+                </div>
+            </FadeIn>
         </section>
     );
 }
