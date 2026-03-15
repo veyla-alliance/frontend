@@ -233,7 +233,7 @@ export function useVaultHistory() {
             setRows(merged);
             saveCache(address, merged, latestBlock);
         } catch (e) {
-            console.error("Failed to fetch vault history:", e);
+            if (process.env.NODE_ENV === "development") console.error("Failed to fetch vault history:", e);
             // On error, still show cached data rather than blank screen
             if (cachedRows.length > 0) setRows(cachedRows);
         } finally {

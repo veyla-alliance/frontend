@@ -152,89 +152,83 @@ export default function VaultPage() {
 
     // ── Deposit lifecycle toasts ──────────────────────────────────────────
     useEffect(() => {
-        if (depositTxState.status !== "success") return;
-        const { amount, asset: a, route } = depositCtx.current;
-        toast.success(`Deposited ${amount} ${a} to vault`, {
-            action: depositTxState.hash
-                ? { label: "View TX", onClick: () => window.open(`${env.blockExplorerUrl}/tx/${depositTxState.hash}`, "_blank") }
-                : undefined,
-        });
-        if (address && depositTxState.hash) {
-            pushToHistoryCache(address, {
-                type: "Deposit",
-                asset: a,
-                amount: amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 }),
-                chain: route,
-                date: new Date(),
-                txHash: depositTxState.hash,
+        if (depositTxState.status === "success") {
+            const { amount, asset: a, route } = depositCtx.current;
+            toast.success(`Deposited ${amount} ${a} to vault`, {
+                action: depositTxState.hash
+                    ? { label: "View TX", onClick: () => window.open(`${env.blockExplorerUrl}/tx/${depositTxState.hash}`, "_blank") }
+                    : undefined,
             });
+            if (address && depositTxState.hash) {
+                pushToHistoryCache(address, {
+                    type: "Deposit",
+                    asset: a,
+                    amount: amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 }),
+                    chain: route,
+                    date: new Date(),
+                    txHash: depositTxState.hash,
+                });
+            }
+            setDepositAmount("");
+            const t = setTimeout(resetDeposit, 2500);
+            return () => clearTimeout(t);
+        } else if (depositTxState.status === "error") {
+            toast.error(depositTxState.error ?? "Transaction failed.");
         }
-        setDepositAmount("");
-        const t = setTimeout(resetDeposit, 2500);
-        return () => clearTimeout(t);
-    }, [depositTxState.status, depositTxState.hash, address, resetDeposit]);
-
-    useEffect(() => {
-        if (depositTxState.status !== "error") return;
-        toast.error(depositTxState.error ?? "Transaction failed.");
-    }, [depositTxState.status, depositTxState.error]);
+    }, [depositTxState.status, depositTxState.hash, depositTxState.error, address, resetDeposit]);
 
     // ── Withdraw lifecycle toasts ─────────────────────────────────────────
     useEffect(() => {
-        if (withdrawTxState.status !== "success") return;
-        const { amount, asset: a, route } = withdrawCtx.current;
-        toast.success(`Withdrew ${amount} ${a} to your wallet`, {
-            action: withdrawTxState.hash
-                ? { label: "View TX", onClick: () => window.open(`${env.blockExplorerUrl}/tx/${withdrawTxState.hash}`, "_blank") }
-                : undefined,
-        });
-        if (address && withdrawTxState.hash) {
-            pushToHistoryCache(address, {
-                type: "Withdraw",
-                asset: a,
-                amount: amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 }),
-                chain: route,
-                date: new Date(),
-                txHash: withdrawTxState.hash,
+        if (withdrawTxState.status === "success") {
+            const { amount, asset: a, route } = withdrawCtx.current;
+            toast.success(`Withdrew ${amount} ${a} to your wallet`, {
+                action: withdrawTxState.hash
+                    ? { label: "View TX", onClick: () => window.open(`${env.blockExplorerUrl}/tx/${withdrawTxState.hash}`, "_blank") }
+                    : undefined,
             });
+            if (address && withdrawTxState.hash) {
+                pushToHistoryCache(address, {
+                    type: "Withdraw",
+                    asset: a,
+                    amount: amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 4 }),
+                    chain: route,
+                    date: new Date(),
+                    txHash: withdrawTxState.hash,
+                });
+            }
+            setWithdrawAmount("");
+            const t = setTimeout(resetWithdraw, 2500);
+            return () => clearTimeout(t);
+        } else if (withdrawTxState.status === "error") {
+            toast.error(withdrawTxState.error ?? "Transaction failed.");
         }
-        setWithdrawAmount("");
-        const t = setTimeout(resetWithdraw, 2500);
-        return () => clearTimeout(t);
-    }, [withdrawTxState.status, withdrawTxState.hash, address, resetWithdraw]);
-
-    useEffect(() => {
-        if (withdrawTxState.status !== "error") return;
-        toast.error(withdrawTxState.error ?? "Transaction failed.");
-    }, [withdrawTxState.status, withdrawTxState.error]);
+    }, [withdrawTxState.status, withdrawTxState.hash, withdrawTxState.error, address, resetWithdraw]);
 
     // ── Claim Yield lifecycle toasts ──────────────────────────────────────
     useEffect(() => {
-        if (claimTxState.status !== "success") return;
-        const { amount: a, asset: ast } = claimCtx.current;
-        toast.success(`Claimed ${a} ${ast} yield`, {
-            action: claimTxState.hash
-                ? { label: "View TX", onClick: () => window.open(`${env.blockExplorerUrl}/tx/${claimTxState.hash}`, "_blank") }
-                : undefined,
-        });
-        if (address && claimTxState.hash) {
-            pushToHistoryCache(address, {
-                type: "Claim",
-                asset: ast,
-                amount: a,
-                chain: selectedAsset.route,
-                date: new Date(),
-                txHash: claimTxState.hash,
+        if (claimTxState.status === "success") {
+            const { amount: a, asset: ast } = claimCtx.current;
+            toast.success(`Claimed ${a} ${ast} yield`, {
+                action: claimTxState.hash
+                    ? { label: "View TX", onClick: () => window.open(`${env.blockExplorerUrl}/tx/${claimTxState.hash}`, "_blank") }
+                    : undefined,
             });
+            if (address && claimTxState.hash) {
+                pushToHistoryCache(address, {
+                    type: "Claim",
+                    asset: ast,
+                    amount: a,
+                    chain: selectedAsset.route,
+                    date: new Date(),
+                    txHash: claimTxState.hash,
+                });
+            }
+            const t = setTimeout(resetClaim, 2500);
+            return () => clearTimeout(t);
+        } else if (claimTxState.status === "error") {
+            toast.error(claimTxState.error ?? "Transaction failed.");
         }
-        const t = setTimeout(resetClaim, 2500);
-        return () => clearTimeout(t);
-    }, [claimTxState.status, claimTxState.hash, address, resetClaim, selectedAsset.route]);
-
-    useEffect(() => {
-        if (claimTxState.status !== "error") return;
-        toast.error(claimTxState.error ?? "Transaction failed.");
-    }, [claimTxState.status, claimTxState.error]);
+    }, [claimTxState.status, claimTxState.hash, claimTxState.error, address, resetClaim, selectedAsset.route]);
 
     function handleDeposit() {
         if (!tokenAddress || !depositIsValid) return;

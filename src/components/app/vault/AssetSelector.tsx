@@ -49,7 +49,7 @@ export function AssetSelector({ value, onChange, balances, apys }: AssetSelector
                 {/* Asset badge */}
                 <div className="flex items-center gap-2 shrink-0">
                     <div className="relative w-6 h-6 rounded-full overflow-hidden">
-                        <Image src={selected.icon} alt={selected.symbol} fill className="object-cover" />
+                        <Image src={selected.icon} alt={selected.symbol} fill sizes="24px" className="object-cover" />
                     </div>
                 </div>
 
@@ -91,7 +91,7 @@ export function AssetSelector({ value, onChange, balances, apys }: AssetSelector
                             >
                                 <div className="flex items-center gap-2 shrink-0">
                                     <div className="relative w-6 h-6 rounded-full overflow-hidden">
-                                        <Image src={asset.icon} alt={asset.symbol} fill className="object-cover" />
+                                        <Image src={asset.icon} alt={asset.symbol} fill sizes="24px" className="object-cover" />
                                     </div>
                                 </div>
                                 <div className="flex-1 text-left">

@@ -108,6 +108,7 @@ export function PositionsTable({ positions, isLoading }: PositionsTableProps) {
                                                     src={ASSET_ICONS[pos.asset].url}
                                                     alt={pos.asset}
                                                     fill
+                                                    sizes="20px"
                                                     className={ASSET_ICONS[pos.asset].whiteBg ? 'object-contain p-[2px]' : 'object-cover'}
                                                 />
                                             </div>
@@ -129,6 +130,7 @@ export function PositionsTable({ positions, isLoading }: PositionsTableProps) {
                                                     src={CHAIN_ICONS[pos.deployedTo].url}
                                                     alt={pos.deployedTo}
                                                     fill
+                                                    sizes="20px"
                                                     className={CHAIN_ICONS[pos.deployedTo].whiteBg ? 'object-contain p-1' : 'object-cover'}
                                                 />
                                             </div>
