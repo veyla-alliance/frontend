@@ -8,15 +8,16 @@ import { cn } from "@/lib/utils";
 
 // ── Nav sections ──────────────────────────────────────────────────────────────
 const SECTIONS = [
-    { id: "overview",      label: "Overview" },
-    { id: "architecture",  label: "Architecture" },
-    { id: "xcm",           label: "XCM Integration" },
-    { id: "contract",      label: "Smart Contract" },
-    { id: "frontend",      label: "Frontend" },
-    { id: "quickstart",    label: "Quick Start" },
-    { id: "api",           label: "Contract API" },
-    { id: "roadmap",       label: "Roadmap" },
-    { id: "faq",           label: "FAQ" },
+    { id: "overview", label: "Overview" },
+    { id: "architecture", label: "Architecture" },
+    { id: "xcm", label: "XCM Integration" },
+    { id: "contract", label: "Smart Contract" },
+    { id: "frontend", label: "Frontend" },
+    { id: "quickstart", label: "Quick Start" },
+    { id: "api", label: "Contract API" },
+    { id: "roadmap", label: "Roadmap" },
+    { id: "faq", label: "FAQ" },
+    { id: "team", label: "Team" },
 ] as const;
 
 // ── Small reusable atoms ──────────────────────────────────────────────────────
@@ -86,8 +87,8 @@ function CodeBlock({ code, lang = "" }: { code: string; lang?: string }) {
 function InfoBox({ title, children, color = "purple" }: { title: string; children: React.ReactNode; color?: "purple" | "cyan" | "green" | "yellow" }) {
     const styles = {
         purple: "bg-[rgba(123,57,252,0.06)] border-[rgba(123,57,252,0.2)] text-[var(--veyla-purple-soft)]",
-        cyan:   "bg-[rgba(0,212,255,0.05)] border-[rgba(0,212,255,0.2)] text-[var(--veyla-cyan)]",
-        green:  "bg-[rgba(74,222,128,0.05)] border-[rgba(74,222,128,0.2)] text-[#4ade80]",
+        cyan: "bg-[rgba(0,212,255,0.05)] border-[rgba(0,212,255,0.2)] text-[var(--veyla-cyan)]",
+        green: "bg-[rgba(74,222,128,0.05)] border-[rgba(74,222,128,0.2)] text-[#4ade80]",
         yellow: "bg-[rgba(250,204,21,0.05)] border-[rgba(250,204,21,0.2)] text-[#facc15]",
     };
     return (
@@ -187,9 +188,9 @@ function ArchitectureDiagram() {
                             </div>
                             <div className="space-y-2">
                                 {[
-                                    { fn: "deposit(token, amount)",          tag: "payable",     xcm: false },
-                                    { fn: "withdraw(token, amount)",         tag: "nonpayable",  xcm: false },
-                                    { fn: "balanceOf / earned / currentApy", tag: "view",        xcm: false },
+                                    { fn: "deposit(token, amount)", tag: "payable", xcm: false },
+                                    { fn: "withdraw(token, amount)", tag: "nonpayable", xcm: false },
+                                    { fn: "balanceOf / earned / currentApy", tag: "view", xcm: false },
                                 ].map(({ fn, tag }) => (
                                     <div key={fn} className="flex items-center justify-between gap-4">
                                         <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[10px] text-[var(--veyla-text-dim)] whitespace-nowrap">{fn}</span>
@@ -198,8 +199,8 @@ function ArchitectureDiagram() {
                                 ))}
                                 <div className="border-t border-dashed border-[rgba(123,57,252,0.15)] pt-2 mt-1 space-y-2">
                                     {[
-                                        { fn: "routeAssets(token, xcmMsg)",  tag: "→ XCM" },
-                                        { fn: "sendCrossChain(dest, msg)",   tag: "→ XCM" },
+                                        { fn: "routeAssets(token, xcmMsg)", tag: "→ XCM" },
+                                        { fn: "sendCrossChain(dest, msg)", tag: "→ XCM" },
                                     ].map(({ fn, tag }) => (
                                         <div key={fn} className="flex items-center justify-between gap-4">
                                             <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[10px] text-[var(--veyla-purple-soft)] whitespace-nowrap">{fn}</span>
@@ -411,9 +412,9 @@ export default function DocsPage() {
                                 key={label}
                                 className={cn(
                                     "[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[0.5px] px-3 py-1.5 rounded-full border",
-                                    color === "cyan"   && "bg-[rgba(0,212,255,0.08)] border-[rgba(0,212,255,0.2)] text-[var(--veyla-cyan)]",
+                                    color === "cyan" && "bg-[rgba(0,212,255,0.08)] border-[rgba(0,212,255,0.2)] text-[var(--veyla-cyan)]",
                                     color === "purple" && "bg-[rgba(123,57,252,0.1)] border-[rgba(123,57,252,0.2)] text-[var(--veyla-purple-soft)]",
-                                    color === "dim"    && "bg-white/[0.03] border-white/[0.08] text-[var(--veyla-text-dim)]"
+                                    color === "dim" && "bg-white/[0.03] border-white/[0.08] text-[var(--veyla-text-dim)]"
                                 )}
                             >
                                 {label}
@@ -905,7 +906,7 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                             },
                             {
                                 q: "Which wallets are supported?",
-                                a: "Any EVM-compatible wallet that supports custom networks: MetaMask, Rabby, Coinbase Wallet, and any injected browser wallet. We detect installed wallets automatically at connection time."
+                                a: "Any EVM-compatible wallet that supports custom networks: MetaMask, Rabby, SubWallet, Talisman, Coinbase Wallet, and any injected browser wallet. We detect installed wallets automatically at connection time. SubWallet and Talisman are especially recommended for Polkadot users."
                             },
                             {
                                 q: "Can I see the source code?",
@@ -922,6 +923,88 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                                 </div>
                             </details>
                         ))}
+                    </div>
+
+                    <Divider />
+
+                    {/* ══ TEAM ═══════════════════════════════════════════════════════ */}
+                    <SectionAnchor id="team" />
+                    <SectionTitle>Team</SectionTitle>
+                    <SectionLead>Veyla Protocol is built by Veyla Alliance for the Polkadot Solidity Hackathon 2026.</SectionLead>
+
+                    <div className="rounded-2xl border border-white/[0.08] bg-white/[0.02] overflow-hidden">
+                        {/* On-chain identity header */}
+                        <div className="px-5 py-4 border-b border-white/[0.06] flex items-center gap-2">
+                            <div className="w-2 h-2 rounded-full bg-[var(--veyla-purple)]" />
+                            <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] tracking-[2px] text-[var(--veyla-purple)] uppercase">
+                                On-Chain Identity
+                            </span>
+                        </div>
+
+                        <div className="px-5 py-5 flex flex-col sm:flex-row sm:items-start gap-5">
+                            {/* Avatar placeholder */}
+                            <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[rgba(123,57,252,0.3)] to-[rgba(0,212,255,0.15)] border border-white/[0.08] flex items-center justify-center shrink-0">
+                                <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[16px] text-[var(--veyla-purple)]">F</span>
+                            </div>
+
+                            <div className="flex-1 min-w-0">
+                                <div className="flex flex-wrap items-center gap-2 mb-1">
+                                    <span className="text-[18px] font-semibold text-[var(--veyla-text-main)]">fdaniall</span>
+                                    {/* Verified badge */}
+                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[rgba(123,57,252,0.15)] border border-[rgba(123,57,252,0.3)] text-[11px] font-medium text-[var(--veyla-purple-soft)]">
+                                        ✓ Verified · Reasonable
+                                    </span>
+                                </div>
+
+                                <p className="text-[14px] text-[var(--veyla-text-muted)] mb-4 leading-[1.65]">
+                                    Full-stack developer &amp; protocol designer. Builder of Veyla Protocol — automated yield optimization on Polkadot Hub.
+                                </p>
+
+                                {/* SS58 address */}
+                                <div className="mb-3">
+                                    <div className="text-[12px] text-[var(--veyla-text-dim)] mb-1.5 uppercase tracking-wider">Polkadot SS58 Address</div>
+                                    <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-white/[0.03] border border-white/[0.06] overflow-x-auto">
+                                        <code className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] text-[var(--veyla-cyan)] whitespace-nowrap">
+                                            5HBz4tNpNnbpwnYjERnEjebTiDeEgeRjMytapvFr7V8sKchY
+                                        </code>
+                                    </div>
+                                </div>
+
+                                {/* Identity details */}
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+                                    {[
+                                        { label: "Network", value: "Polkadot People Chain" },
+                                        { label: "Judgment", value: "Reasonable" },
+                                        { label: "Registrar", value: "W3F" },
+                                    ].map(({ label, value }) => (
+                                        <div key={label} className="px-3 py-2.5 rounded-lg bg-white/[0.02] border border-white/[0.05]">
+                                            <div className="text-[11px] text-[var(--veyla-text-dim)] mb-0.5 uppercase tracking-wider">{label}</div>
+                                            <div className="text-[13px] font-medium text-[var(--veyla-text-main)]">{value}</div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {/* Links */}
+                                <div className="flex flex-wrap gap-2">
+                                    <a
+                                        href="https://polkadot.polkassembly.io/user/5HBz4t...KchY"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[rgba(123,57,252,0.1)] border border-[rgba(123,57,252,0.2)] text-[13px] text-[var(--veyla-purple-soft)] hover:bg-[rgba(123,57,252,0.18)] transition-colors duration-150"
+                                    >
+                                        View on Polkadot Identity <ExternalLink size={11} />
+                                    </a>
+                                    <a
+                                        href="https://x.com/veylaprotocol"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-[13px] text-[var(--veyla-text-muted)] hover:text-white hover:border-white/[0.15] transition-colors duration-150"
+                                    >
+                                        @veylaprotocol <ExternalLink size={11} />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* ── Footer ── */}
