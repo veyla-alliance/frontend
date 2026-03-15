@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils";
 
 type Tab = "deposit" | "withdraw";
 
+const RISK_ACK_KEY = (address: string) => `veyla_risk_ack_${address}`;
+
 // ── Withdraw Summary (right panel) ──────────────────────────────────────────
 function WithdrawSummary({
     asset,
@@ -82,6 +84,7 @@ export default function VaultPage() {
     const [asset, setAsset]               = useState("DOT");
     const [depositAmount, setDepositAmount]   = useState("");
     const [withdrawAmount, setWithdrawAmount] = useState("");
+    const [riskAcked, setRiskAcked] = useState(false);
 
     const { address } = useConnection();
     const chainId = useChainId();
@@ -130,7 +133,7 @@ export default function VaultPage() {
     const parsedDeposit   = parseFloat(depositAmount) || 0;
     const depositUsdValue = parsedDeposit * prices[asset as AssetSymbol];
     const depositBalance  = walletBalances[asset];
-    const depositIsValid  = isCorrectChain && parsedDeposit > 0 && parsedDeposit <= depositBalance && !!tokenAddress;
+    const depositIsValid  = isCorrectChain && parsedDeposit > 0 && parsedDeposit <= depositBalance && !!tokenAddress && riskAcked;
 
     // Withdraw
     const parsedWithdraw    = parseFloat(withdrawAmount) || 0;
@@ -143,6 +146,18 @@ export default function VaultPage() {
     const earnedAmount    = positions.find(p => p.asset === asset)?.earnedAmount ?? 0n;
     const hasEarned       = earnedAmount > 0n;
     const earnedFormatted = Number(formatUnits(earnedAmount, selectedAsset.decimals)).toFixed(6);
+
+    // Load risk ack from localStorage once wallet is connected
+    useEffect(() => {
+        if (address) {
+            setRiskAcked(localStorage.getItem(RISK_ACK_KEY(address)) === "true");
+        }
+    }, [address]);
+
+    function handleRiskAck(checked: boolean) {
+        setRiskAcked(checked);
+        if (checked && address) localStorage.setItem(RISK_ACK_KEY(address), "true");
+    }
 
     // Reset amounts on tab switch so both forms start clean
     useEffect(() => {
@@ -309,6 +324,25 @@ export default function VaultPage() {
                                     Amount exceeds your balance of {depositBalance.toLocaleString()} {asset}
                                 </p>
                             )}
+
+                            {/* Risk acknowledgment */}
+                            <label className={cn(
+                                "flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors duration-150 select-none",
+                                riskAcked
+                                    ? "bg-[rgba(74,222,128,0.05)] border-[rgba(74,222,128,0.2)]"
+                                    : "bg-white/[0.02] border-white/[0.07] hover:border-white/[0.12]"
+                            )}>
+                                <input
+                                    type="checkbox"
+                                    checked={riskAcked}
+                                    onChange={(e) => handleRiskAck(e.target.checked)}
+                                    className="mt-0.5 w-4 h-4 shrink-0 accent-[#4ade80] cursor-pointer"
+                                />
+                                <span className="text-[13px] text-[var(--veyla-text-muted)] leading-[1.6]">
+                                    I understand this is a <strong className="text-[var(--veyla-text-main)]">testnet deployment</strong> (no real funds at risk),
+                                    APY rates are manually set, and the contract has not been audited by a third party.
+                                </span>
+                            </label>
 
                             <TxButton
                                 txState={depositTxState}

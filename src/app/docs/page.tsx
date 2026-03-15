@@ -931,6 +931,10 @@ event TokenRouteUpdated(address indexed token, string route);
                     <div className="space-y-4">
                         {[
                             {
+                                q: "What are the risks of using Veyla?",
+                                a: "Several risk factors to be aware of: (1) Smart contract risk — the contract has 82 passing tests and an internal security audit, but has not yet been audited by a professional third-party firm. A formal audit is planned before mainnet. (2) Testnet only — Veyla currently runs on Passet Hub Testnet (PAS tokens, not real DOT). No real funds are at risk. (3) APY is owner-set — yield rates are configured by the contract owner, not sourced from a live oracle. Rates reflect real parachain yields but are manually curated. (4) Routing is owner-triggered in the MVP — assets are not automatically moved between chains without an owner action. (5) Yield pool dependency — yield is paid from a funded pool; if the pool is empty, withdrawals still return full principal but yield reverts to zero. Never deposit more than you're comfortable with on a testnet protocol."
+                            },
+                            {
                                 q: "Why does MetaMask show PAS instead of DOT?",
                                 a: "Passet Hub Testnet uses PAS (Paseo) as its native token — the testnet equivalent of DOT. They are functionally identical in this context. When you deposit 'DOT' on Veyla Protocol, MetaMask shows PAS because that's the actual testnet currency. On mainnet, this will be DOT."
                             },

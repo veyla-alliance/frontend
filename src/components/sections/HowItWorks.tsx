@@ -88,17 +88,17 @@ export default function HowItWorks() {
                                 </div>
                                 <div className={styles.previewChainLine} />
                                 <div className={styles.previewChainActive}>
-                                    <div className="relative w-4 h-4 rounded-sm bg-white overflow-hidden shrink-0 border border-white/20">
-                                        <Image src="/astar.jpg" alt="Astar" fill className="object-contain p-[1.5px]" />
-                                    </div>
-                                    <span className={styles.previewChainTextActive}>ASTR</span>
-                                </div>
-                                <div className={styles.previewChainLine} />
-                                <div className={styles.previewChain}>
                                     <div className="relative w-4 h-4 rounded-sm overflow-hidden shrink-0">
                                         <Image src="/hydration.jpg" alt="Hydration" fill className="object-cover" />
                                     </div>
-                                    <span className={styles.previewChainText}>HDX</span>
+                                    <span className={styles.previewChainTextActive}>HDX</span>
+                                </div>
+                                <div className={styles.previewChainLine} />
+                                <div className={styles.previewChain}>
+                                    <div className="relative w-4 h-4 rounded-sm bg-white overflow-hidden shrink-0 border border-white/20">
+                                        <Image src="/astar.jpg" alt="Astar" fill className="object-contain p-[1.5px]" />
+                                    </div>
+                                    <span className={styles.previewChainText}>ASTR</span>
                                 </div>
                             </div>
                         </div>
@@ -124,7 +124,7 @@ export default function HowItWorks() {
                         </p>
                         <div className={styles.previewBox}>
                             <span className={styles.previewLabel}>Current APY</span>
-                            <span className={styles.previewApy}>12.4%</span>
+                            <span className={styles.previewApy}>14.2%</span>
                         </div>
                     </FadeIn>
                 </div>

@@ -2,42 +2,57 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-const COINGECKO_URL =
-    "https://api.coingecko.com/api/v3/simple/price?ids=polkadot,tether&vs_currencies=usd";
-
 interface Prices {
     DOT: number;
     USDT: number;
     [key: string]: number;
 }
 
-// Fallback to last-known prices if the API is unreachable
-const FALLBACK: Prices = { DOT: 7.85, USDT: 1.00 };
+// Last-resort fallback (updated March 2026)
+const FALLBACK: Prices = { DOT: 1.50, USDT: 1.00 };
 
-async function fetchPrices(): Promise<Prices> {
-    const res = await fetch(COINGECKO_URL);
-    if (!res.ok) throw new Error("non-OK response");
+// ── Source 1: CoinGecko ─────────────────────────────────────────────────────
+async function fetchFromCoinGecko(): Promise<Prices> {
+    const res = await fetch(
+        "https://api.coingecko.com/api/v3/simple/price?ids=polkadot,tether&vs_currencies=usd"
+    );
+    if (!res.ok) throw new Error("CoinGecko: non-OK");
     const json = await res.json();
-    return {
-        DOT:  json?.polkadot?.usd ?? FALLBACK.DOT,
-        USDT: json?.tether?.usd   ?? FALLBACK.USDT,
-    };
+    const dot = json?.polkadot?.usd;
+    if (typeof dot !== "number") throw new Error("CoinGecko: missing DOT");
+    return { DOT: dot, USDT: json?.tether?.usd ?? 1.00 };
+}
+
+// ── Source 2: CoinCap ───────────────────────────────────────────────────────
+async function fetchFromCoinCap(): Promise<Prices> {
+    const res = await fetch("https://api.coincap.io/v2/assets?ids=polkadot");
+    if (!res.ok) throw new Error("CoinCap: non-OK");
+    const json = await res.json();
+    const dot = parseFloat(json?.data?.[0]?.priceUsd);
+    if (isNaN(dot)) throw new Error("CoinCap: missing DOT");
+    return { DOT: dot, USDT: 1.00 };
+}
+
+// ── Waterfall: try each source, fall back to next ───────────────────────────
+async function fetchPrices(): Promise<Prices> {
+    try { return await fetchFromCoinGecko(); } catch { /* next */ }
+    try { return await fetchFromCoinCap(); } catch { /* next */ }
+    return FALLBACK;
 }
 
 /**
- * Fetches DOT and USDT prices from CoinGecko.
- * Uses TanStack Query so multiple components share a single cache entry —
- * no duplicate API calls regardless of how many times the hook is mounted.
- * Falls back to { DOT: 7.85, USDT: 1.00 } on error.
+ * Fetches DOT and USDT prices with multi-source fallback:
+ * CoinGecko → CoinCap → hardcoded fallback.
+ * Uses TanStack Query so multiple components share a single cache entry.
  */
 export function useTokenPrices() {
     const { data, isLoading } = useQuery<Prices>({
         queryKey: ["tokenPrices"],
         queryFn:  fetchPrices,
-        staleTime:       60_000,  // re-fetch at most every 60s
+        staleTime:       60_000,
         refetchInterval: 60_000,
-        placeholderData: FALLBACK, // never shows undefined — fallback until first fetch
-        retry: false,              // don't hammer CoinGecko on error
+        placeholderData: FALLBACK,
+        retry: 1,
     });
 
     return {

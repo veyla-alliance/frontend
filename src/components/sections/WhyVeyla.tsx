@@ -80,21 +80,21 @@ export default function WhyVeyla() {
                                     <div className="shrink-0 flex flex-col gap-1.5 items-start">
                                         <div className={styles.xcmChain}>
                                             <div className="relative w-4 h-4 rounded-sm overflow-hidden shrink-0">
-                                                <Image src="/polkadot.jpg" alt="Polkadot" fill className="object-cover" />
+                                                <Image src="/hydration.jpg" alt="Hydration" fill className="object-cover" />
                                             </div>
-                                            <span className={styles.xcmChainText}>DOT</span>
+                                            <span className={styles.xcmChainText}>HDX</span>
+                                        </div>
+                                        <div className={styles.xcmChain}>
+                                            <div className="relative w-4 h-4 rounded-sm overflow-hidden shrink-0">
+                                                <Image src="/moonbeam.jpg" alt="Moonbeam" fill className="object-cover" />
+                                            </div>
+                                            <span className={styles.xcmChainText}>GLMR</span>
                                         </div>
                                         <div className={styles.xcmChain}>
                                             <div className="relative w-4 h-4 rounded-sm bg-white overflow-hidden shrink-0 border border-white/20">
                                                 <Image src="/astar.jpg" alt="Astar" fill className="object-contain p-[1.5px]" />
                                             </div>
                                             <span className={styles.xcmChainText}>ASTR</span>
-                                        </div>
-                                        <div className={styles.xcmChain}>
-                                            <div className="relative w-4 h-4 rounded-sm overflow-hidden shrink-0">
-                                                <Image src="/hydration.jpg" alt="Hydration" fill className="object-cover" />
-                                            </div>
-                                            <span className={styles.xcmChainText}>HDX</span>
                                         </div>
                                     </div>
                                 </div>
