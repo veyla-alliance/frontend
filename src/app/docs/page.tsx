@@ -573,10 +573,11 @@ function _accrueYield(address user, address token) internal {
     `} />
 
                     <h3 className="text-[20px] font-semibold text-[var(--veyla-text-main)] mb-4 mt-8">Test Coverage</h3>
-                    <InfoBox title="50/50 Tests Passing" color="green">
+                    <InfoBox title="82/82 Tests Passing" color="green">
                         Full unit + fuzz test suite (4 fuzz tests, 256 runs each). Coverage includes: deposit (DOT + USDT), withdraw,
-                        yield accrual, multi-deposit accuracy, XCM routing calls, access control (onlyOwner), pause mechanism,
-                        2-step ownership transfer, principal protection when yield pool is empty, and all custom error paths.
+                        yield accrual, multi-deposit accuracy, XCM routing calls, XCM destination whitelist, 2-step treasury transfer,
+                        access control (onlyOwner), pause mechanism, 2-step ownership transfer, principal protection when yield pool is empty,
+                        and all custom error paths.
                     </InfoBox>
 
                     <Divider />
@@ -728,6 +729,27 @@ function transferOwnership(address newOwner) external;
 
 // [Pending owner only] Step 2 — accept and finalise ownership transfer.
 function acceptOwnership() external;
+
+// [Owner only] Step 1 of 2-step treasury (fee recipient) transfer.
+function proposeTreasury(address newTreasury) external;
+
+// [Pending treasury only] Step 2 — accept and activate new treasury address.
+function acceptTreasury() external;
+
+// [Owner only] Whitelist a cross-chain XCM destination (raw bytes encoding).
+function addTrustedDestination(bytes calldata destination) external;
+
+// [Owner only] Remove a previously whitelisted XCM destination.
+function removeTrustedDestination(bytes calldata destination) external;
+
+// [Owner only] Update protocol fee (basis points, capped at MAX_FEE_BPS).
+function setProtocolFee(uint256 feeBps) external;
+
+// [Owner only] Update the minimum rebalance interval in seconds.
+function setRebalanceInterval(uint256 interval) external;
+
+// [Owner only] Update the human-readable route label for a token.
+function setTokenRoute(address token, string calldata route) external;
     `} />
 
                     <h3 className="text-[18px] font-semibold text-[var(--veyla-cyan)] mb-3 mt-8">Read Functions</h3>
@@ -747,9 +769,17 @@ function tvl() external view returns (uint256);
 // TVL for a specific token.
 function tvlOf(address token) external view returns (uint256);
 
+// Timestamp of the user's last deposit for a given token.
+function depositTimestampOf(address user, address token) external view returns (uint256);
+
+// Human-readable route label for a token (e.g. "Hydration").
+function tokenRoute(address token) external view returns (string memory);
+
 // Public state
 address public owner;
 address public pendingOwner;
+address public treasury;
+address public pendingTreasury;
 bool public paused;
     `} />
 
@@ -765,6 +795,13 @@ event ApyUpdated(address indexed token, uint256 newApyBps);
 event Paused(bool isPaused);
 event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner);
 event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+event TreasuryProposed(address indexed newTreasury);
+event TreasuryUpdated(address indexed newTreasury);
+event TrustedDestinationAdded(bytes destination);
+event TrustedDestinationRemoved(bytes destination);
+event ProtocolFeeUpdated(uint256 newFeeBps);
+event RebalanceIntervalUpdated(uint256 newInterval);
+event TokenRouteUpdated(address indexed token, string route);
     `} />
 
                     <h3 className="text-[18px] font-semibold text-[var(--veyla-cyan)] mb-3 mt-8">Custom Errors</h3>
@@ -781,6 +818,13 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                             [<InlineCode key="a">ApyExceedsCap()</InlineCode>, "setApy() called with value above MAX_APY_BPS (10,000 = 100%)"],
                             [<InlineCode key="za">ZeroAddress()</InlineCode>, "transferOwnership() called with address(0)"],
                             [<InlineCode key="np">NoPendingOwner()</InlineCode>, "acceptOwnership() called when no transfer is pending"],
+                            [<InlineCode key="ud">UntrustedDestination()</InlineCode>, "sendCrossChain() called with a non-whitelisted destination"],
+                            [<InlineCode key="xl">XcmMessageTooLarge()</InlineCode>, "XCM message exceeds MAX_XCM_MESSAGE_SIZE (1024 bytes)"],
+                            [<InlineCode key="pt">NotPendingTreasury()</InlineCode>, "acceptTreasury() called by non-pending treasury address"],
+                            [<InlineCode key="fe">FeeExceedsCap()</InlineCode>, "setProtocolFee() called with value above the fee cap"],
+                            [<InlineCode key="ii">InvalidInterval()</InlineCode>, "setRebalanceInterval() called with zero interval"],
+                            [<InlineCode key="rt">RouteTooLong()</InlineCode>, "setTokenRoute() called with a route string exceeding max length"],
+                            [<InlineCode key="ye">YieldPoolEmpty()</InlineCode>, "claimYield() called but yield pool has insufficient funds"],
                         ]}
                     />
 
@@ -804,7 +848,7 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                                     "DOT (native) + USDT (pallet-assets precompile) deposits & withdrawals",
                                     "XCM precompile integration (execute + send)",
                                     "Automated yield accounting (snapshot pattern)",
-                                    "50/50 tests passing (4 fuzz tests, 256 runs each)",
+                                    "82/82 tests passing (4 fuzz tests, 256 runs each)",
                                     "Security audit completed — Critical, High, Medium, Low all fixed",
                                     "Live deployment on Vercel",
                                 ]
@@ -902,7 +946,7 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                             },
                             {
                                 q: "Is the contract audited?",
-                                a: "Yes — a full internal security audit was completed (Critical through Low severity), covering APY drain prevention, 2-step ownership transfer, principal protection, and event traceability. The contract has 50 passing tests including 4 fuzz tests (256 runs each) and is verified on Blockscout. A professional third-party audit is planned before mainnet deployment."
+                                a: "Yes — a full internal security audit was completed (Critical through Low severity), covering APY drain prevention, 2-step ownership transfer, principal protection, and event traceability. The contract has 82 passing tests including 4 fuzz tests (256 runs each), covering XCM destination whitelist, 2-step treasury transfer, and all new security paths. It is verified on Blockscout. A professional third-party audit is planned before mainnet deployment."
                             },
                             {
                                 q: "Which wallets are supported?",
