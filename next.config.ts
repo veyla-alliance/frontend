@@ -11,9 +11,9 @@ const securityHeaders = [
         value: [
             "default-src 'self'",
             "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
-            "style-src 'self' 'unsafe-inline'",
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
             "img-src 'self' data: blob: https://images.unsplash.com",
-            "font-src 'self'",
+            "font-src 'self' https://fonts.gstatic.com",
             "connect-src 'self' https://eth-rpc-testnet.polkadot.io https://api.coingecko.com wss: ws:",
             "frame-ancestors 'none'",
         ].join("; "),
