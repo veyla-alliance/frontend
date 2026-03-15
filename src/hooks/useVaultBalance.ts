@@ -105,3 +105,30 @@ export function useVaultTvl() {
         isLoading,
     };
 }
+
+/**
+ * Reads global protocol config from contract:
+ * protocolFeeBps, rebalanceInterval, lastRoutedAt, and token→route mappings.
+ * Refreshes every 60s.
+ */
+export function useVaultConfig() {
+    const { data, isLoading } = useReadContracts({
+        contracts: [
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "protocolFeeBps"   },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "rebalanceInterval" },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "lastRoutedAt"      },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "tokenRoute", args: [env.dotTokenAddress]  },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "tokenRoute", args: [env.usdtTokenAddress] },
+        ],
+        query: { staleTime: 60_000, refetchInterval: 60_000 },
+    });
+
+    return {
+        protocolFeeBps:    data?.[0]?.result as bigint | undefined,
+        rebalanceInterval: data?.[1]?.result as bigint | undefined,
+        lastRoutedAt:      data?.[2]?.result as bigint | undefined,
+        dotRoute:          data?.[3]?.result as string | undefined,
+        usdtRoute:         data?.[4]?.result as string | undefined,
+        isLoading,
+    };
+}

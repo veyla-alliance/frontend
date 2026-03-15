@@ -9,7 +9,8 @@ import { ASSETS } from "@/components/app/vault/AssetSelector";
 import type { VaultPosition, AssetSymbol } from "@/types";
 
 /**
- * Returns the connected user's active vault positions via a single multicall.
+ * Returns the connected user's active vault positions via a single multicall (10 reads).
+ * Reads: balanceOf x2, earned x2, currentApy x2, depositTimestampOf x2, tokenRoute x2.
  * Pass `prices` to populate depositedUsd and earnedUsd fields.
  * Returns an empty array when the contract is not yet deployed or wallet is disconnected.
  */
@@ -26,12 +27,16 @@ export function useUserPositions(prices?: Record<string, number>): {
 
     const { data, isLoading } = useReadContracts({
         contracts: [
-            { address: env.vaultAddress, abi: vaultAbi, functionName: "balanceOf", args: [address!, dotAddress] },
-            { address: env.vaultAddress, abi: vaultAbi, functionName: "balanceOf", args: [address!, usdtAddress] },
-            { address: env.vaultAddress, abi: vaultAbi, functionName: "earned",    args: [address!, dotAddress] },
-            { address: env.vaultAddress, abi: vaultAbi, functionName: "earned",    args: [address!, usdtAddress] },
-            { address: env.vaultAddress, abi: vaultAbi, functionName: "currentApy", args: [dotAddress] },
-            { address: env.vaultAddress, abi: vaultAbi, functionName: "currentApy", args: [usdtAddress] },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "balanceOf",          args: [address!, dotAddress]  },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "balanceOf",          args: [address!, usdtAddress] },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "earned",             args: [address!, dotAddress]  },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "earned",             args: [address!, usdtAddress] },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "currentApy",         args: [dotAddress]            },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "currentApy",         args: [usdtAddress]           },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "depositTimestampOf", args: [address!, dotAddress]  },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "depositTimestampOf", args: [address!, usdtAddress] },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "tokenRoute",         args: [dotAddress]            },
+            { address: env.vaultAddress, abi: vaultAbi, functionName: "tokenRoute",         args: [usdtAddress]           },
         ],
         query: {
             enabled,
@@ -44,7 +49,13 @@ export function useUserPositions(prices?: Record<string, number>): {
         return { positions: [], isLoading: false };
     }
 
-    const [dotBalRes, usdtBalRes, dotEarnedRes, usdtEarnedRes, dotApyRes, usdtApyRes] = data;
+    const [
+        dotBalRes, usdtBalRes,
+        dotEarnedRes, usdtEarnedRes,
+        dotApyRes, usdtApyRes,
+        dotTsRes, usdtTsRes,
+        dotRouteRes, usdtRouteRes,
+    ] = data;
 
     const dotBal   = dotBalRes?.result   as bigint | undefined;
     const usdtBal  = usdtBalRes?.result  as bigint | undefined;
@@ -52,6 +63,10 @@ export function useUserPositions(prices?: Record<string, number>): {
     const usdtEarn = usdtEarnedRes?.result as bigint | undefined;
     const dotApy   = dotApyRes?.result   as bigint | undefined;
     const usdtApy  = usdtApyRes?.result  as bigint | undefined;
+    const dotTs    = dotTsRes?.result    as bigint | undefined;
+    const usdtTs   = usdtTsRes?.result   as bigint | undefined;
+    const dotRoute = dotRouteRes?.result  as string | undefined;
+    const usdtRoute = usdtRouteRes?.result as string | undefined;
 
     const positions: VaultPosition[] = [];
 
@@ -69,8 +84,8 @@ export function useUserPositions(prices?: Record<string, number>): {
             currentApy: dotApy ? Number(dotApy) / 100 : 0,
             earnedAmount: dotEarn ?? 0n,
             earnedUsd: toUsd(dotEarn, "DOT"),
-            deployedTo: "Hydration",
-            depositedAt: 0,
+            deployedTo: dotRoute ?? "Hydration",
+            depositedAt: dotTs ? Number(dotTs) * 1000 : 0,
         });
     }
 
@@ -82,8 +97,8 @@ export function useUserPositions(prices?: Record<string, number>): {
             currentApy: usdtApy ? Number(usdtApy) / 100 : 0,
             earnedAmount: usdtEarn ?? 0n,
             earnedUsd: toUsd(usdtEarn, "USDT"),
-            deployedTo: "Moonbeam",
-            depositedAt: 0,
+            deployedTo: usdtRoute ?? "Moonbeam",
+            depositedAt: usdtTs ? Number(usdtTs) * 1000 : 0,
         });
     }
 

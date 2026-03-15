@@ -23,6 +23,7 @@ const TYPE_STYLE: Record<ActivityType, string> = {
     Withdraw: "bg-[rgba(251,191,36,0.08)] text-[#fbbf24] border-[rgba(251,191,36,0.2)]",
     Route:    "bg-[rgba(0,212,255,0.08)] text-[var(--veyla-cyan)] border-[rgba(0,212,255,0.2)]",
     Earn:     "bg-[rgba(74,222,128,0.08)] text-[#4ade80] border-[rgba(74,222,128,0.2)]",
+    Claim:    "bg-[rgba(74,222,128,0.08)] text-[#4ade80] border-[rgba(74,222,128,0.2)]",
 };
 
 function formatDate(date: Date): string {

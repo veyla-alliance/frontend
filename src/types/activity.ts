@@ -1,6 +1,6 @@
 // Types for on-chain activity / event history.
 
-export type ActivityType = "Deposit" | "Withdraw" | "Route" | "Earn";
+export type ActivityType = "Deposit" | "Withdraw" | "Route" | "Earn" | "Claim";
 
 /** A single on-chain event, as returned from the indexer or RPC. */
 export interface ActivityEvent {

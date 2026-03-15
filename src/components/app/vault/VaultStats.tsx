@@ -4,7 +4,7 @@ import { useReadContracts, useConnection } from "wagmi";
 import { formatUnits } from "viem";
 import { vaultAbi } from "@/lib/abi/vault";
 import { env } from "@/lib/env";
-import { useUserPositions } from "@/hooks";
+import { useUserPositions, useVaultConfig } from "@/hooks";
 
 function fmt(value: bigint, decimals: number, maxDecimals = 2): string {
     return Number(formatUnits(value, decimals)).toLocaleString("en-US", {
@@ -16,6 +16,7 @@ function fmt(value: bigint, decimals: number, maxDecimals = 2): string {
 export function VaultStats() {
     const { address } = useConnection();
     const { positions } = useUserPositions();
+    const { protocolFeeBps, rebalanceInterval } = useVaultConfig();
 
     const { data, isLoading } = useReadContracts({
         contracts: [
@@ -57,11 +58,19 @@ export function VaultStats() {
         shareDisplay = parts.length > 0 ? parts.join(" · ") : "0%";
     }
 
+    const feeDisplay = protocolFeeBps !== undefined
+        ? `${(Number(protocolFeeBps) / 100).toFixed(1)}%`
+        : "0.5%";
+
+    const rebalanceDisplay = rebalanceInterval !== undefined
+        ? `~${Math.round(Number(rebalanceInterval) / 3600)}h`
+        : "~4h";
+
     const stats = [
-        { label: "Protocol TVL",  value: tvlDisplay,  sub: "Total deposited in vault"  },
-        { label: "Your Share",    value: shareDisplay, sub: "Of total per-asset TVL"    },
-        { label: "Protocol Fee",  value: "0.5%",       sub: "Of yield earned"           },
-        { label: "Avg Rebalance", value: "~4h",        sub: "Routing frequency"         },
+        { label: "Protocol TVL",  value: tvlDisplay,       sub: "Total deposited in vault"  },
+        { label: "Your Share",    value: shareDisplay,      sub: "Of total per-asset TVL"    },
+        { label: "Protocol Fee",  value: feeDisplay,        sub: "Of yield earned"           },
+        { label: "Avg Rebalance", value: rebalanceDisplay,  sub: "Routing frequency"         },
     ];
 
     return (

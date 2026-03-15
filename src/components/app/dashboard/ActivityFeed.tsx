@@ -37,6 +37,11 @@ const ACTIVITY_CONFIG: Record<ActivityType, {
         iconBg: "bg-[rgba(251,191,36,0.08)] text-[#fbbf24] border-[rgba(251,191,36,0.15)]",
         amountColor: "text-[#fbbf24]",
     },
+    Claim: {
+        icon: <TrendingUp size={13} />,
+        iconBg: "bg-[rgba(74,222,128,0.08)] text-[#4ade80] border-[rgba(74,222,128,0.15)]",
+        amountColor: "text-[#4ade80]",
+    },
 };
 
 function formatRelativeTime(date: Date): string {

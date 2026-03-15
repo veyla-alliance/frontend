@@ -10,7 +10,7 @@ import { AmountInput } from "@/components/app/vault/AmountInput";
 import { DepositPreview } from "@/components/app/vault/DepositPreview";
 import { VaultStats } from "@/components/app/vault/VaultStats";
 import { TxButton } from "@/components/app/vault/TxButton";
-import { useDeposit, useWithdraw, useERC20Balance, useUserPositions, useTokenApys, useTokenPrices } from "@/hooks";
+import { useDeposit, useWithdraw, useERC20Balance, useUserPositions, useTokenApys, useTokenPrices, useClaimYield } from "@/hooks";
 import { pushToHistoryCache } from "@/hooks/useVaultHistory";
 import { TOKEN_ADDRESSES } from "@/lib/constants";
 import { env } from "@/lib/env";
@@ -94,14 +94,16 @@ export default function VaultPage() {
         USDT: usdtApy ?? ASSETS["USDT"].apy,
     };
     const isCorrectChain = chainId === env.chainId;
-    const { deposit,  txState: depositTxState,  reset: resetDeposit  } = useDeposit();
-    const { withdraw, txState: withdrawTxState, reset: resetWithdraw } = useWithdraw();
+    const { deposit,     txState: depositTxState,  reset: resetDeposit  } = useDeposit();
+    const { withdraw,    txState: withdrawTxState, reset: resetWithdraw } = useWithdraw();
+    const { claimYield,  txState: claimTxState,    reset: resetClaim    } = useClaimYield();
     const { positions } = useUserPositions();
 
     // Capture in-flight tx context at submit time so success toasts are accurate
     // even if the user changes the form before the tx confirms (stale closure fix).
     const depositCtx  = useRef({ amount: 0, asset: "DOT", route: "Hydration" });
     const withdrawCtx = useRef({ amount: 0, asset: "DOT", route: "Hydration" });
+    const claimCtx    = useRef({ amount: "0", asset: "DOT" });
 
     // ── Wallet balances (for deposit) ─────────────────────────────────────
     // DOT is the native asset in PolkaVM — read via useBalance (like ETH), not ERC-20
@@ -136,6 +138,11 @@ export default function VaultPage() {
     const withdrawBalance   = vaultBalances[asset];
     const withdrawIsValid   = isCorrectChain && parsedWithdraw > 0 && parsedWithdraw <= withdrawBalance && !!tokenAddress;
     const hasPosition       = withdrawBalance > 0;
+
+    // Claimable yield for the selected asset
+    const earnedAmount    = positions.find(p => p.asset === asset)?.earnedAmount ?? 0n;
+    const hasEarned       = earnedAmount > 0n;
+    const earnedFormatted = Number(formatUnits(earnedAmount, selectedAsset.decimals)).toFixed(6);
 
     // Reset amounts on tab switch so both forms start clean
     useEffect(() => {
@@ -201,6 +208,34 @@ export default function VaultPage() {
         toast.error(withdrawTxState.error ?? "Transaction failed.");
     }, [withdrawTxState.status, withdrawTxState.error]);
 
+    // ── Claim Yield lifecycle toasts ──────────────────────────────────────
+    useEffect(() => {
+        if (claimTxState.status !== "success") return;
+        const { amount: a, asset: ast } = claimCtx.current;
+        toast.success(`Claimed ${a} ${ast} yield`, {
+            action: claimTxState.hash
+                ? { label: "View TX", onClick: () => window.open(`${env.blockExplorerUrl}/tx/${claimTxState.hash}`, "_blank") }
+                : undefined,
+        });
+        if (address && claimTxState.hash) {
+            pushToHistoryCache(address, {
+                type: "Claim",
+                asset: ast,
+                amount: a,
+                chain: selectedAsset.route,
+                date: new Date(),
+                txHash: claimTxState.hash,
+            });
+        }
+        const t = setTimeout(resetClaim, 2500);
+        return () => clearTimeout(t);
+    }, [claimTxState.status, claimTxState.hash, address, resetClaim, selectedAsset.route]);
+
+    useEffect(() => {
+        if (claimTxState.status !== "error") return;
+        toast.error(claimTxState.error ?? "Transaction failed.");
+    }, [claimTxState.status, claimTxState.error]);
+
     function handleDeposit() {
         if (!tokenAddress || !depositIsValid) return;
         depositCtx.current = { amount: parsedDeposit, asset, route: selectedAsset.route };
@@ -211,6 +246,12 @@ export default function VaultPage() {
         if (!tokenAddress || !withdrawIsValid) return;
         withdrawCtx.current = { amount: parsedWithdraw, asset, route: selectedAsset.route };
         withdraw(tokenAddress, parseUnits(withdrawAmount, selectedAsset.decimals));
+    }
+
+    function handleClaimYield() {
+        if (!tokenAddress || !hasEarned || !isCorrectChain) return;
+        claimCtx.current = { amount: earnedFormatted, asset };
+        claimYield(tokenAddress);
     }
 
     return (
@@ -323,6 +364,29 @@ export default function VaultPage() {
                                         label="Withdraw"
                                         successLabel="Withdrawn!"
                                     />
+
+                                    {hasEarned && (
+                                        <div className="mt-2 pt-4 border-t border-white/[0.05]">
+                                            <div className="flex items-center justify-between mb-3">
+                                                <div>
+                                                    <p className="text-[15px] font-medium text-[var(--veyla-text-main)]">Claimable Yield</p>
+                                                    <p className="text-[13px] text-[#4ade80] font-semibold">
+                                                        {earnedFormatted} {asset}
+                                                    </p>
+                                                </div>
+                                                <TxButton
+                                                    txState={claimTxState}
+                                                    onSubmit={handleClaimYield}
+                                                    disabled={!isCorrectChain || !hasEarned}
+                                                    label="Claim Yield"
+                                                    successLabel="Claimed!"
+                                                />
+                                            </div>
+                                            <p className="text-[13px] text-[var(--veyla-text-dim)]">
+                                                Harvest yield without touching your principal
+                                            </p>
+                                        </div>
+                                    )}
                                 </>
                             ) : (
                                 <div className="flex flex-col items-center justify-center gap-3 py-10 text-center">

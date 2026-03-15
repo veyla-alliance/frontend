@@ -2,8 +2,20 @@
 
 import Image from "next/image";
 import { CHAINS } from "@/components/app/routes/ChainNode";
+import { useVaultConfig } from "@/hooks";
+
+function formatRelativeTime(ts: bigint | undefined): string {
+    if (!ts || ts === 0n) return "never";
+    const elapsed = Math.max(0, Math.floor(Date.now() / 1000) - Number(ts));
+    if (elapsed === 0)   return "just now";
+    if (elapsed < 60)    return `${elapsed}s ago`;
+    if (elapsed < 3600)  return `${Math.floor(elapsed / 60)}m ago`;
+    if (elapsed < 86400) return `${Math.floor(elapsed / 3600)}h ago`;
+    return `${Math.floor(elapsed / 86400)}d ago`;
+}
 
 export function MiniRouteViz() {
+    const { lastRoutedAt } = useVaultConfig();
     return (
         <div className="flex flex-col rounded-2xl bg-white/[0.02] border border-white/[0.06] overflow-hidden">
             {/* Header */}
@@ -79,7 +91,7 @@ export function MiniRouteViz() {
                 <div className="mt-1 pt-3 border-t border-white/[0.05] flex items-center justify-between">
                     <span className="text-[13px] text-[var(--veyla-text-dim)]">Last routed</span>
                     <span className="[font-family:var(--font-geist-pixel-square),monospace] text-[11px] text-[var(--veyla-text-dim)] tracking-[0.5px]">
-                        2 min ago
+                        {formatRelativeTime(lastRoutedAt)}
                     </span>
                 </div>
             </div>
