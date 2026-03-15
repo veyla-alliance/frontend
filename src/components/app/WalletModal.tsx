@@ -12,7 +12,7 @@ import Image from "next/image";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-type WalletId = "metamask" | "rabby" | "coinbase";
+type WalletId = "metamask" | "rabby" | "subwallet" | "talisman" | "coinbase";
 
 interface WalletDef {
     id: WalletId;
@@ -61,6 +61,60 @@ const WALLETS: WalletDef[] = [
             const eth = (window as any).ethereum;
             const providers: any[] = eth?.providers ?? (eth ? [eth] : []);
             return providers.some((p) => p.isRabby);
+        },
+    },
+    {
+        id: "subwallet",
+        name: "SubWallet",
+        description: "Polkadot & EVM multi-chain wallet",
+        icon: (
+            <div className="relative w-10 h-10 rounded-xl overflow-hidden shrink-0 border border-white/[0.08]">
+                <Image src="/subwallet.jpeg" alt="SubWallet" fill className="object-cover" />
+            </div>
+        ),
+        installUrl: "https://subwallet.app/download.html",
+        getConnector: () => injected({
+            target() {
+                return {
+                    id: "subwallet-js",
+                    name: "SubWallet",
+                    provider: (window as any)?.SubWallet,
+                };
+            },
+        }),
+        detect: () => {
+            if (typeof window === "undefined") return false;
+            if ((window as any).SubWallet) return true;
+            const eth = (window as any).ethereum;
+            const providers: any[] = eth?.providers ?? (eth ? [eth] : []);
+            return providers.some((p) => p.isSubWallet);
+        },
+    },
+    {
+        id: "talisman",
+        name: "Talisman",
+        description: "Polkadot-native browser wallet",
+        icon: (
+            <div className="relative w-10 h-10 rounded-xl overflow-hidden shrink-0 border border-white/[0.08]">
+                <Image src="/talisman.png" alt="Talisman" fill className="object-cover" />
+            </div>
+        ),
+        installUrl: "https://talisman.xyz",
+        getConnector: () => injected({
+            target() {
+                return {
+                    id: "talisman",
+                    name: "Talisman",
+                    provider: (window as any)?.talismanEth,
+                };
+            },
+        }),
+        detect: () => {
+            if (typeof window === "undefined") return false;
+            if ((window as any).talismanEth) return true;
+            const eth = (window as any).ethereum;
+            const providers: any[] = eth?.providers ?? (eth ? [eth] : []);
+            return providers.some((p) => p.isTalisman);
         },
     },
     {
@@ -253,7 +307,7 @@ export function WalletModal({ isOpen, onClose }: WalletModalProps) {
                                             Install a browser wallet extension to connect to Veyla.
                                         </p>
                                         <div className="flex flex-col gap-2 w-full">
-                                            {WALLETS.slice(0, 2).map((w) => (
+                                            {WALLETS.filter((w) => ["subwallet", "talisman"].includes(w.id)).map((w) => (
                                                 <a
                                                     key={w.id}
                                                     href={w.installUrl}
