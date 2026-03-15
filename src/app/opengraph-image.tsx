@@ -75,9 +75,9 @@ export default function Image() {
                     }}
                 >
                     {[
-                        { value: "$2.4M", label: "TVL" },
-                        { value: "12.4%", label: "AVG APY" },
-                        { value: "6", label: "CHAINS" },
+                        { value: "14.2%", label: "TOP APY" },
+                        { value: "XCM", label: "ROUTING" },
+                        { value: "4", label: "CHAINS" },
                     ].map(({ value, label }) => (
                         <div
                             key={label}

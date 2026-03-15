@@ -353,7 +353,7 @@ export default function VaultPage() {
                             />
 
                             <p className="text-center text-[13px] text-[var(--veyla-text-dim)]">
-                                Assets routed via XCM · No bridge risk · Auto-compounding
+                                Assets routed via XCM · No bridge risk · Yield accrues on-chain
                                 {asset === "DOT" && (
                                     <> · DOT uses <span className="text-[var(--veyla-purple-soft)]">PAS</span> on testnet</>
                                 )}

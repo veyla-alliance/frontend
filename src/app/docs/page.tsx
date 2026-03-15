@@ -1011,7 +1011,7 @@ event TokenRouteUpdated(address indexed token, string route);
                                 </div>
 
                                 <p className="text-[14px] text-[var(--veyla-text-muted)] mb-4 leading-[1.65]">
-                                    Full-stack developer &amp; protocol designer. Builder of Veyla Protocol — automated yield optimization on Polkadot Hub.
+                                    Full-stack developer &amp; protocol designer. Builder of Veyla Protocol — on-chain yield accounting &amp; XCM routing on Polkadot Hub.
                                 </p>
 
                                 {/* SS58 address */}

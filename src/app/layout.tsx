@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     default: "Veyla Protocol",
     template: "%s | Veyla",
   },
-  description: "Veyla is an automated yield optimization protocol built natively on Polkadot Hub. Stop worrying about liquidity fragmentation—let Veyla route your assets for maximum yield with PVM and XCM.",
+  description: "Veyla is an on-chain yield accounting and XCM routing protocol built natively on Polkadot Hub. Deposit once, earn across Polkadot parachains — no bridges, no wrapped tokens.",
   openGraph: {
     title: "Veyla | The Intelligent Yield Router",
     description: "Your Personal Executive for crypto assets on the Polkadot ecosystem.",
