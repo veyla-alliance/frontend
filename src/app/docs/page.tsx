@@ -398,7 +398,7 @@ export default function DocsPage() {
                         Veyla Protocol Docs
                     </h1>
                     <p className="text-[16px] md:text-[18px] text-[var(--veyla-text-muted)] leading-[1.75] mb-8 max-w-[640px]">
-                        Complete technical documentation for Veyla Protocol — the automated yield optimization protocol built natively on Polkadot Hub using PVM smart contracts and XCM cross-chain routing.
+                        Complete technical documentation for Veyla Protocol — automated yield accounting and XCM routing infrastructure built natively on Polkadot Hub using PVM smart contracts and Polkadot-native cross-chain messaging.
                     </p>
 
                     <div className="flex flex-wrap gap-3 mb-10">
@@ -423,15 +423,15 @@ export default function DocsPage() {
                     </div>
 
                     <InfoBox title="What is Veyla Protocol?" color="purple">
-                        Veyla Protocol is an automated yield optimization protocol on Polkadot Hub. Users deposit DOT or USDT into a single vault.
-                        The protocol detects the highest yields across connected parachains, routes liquidity via native XCM, and auto-compounds
-                        assets — all on-chain, no bridges, no manual management.
+                        Veyla Protocol is an on-chain yield accounting and XCM routing protocol on Polkadot Hub. Users deposit DOT or USDT into a single vault.
+                        The contract tracks principal + accrued yield per user, and routes liquidity to the highest-APY parachain via Polkadot-native XCM precompiles —
+                        no bridges, no wrapped tokens. In the current MVP, APY rates and routing execution are owner-configured; keeper-based automation is planned for Phase 2.
                     </InfoBox>
 
                     <div className="grid sm:grid-cols-3 gap-4 mb-8">
                         {[
                             { title: "Deposit Once", desc: "Deposit DOT or USDT into the Veyla Protocol vault on Polkadot Hub. That's it." },
-                            { title: "Auto-Route", desc: "Smart contract scans APYs and routes via XCM precompile to the best parachain." },
+                            { title: "Auto-Route", desc: "Vault routes via XCM precompile to the highest-APY parachain. Routing is owner-triggered in the MVP — keeper automation in Phase 2." },
                             { title: "Earn & Compound", desc: "Yield accrues automatically. Withdraw anytime, principal + earned." },
                         ].map((c) => (
                             <div key={c.title} className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.05]">
@@ -519,6 +519,12 @@ interface IXcm {
                             ["Bifrost", "Bifrost LP", "DOT", "7.4%", <span key="b" className="text-[var(--veyla-text-dim)] text-[12px]">PAUSED</span>],
                         ]}
                     />
+
+                    <InfoBox title="MVP vs Phase 2" color="yellow">
+                        In the current MVP, XCM routing execution is triggered by the contract owner (demonstrable via the deployed contract on Passet Hub).
+                        APY rates are set on-chain via <InlineCode>setApy()</InlineCode> and currently reflect real parachain yields manually curated.
+                        Phase 2 will introduce keeper-based automation: off-chain agents monitor live APY feeds and call <InlineCode>routeAssets()</InlineCode> permissionlessly when better routes are detected.
+                    </InfoBox>
 
                     <Divider />
 

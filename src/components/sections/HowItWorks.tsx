@@ -118,8 +118,9 @@ export default function HowItWorks() {
                         <span className={styles.stepNumber}>03</span>
                         <h3 className={styles.title}>Earn</h3>
                         <p className={styles.description}>
-                            Yields auto-compound and rebalance 24/7. Market shifts?
-                            Veyla re-routes. You earn more by doing nothing.
+                            Yield accrues on-chain continuously. When better routes emerge,
+                            Veyla moves liquidity via XCM to the highest-yielding parachain.
+                            Withdraw anytime — principal plus earned.
                         </p>
                         <div className={styles.previewBox}>
                             <span className={styles.previewLabel}>Current APY</span>

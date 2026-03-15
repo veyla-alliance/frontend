@@ -20,8 +20,8 @@ const BENEFITS: Benefit[] = [
     },
     {
         icon: Zap,
-        title: "Fully Automated",
-        description: "Set it and forget it. Veyla monitors, rebalances, and re-routes your positions 24/7 as market conditions shift.",
+        title: "XCM-Native Routing",
+        description: "No bridges, no relayers. Veyla routes directly via Polkadot's native XCM precompile — the same messaging layer the protocol itself is built on.",
     },
     {
         icon: Code,
