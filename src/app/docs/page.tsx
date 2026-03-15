@@ -535,10 +535,10 @@ interface IXcm {
                         rows={[
                             ["Contract", <InlineCode key="c">VeylaVault.sol</InlineCode>],
                             ["Network", "Passet Hub Testnet (Chain ID: 420420417)"],
-                            ["Address", <InlineCode key="a">0xb155972671A3C19985fc1250e1433b26eB71837c</InlineCode>],
+                            ["Address", <InlineCode key="a">0xa93C92894af013652209db6155b13f115B30331E</InlineCode>],
                             ["Compiler", "Solidity 0.8.28 (PolkaVM)"],
                             ["Optimizer", "200 runs"],
-                            ["Blockscout", <a key="b" href="https://blockscout-testnet.polkadot.io/address/0xb155972671A3C19985fc1250e1433b26eB71837c" target="_blank" rel="noopener noreferrer" className="text-[var(--veyla-purple-soft)] flex items-center gap-1 hover:text-white transition-colors">View on Blockscout <ExternalLink size={11} /></a>],
+                            ["Blockscout", <a key="b" href="https://blockscout-testnet.polkadot.io/address/0xa93C92894af013652209db6155b13f115B30331E" target="_blank" rel="noopener noreferrer" className="text-[var(--veyla-purple-soft)] flex items-center gap-1 hover:text-white transition-colors">View on Blockscout <ExternalLink size={11} /></a>],
                         ]}
                     />
 
@@ -652,7 +652,7 @@ Withdrawal (DOT or USDT):
                         <CodeBlock lang="bash" code={`NEXT_PUBLIC_CHAIN_ID=420420417
 NEXT_PUBLIC_RPC_URL=https://eth-rpc-testnet.polkadot.io
 NEXT_PUBLIC_BLOCK_EXPLORER_URL=https://blockscout-testnet.polkadot.io
-NEXT_PUBLIC_VAULT_ADDRESS=0xb155972671A3C19985fc1250e1433b26eB71837c
+NEXT_PUBLIC_VAULT_ADDRESS=0xa93C92894af013652209db6155b13f115B30331E
 NEXT_PUBLIC_DOT_TOKEN_ADDRESS=0x0000000000000000000000000000000000000000
 NEXT_PUBLIC_USDT_TOKEN_ADDRESS=0x000007c000000000000000000000000001200000`} />
                     </Step>
@@ -1024,7 +1024,7 @@ event OwnershipTransferred(address indexed previousOwner, address indexed newOwn
                                 className="flex items-center gap-1.5 text-[14px] text-[var(--veyla-text-dim)] hover:text-white transition-colors">
                                 Twitter <ExternalLink size={11} />
                             </a>
-                            <a href="https://blockscout-testnet.polkadot.io/address/0xb155972671A3C19985fc1250e1433b26eB71837c" target="_blank" rel="noopener noreferrer"
+                            <a href="https://blockscout-testnet.polkadot.io/address/0xa93C92894af013652209db6155b13f115B30331E" target="_blank" rel="noopener noreferrer"
                                 className="flex items-center gap-1.5 text-[14px] text-[var(--veyla-text-dim)] hover:text-white transition-colors">
                                 Contract <ExternalLink size={11} />
                             </a>
@@ -1066,7 +1066,7 @@ function SidebarContent({ activeSection, scrollTo, isMobile = false }: { activeS
 
                 <div className="mt-2 pt-4 border-t border-white/[0.05] flex flex-col gap-2">
                     <a
-                        href="https://blockscout-testnet.polkadot.io/address/0xb155972671A3C19985fc1250e1433b26eB71837c"
+                        href="https://blockscout-testnet.polkadot.io/address/0xa93C92894af013652209db6155b13f115B30331E"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-3 px-4 py-3 rounded-xl text-[16px] font-medium transition-all duration-150 no-underline text-[var(--veyla-text-muted)] hover:text-white hover:bg-white/[0.04] border border-transparent"
@@ -1107,7 +1107,7 @@ function SidebarContent({ activeSection, scrollTo, isMobile = false }: { activeS
 
             <div className="mt-8 px-3 flex flex-col gap-2">
                 <a
-                    href="https://blockscout-testnet.polkadot.io/address/0xb155972671A3C19985fc1250e1433b26eB71837c"
+                    href="https://blockscout-testnet.polkadot.io/address/0xa93C92894af013652209db6155b13f115B30331E"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1.5 text-[13px] text-[var(--veyla-text-dim)] hover:text-white transition-colors"
