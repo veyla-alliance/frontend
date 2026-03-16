@@ -6,7 +6,6 @@ import Hero from "@/components/sections/Hero";
 const ProofBar = dynamic(() => import("@/components/sections/ProofBar"));
 const ProblemTeaser = dynamic(() => import("@/components/sections/ProblemTeaser"));
 const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks"));
-const WhyVeyla = dynamic(() => import("@/components/sections/WhyVeyla"));
 const UnderTheHood = dynamic(() => import("@/components/sections/UnderTheHood"));
 const CallToAction = dynamic(() => import("@/components/sections/CallToAction"));
 const Footer = dynamic(() => import("@/components/sections/Footer"));
@@ -30,7 +29,6 @@ export default function Home() {
         </div>
         <ProblemTeaser />
         <HowItWorks />
-        <WhyVeyla />
         <UnderTheHood />
         <CallToAction />
         <Footer />

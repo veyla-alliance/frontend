@@ -4,7 +4,7 @@ import { FadeIn } from "@/components/FadeIn";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ExternalLink } from "lucide-react";
 
-const CONTRACT_ADDRESS = "0x5196F62a03cCDBed4b5372dC59E982b9A1e2B088";
+const CONTRACT_ADDRESS = "0xa93C92894af013652209db6155b13f115B30331E";
 const BLOCKSCOUT_URL = `https://blockscout-testnet.polkadot.io/address/${CONTRACT_ADDRESS}`;
 
 const CODE = `// VeylaVault.sol — deployed on Passet Hub Testnet
@@ -44,7 +44,7 @@ contract VeylaVault {
 }`;
 
 const PROOF_POINTS = [
-    { value: "514", label: "Lines of Solidity" },
+    { value: "513", label: "Lines of Solidity" },
     { value: "82", label: "Tests Passing" },
     { value: "17", label: "Custom Errors" },
     { value: "2", label: "Precompiles Used" },

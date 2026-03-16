@@ -735,7 +735,7 @@ Safety Cap:
                     <Table
                         headers={["Page / Route", "Description"]}
                         rows={[
-                            [<InlineCode key="l">/</InlineCode>, "Landing page — Navbar, Hero, ProofBar, HowItWorks, WhyVeyla, CTA, Footer"],
+                            [<InlineCode key="l">/</InlineCode>, "Landing page — Navbar, Hero, ProofBar, ProblemTeaser, HowItWorks, UnderTheHood, CTA, Footer"],
                             [<InlineCode key="d">/app</InlineCode>, "Dashboard — stat cards, positions table, route visualization, activity feed"],
                             [<InlineCode key="v">/app/vault</InlineCode>, "Vault — deposit & withdraw with live APY, balance, USD values"],
                             [<InlineCode key="r">/app/routes</InlineCode>, "Routes — animated hub-and-spoke XCM route map + APY comparison table"],
