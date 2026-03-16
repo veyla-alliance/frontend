@@ -1,5 +1,5 @@
 // Read hooks
-export { useVaultBalance, useVaultEarned, useCurrentApy, useVaultTvl, useTokenApys, useVaultConfig } from "./useVaultBalance";
+export { useVaultTvl, useTokenApys, useVaultConfig } from "./useVaultBalance";
 export { useUserPositions } from "./useUserPositions";
 export { useERC20Balance } from "./useERC20Balance";
 export { useTokenPrices } from "./useTokenPrices";

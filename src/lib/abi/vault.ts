@@ -66,64 +66,6 @@ export const vaultAbi = [
         inputs: [{ name: "token", type: "address" }],
         outputs: [{ name: "", type: "uint256" }],
     },
-
-    // ── Events ───────────────────────────────────────────────────────────────
-
-    {
-        name: "Deposited",
-        type: "event",
-        inputs: [
-            { name: "user",   type: "address", indexed: true  },
-            { name: "token",  type: "address", indexed: true  },
-            { name: "amount", type: "uint256", indexed: false },
-        ],
-    },
-    {
-        name: "Withdrawn",
-        type: "event",
-        inputs: [
-            { name: "user",   type: "address", indexed: true  },
-            { name: "token",  type: "address", indexed: true  },
-            { name: "amount", type: "uint256", indexed: false },
-        ],
-    },
-    {
-        name: "YieldClaimed",
-        type: "event",
-        inputs: [
-            { name: "user",   type: "address", indexed: true  },
-            { name: "token",  type: "address", indexed: true  },
-            { name: "amount", type: "uint256", indexed: false },
-        ],
-    },
-    {
-        name: "RoutedLocally",
-        type: "event",
-        inputs: [
-            { name: "token",  type: "address", indexed: true  },
-            { name: "amount", type: "uint256", indexed: false },
-        ],
-    },
-    {
-        name: "RoutedCrossChain",
-        type: "event",
-        inputs: [
-            { name: "token",       type: "address", indexed: true  },
-            { name: "destination", type: "bytes",   indexed: false },
-            { name: "amount",      type: "uint256", indexed: false },
-        ],
-    },
-    {
-        name: "YieldPoolFunded",
-        type: "event",
-        inputs: [
-            { name: "from",   type: "address", indexed: true  },
-            { name: "amount", type: "uint256", indexed: false },
-        ],
-    },
-
-    // ── New read: config getters ──────────────────────────────────────────────
-
     {
         name: "depositTimestampOf",
         type: "function",
@@ -163,79 +105,33 @@ export const vaultAbi = [
         outputs: [{ name: "", type: "uint256" }],
     },
 
-    // ── New admin write ───────────────────────────────────────────────────────
+    // ── Events ───────────────────────────────────────────────────────────────
 
     {
-        name: "setProtocolFee",
-        type: "function",
-        stateMutability: "nonpayable",
-        inputs: [{ name: "feeBps", type: "uint256" }],
-        outputs: [],
-    },
-    {
-        name: "setRebalanceInterval",
-        type: "function",
-        stateMutability: "nonpayable",
-        inputs: [{ name: "interval", type: "uint256" }],
-        outputs: [],
-    },
-    {
-        name: "setTokenRoute",
-        type: "function",
-        stateMutability: "nonpayable",
-        inputs: [
-            { name: "token", type: "address" },
-            { name: "route", type: "string" },
-        ],
-        outputs: [],
-    },
-
-    // ── New events ────────────────────────────────────────────────────────────
-
-    {
-        name: "ProtocolFeeUpdated",
+        name: "Deposited",
         type: "event",
         inputs: [
-            { name: "newFeeBps", type: "uint256", indexed: false },
+            { name: "user",   type: "address", indexed: true  },
+            { name: "token",  type: "address", indexed: true  },
+            { name: "amount", type: "uint256", indexed: false },
         ],
     },
     {
-        name: "RebalanceIntervalUpdated",
+        name: "Withdrawn",
         type: "event",
         inputs: [
-            { name: "newInterval", type: "uint256", indexed: false },
+            { name: "user",   type: "address", indexed: true  },
+            { name: "token",  type: "address", indexed: true  },
+            { name: "amount", type: "uint256", indexed: false },
         ],
     },
     {
-        name: "TokenRouteUpdated",
+        name: "YieldClaimed",
         type: "event",
         inputs: [
-            { name: "token", type: "address", indexed: true  },
-            { name: "route", type: "string",  indexed: false },
-        ],
-    },
-
-    // ── Treasury ──────────────────────────────────────────────────────────────
-
-    {
-        name: "treasury",
-        type: "function",
-        stateMutability: "view",
-        inputs: [],
-        outputs: [{ name: "", type: "address" }],
-    },
-    {
-        name: "setTreasury",
-        type: "function",
-        stateMutability: "nonpayable",
-        inputs: [{ name: "newTreasury", type: "address" }],
-        outputs: [],
-    },
-    {
-        name: "TreasuryUpdated",
-        type: "event",
-        inputs: [
-            { name: "newTreasury", type: "address", indexed: true },
+            { name: "user",   type: "address", indexed: true  },
+            { name: "token",  type: "address", indexed: true  },
+            { name: "amount", type: "uint256", indexed: false },
         ],
     },
 ] as const;

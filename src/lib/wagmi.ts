@@ -5,7 +5,7 @@ import { env } from "./env";
 
 // Polkadot Hub Testnet (Passet Hub — Paseo)
 // Verify latest RPC: https://docs.polkadot.com/develop/smart-contracts/
-export const passetHub = defineChain({
+const passetHub = defineChain({
     id: env.chainId,
     name: "Passet Hub",
     nativeCurrency: {

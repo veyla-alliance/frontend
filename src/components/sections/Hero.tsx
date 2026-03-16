@@ -57,7 +57,7 @@ export default function Hero() {
 
                 <FadeIn delay={0.15}>
                     <p className="[font-family:'Instrument_Serif',serif] italic text-[28px] font-normal text-white/85 mt-6 leading-[1.4] max-[1024px]:text-[26px] max-[768px]:text-[24px] max-[480px]:text-[18px] max-[320px]:text-[16px]">
-                        Your assets, routed for maximum yield.
+                        Not a yield aggregator. A yield routing protocol.
                     </p>
                 </FadeIn>
 

@@ -39,6 +39,58 @@ export default function ProblemTeaser() {
                     ))}
                 </div>
             </FadeIn>
+            <FadeIn delay={0.4}>
+                <div className="mt-12 grid grid-cols-2 gap-3 max-w-[600px] w-full max-sm:grid-cols-1">
+                    {/* Left: Traditional */}
+                    <div className="p-5 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+                        <span className="block text-[11px] font-semibold tracking-[2px] uppercase text-[#f87171] mb-4">
+                            Traditional Aggregator
+                        </span>
+                        <ul className="space-y-2.5 text-[14px] text-[var(--veyla-text-dim)] leading-[1.6]">
+                            <li className="flex items-start gap-2">
+                                <span className="text-[#f87171] shrink-0 mt-0.5">&times;</span>
+                                <span>Bridge-dependent routing</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-[#f87171] shrink-0 mt-0.5">&times;</span>
+                                <span>Wrapped/synthetic tokens</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-[#f87171] shrink-0 mt-0.5">&times;</span>
+                                <span>Off-chain keeper bots</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-[#f87171] shrink-0 mt-0.5">&times;</span>
+                                <span>Fork of Yearn/Beefy</span>
+                            </li>
+                        </ul>
+                    </div>
+                    {/* Right: Veyla */}
+                    <div className="p-5 rounded-2xl bg-[rgba(123,57,252,0.04)] border border-[rgba(123,57,252,0.15)]">
+                        <span className="block text-[11px] font-semibold tracking-[2px] uppercase text-[var(--veyla-purple-soft)] mb-4">
+                            Veyla Protocol
+                        </span>
+                        <ul className="space-y-2.5 text-[14px] text-[var(--veyla-text-muted)] leading-[1.6]">
+                            <li className="flex items-start gap-2">
+                                <span className="text-[#4ade80] shrink-0 mt-0.5">✓</span>
+                                <span>XCM native — zero bridge risk</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-[#4ade80] shrink-0 mt-0.5">✓</span>
+                                <span>Native assets via precompiles</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-[#4ade80] shrink-0 mt-0.5">✓</span>
+                                <span>On-chain yield accounting</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                                <span className="text-[#4ade80] shrink-0 mt-0.5">✓</span>
+                                <span>Built from scratch on PolkaVM</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </FadeIn>
         </section>
     );
 }

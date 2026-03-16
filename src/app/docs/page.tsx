@@ -1087,6 +1087,10 @@ event TokenRouteUpdated(address indexed token, string route);
                                 a: "Currently, the APY is set by the owner and routing is triggered manually for the hackathon demo. Phase 2 (Q2 2026) introduces automated rebalancing via keeper bots that monitor on-chain APY oracles."
                             },
                             {
+                                q: "How are APY rates determined?",
+                                a: "APY rates are set by the protocol owner based on observed yields from destination chains (e.g., Hydration Omnipool for DOT at 14.2%, Stellaswap for USDT at 9.8%). In the current MVP, APY is set via setApy(token, bps) — owner-only, capped at 100% (10,000 bps) by smart contract. Rates reflect real DeFi yields on destination parachains. Yield accrues on-chain using the formula: principal \u00d7 APY \u00d7 elapsed / (365 days \u00d7 10,000). Production roadmap includes oracle integration (Acurast/DIA) for real-time APY feeds from destination chains, keeper automation for periodic rate updates, and governance-controlled rate bounds."
+                            },
+                            {
                                 q: "Do you use bridges?",
                                 a: "No. Veyla Protocol uses Polkadot's native XCM (Cross-Consensus Messaging) protocol, which is built into the relay chain. There are no external bridges, wrapped tokens, or third-party relayers. Assets move natively between parachains."
                             },

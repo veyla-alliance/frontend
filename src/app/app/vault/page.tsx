@@ -270,7 +270,7 @@ export default function VaultPage() {
                     Vault
                 </h1>
                 <p className="text-[15px] text-[var(--veyla-text-dim)] mt-0.5">
-                    Deposit assets to start earning optimized yield
+                    Deposit assets to earn yield — rates based on destination chain DeFi yields
                 </p>
             </div>
 
@@ -454,6 +454,22 @@ export default function VaultPage() {
 
             {/* Bottom stats */}
             <VaultStats />
+
+            {/* APY transparency note */}
+            <div className="p-4 rounded-xl bg-[rgba(0,212,255,0.04)] border border-[rgba(0,212,255,0.12)]">
+                <div className="flex items-start gap-3">
+                    <span className="text-[var(--veyla-cyan)] text-[16px] shrink-0 mt-0.5">ℹ</span>
+                    <div>
+                        <p className="text-[14px] font-semibold text-[var(--veyla-text-main)] mb-1">
+                            APY rates are protocol-managed
+                        </p>
+                        <p className="text-[13px] text-[var(--veyla-text-dim)] leading-[1.6]">
+                            Current APY rates are set by the protocol based on destination chain yields (Hydration Omnipool, Stellaswap).
+                            On testnet, rates are manually configured. Production will integrate on-chain oracle feeds for real-time APY tracking.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

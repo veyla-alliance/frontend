@@ -3,13 +3,6 @@
 
 export type AssetSymbol = "DOT" | "USDT";
 
-export interface AssetInfo {
-    symbol: AssetSymbol;
-    name: string;
-    decimals: number;
-    address: `0x${string}`;
-}
-
 /** A user's active position inside the vault. */
 export interface VaultPosition {
     asset: AssetSymbol;
@@ -20,12 +13,4 @@ export interface VaultPosition {
     earnedUsd: number;
     deployedTo: string;        // chain name, e.g. "Hydration"
     depositedAt: number;       // unix timestamp (seconds)
-}
-
-/** Protocol-level aggregate stats. */
-export interface VaultStats {
-    tvlUsd: number;
-    userSharePercent: number;
-    protocolFeeBps: number;    // basis points: 50 = 0.5%
-    avgRebalanceIntervalMs: number;
 }

@@ -74,8 +74,8 @@ export default function HowItWorks() {
                         <span className={styles.stepNumber}>02</span>
                         <h3 className={styles.title}>Route</h3>
                         <p className={styles.description}>
-                            Veyla&apos;s engine finds the best yields across all
-                            connected chains and routes your liquidity — automatically.
+                            Veyla routes your liquidity to the highest-yielding parachain
+                            via Polkadot&apos;s native XCM — not a bridge, not a wrapper, not a bot.
                         </p>
                         <div className={styles.previewBox}>
                             <span className={styles.previewLabel}>Best yield found</span>
