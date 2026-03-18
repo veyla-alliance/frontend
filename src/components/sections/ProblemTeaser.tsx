@@ -4,9 +4,9 @@ import { FadeIn } from "@/components/FadeIn";
 
 export default function ProblemTeaser() {
     return (
-        <section className="w-full px-4 sm:px-8 md:px-12 lg:px-20 py-16 md:py-32 flex flex-col items-center text-center">
+        <section id="problem" className="w-full px-4 sm:px-8 md:px-12 lg:px-20 py-16 md:py-32 flex flex-col items-center text-center">
             <FadeIn>
-                <span className="block text-[11px] font-semibold tracking-[3px] uppercase text-[var(--veyla-text-dim)] mb-6">
+                <span className="block text-[14px] font-semibold tracking-[3px] uppercase text-[var(--veyla-purple)] mb-6">
                     The Challenge
                 </span>
             </FadeIn>

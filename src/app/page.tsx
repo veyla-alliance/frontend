@@ -13,6 +13,7 @@ const Footer = dynamic(() => import("@/components/sections/Footer"));
 import { Noise } from "@/components/Noise";
 import { PixelGrid } from "@/components/PixelGrid";
 import { MagneticCursor } from "@/components/effects/MagneticCursor";
+import { DemoScroller } from "@/components/DemoScroller";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <PixelGrid />
       <Noise />
       <MagneticCursor />
+      <DemoScroller />
       <Navbar />
       <Hero />
 
