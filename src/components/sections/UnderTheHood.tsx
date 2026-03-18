@@ -4,7 +4,7 @@ import { FadeIn } from "@/components/FadeIn";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ExternalLink } from "lucide-react";
 
-const CONTRACT_ADDRESS = "0xa93C92894af013652209db6155b13f115B30331E";
+const CONTRACT_ADDRESS = "0xc66ee6f7CA593fbbccEd23d8c50417C058F1EF77";
 const BLOCKSCOUT_URL = `https://blockscout-testnet.polkadot.io/address/${CONTRACT_ADDRESS}`;
 
 const CODE = `// VeylaVault.sol — deployed on Passet Hub Testnet
