@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { usePublicClient, useConnection } from "wagmi";
 import { formatUnits, decodeEventLog } from "viem";
 import { vaultAbi } from "@/lib/abi/vault";
@@ -133,6 +133,12 @@ export function useVaultHistory() {
         address ? loadCache(address).rows.length === 0 : false
     );
 
+    // Guard against state updates after unmount (race condition with async RPC calls)
+    const isMountedRef = useRef(true);
+    useEffect(() => {
+        return () => { isMountedRef.current = false; };
+    }, []);
+
     const fetchHistory = useCallback(async () => {
         if (!address || !publicClient) {
             setLoading(false);
@@ -230,14 +236,15 @@ export function useVaultHistory() {
                 )
                 .sort((a, b) => b.date.getTime() - a.date.getTime());
 
+            if (!isMountedRef.current) return;
             setRows(merged);
             saveCache(address, merged, latestBlock);
         } catch (e) {
             if (process.env.NODE_ENV === "development") console.error("Failed to fetch vault history:", e);
             // On error, still show cached data rather than blank screen
-            if (cachedRows.length > 0) setRows(cachedRows);
+            if (isMountedRef.current && cachedRows.length > 0) setRows(cachedRows);
         } finally {
-            setLoading(false);
+            if (isMountedRef.current) setLoading(false);
         }
     }, [address, publicClient]);
 

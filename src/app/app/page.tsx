@@ -35,7 +35,9 @@ export default function DashboardPage() {
 
     const activityItems = historyRows.slice(0, 5).map(row => ({
         type: row.type as ActivityType,
-        description: row.type === "Deposit" ? "Deposited to vault" : "Withdrawn from vault",
+        description: row.type === "Deposit" ? "Deposited to vault"
+                   : row.type === "Withdraw" ? "Withdrawn from vault"
+                   : "Yield claimed",
         amount: `${row.type === "Withdraw" ? "-" : "+"}${row.amount} ${row.asset}`,
         timestamp: row.date,
         txHash: row.txHash,
