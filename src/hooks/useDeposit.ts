@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useWaitForTransactionReceipt, useConnection } from "wagmi";
 import { useQueryClient } from "@tanstack/react-query";
 import { readContract, writeContract, waitForTransactionReceipt } from "@wagmi/core";
@@ -100,9 +100,9 @@ export function useDeposit() {
         }
     }
 
-    function reset() {
+    const reset = useCallback(() => {
         setTxState({ status: "idle", hash: undefined });
-    }
+    }, []);
 
     return { deposit, txState, reset };
 }
