@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useWaitForTransactionReceipt } from "wagmi";
 import { useQueryClient } from "@tanstack/react-query";
 import { writeContract } from "@wagmi/core";
@@ -33,7 +33,13 @@ export function useClaimYield() {
         queryClient.invalidateQueries({ refetchType: "active" });
     }, [isConfirmed, queryClient]);
 
+    // Prevent double-submission
+    const busyRef = useRef(false);
+
     async function claimYield(tokenAddress: `0x${string}`) {
+        if (busyRef.current) return;
+        busyRef.current = true;
+
         try {
             setTxState({ status: "awaiting-signature" });
 
@@ -51,6 +57,8 @@ export function useClaimYield() {
             } else {
                 setTxState({ status: "error", error: parseError(err) });
             }
+        } finally {
+            busyRef.current = false;
         }
     }
 

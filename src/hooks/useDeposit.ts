@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useWaitForTransactionReceipt, useConnection } from "wagmi";
 import { useQueryClient } from "@tanstack/react-query";
 import { readContract, writeContract, waitForTransactionReceipt } from "@wagmi/core";
@@ -42,11 +42,16 @@ export function useDeposit() {
         queryClient.invalidateQueries({ refetchType: "active" });
     }, [isConfirmed, queryClient]);
 
+    // Prevent double-submission — useRef avoids stale closure issues
+    const busyRef = useRef(false);
+
     async function deposit(tokenAddress: `0x${string}`, amount: bigint) {
         if (!address) {
             setTxState({ status: "error", error: "Wallet not connected." });
             return;
         }
+        if (busyRef.current) return;
+        busyRef.current = true;
 
         const isDot = tokenAddress === env.dotTokenAddress;
 
@@ -97,6 +102,8 @@ export function useDeposit() {
             } else {
                 setTxState({ status: "error", error: parseError(err) });
             }
+        } finally {
+            busyRef.current = false;
         }
     }
 
